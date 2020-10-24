@@ -96,7 +96,7 @@ const MovieItem = (props) => {
     return (
         <Grid item xs={12} sm={4} md={3} className={classes.root}>
 
-            <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} handleClickChooseMovie={handleClickChooseMovie(maPhim)} danhGia={danhGia} hinhAnh={hinhAnh} />
+            <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} danhGia={danhGia} hinhAnh={hinhAnh} />
             <div className={classes.divContent}>
                 <div className={classes.nameMovie}>
                     <div className={classes.general}>C18</div>

@@ -1,6 +1,6 @@
 
 
-import React, { memo } from 'react';
+import React, { Fragment, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -22,11 +22,12 @@ const TabPanel = (props) => {
             id={`full-width-tabpanel-${index}`}
             aria-labelledby={`full-width-tab-${index}`}
             {...other}
+            style={{ overflow: 'hidden' }}
         >
             {value === index && (
-                <Box p={3}>
+                <Fragment>
                     {children}
-                </Box>
+                </Fragment>
             )}
         </div>
     );
@@ -50,13 +51,13 @@ const MovieHome = () => {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
+    const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
-    };
+    }, []);
 
-    const handleChangeIndex = (index) => {
+    const handleChangeIndex = useCallback((index) => {
         setValue(index);
-    };
+    }, []);
 
     const isShow = useSelector((state) => {
         return state.qlMovie.ModalVideoMovie.isShow
@@ -84,10 +85,10 @@ const MovieHome = () => {
                 index={value}
                 onChangeIndex={handleChangeIndex}
             >
-                <TabPanel value={value} index={0} dir={theme.direction}>
+                <TabPanel value={value} index={0} dir={theme.direction} className={classes.tabContent}>
                     <MovieList index={0} />
                 </TabPanel>
-                <TabPanel value={value} index={1} dir={theme.direction}>
+                <TabPanel value={value} index={1} dir={theme.direction} className={classes.tabContent}>
                     <MovieList index={1} />
                 </TabPanel>
             </SwipeableViews>

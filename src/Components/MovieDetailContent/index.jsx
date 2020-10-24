@@ -306,7 +306,7 @@ const MovieDetailContent = (props) => {
                                 styles={{
                                     root: {},
                                     path: {
-                                        stroke: '#fff',
+                                        stroke: 'rgb(169 255 68)',
                                         strokeLinecap: 'butt',
                                         transition: 'stroke-dashoffset 0.5s ease 0s',
                                         transform: 'rotate(0 )',
@@ -320,7 +320,7 @@ const MovieDetailContent = (props) => {
                                         width: '20px',
                                     },
                                     text: {
-                                        fill: '#fff',
+                                        fill: 'rgb(169 255 68)',
                                         fontSize: '40px',
                                         fontFamily: 'SF Medium',
                                     },

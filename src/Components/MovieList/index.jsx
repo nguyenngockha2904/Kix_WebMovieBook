@@ -10,14 +10,13 @@ import MovieItem from '../MovieItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_DATA_LIST_MOVIE_PHAN_TRANG } from '../../redux/action/type';
-import ModalVideoMovie from '../../Components/ModalShowVideo';
 const useStyles = makeStyles((theme) => {
     return {
         silder: {
             '& .slick-arrow': {
                 zIndex: '10',
-                height: theme.spacing(3),
-                width: theme.spacing(6),
+                height: theme.spacing(5),
+                width: theme.spacing(5),
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 backgroundSize: 'contain',
@@ -31,17 +30,15 @@ const useStyles = makeStyles((theme) => {
 
             },
             '& .slick-next': {
-                right: '-8%',
-                backgroundImage: `url(${ImgNextD})`,
+                backgroundImage: `url(${ImgNextD}) !important`,
                 '&:hover': {
-                    backgroundImage: `url(${ImgNextL})`,
+                    backgroundImage: `url(${ImgNextL}) !important`,
                 }
             },
             '& .slick-prev': {
-                left: '-8%',
-                backgroundImage: `url(${ImgPrevD})`,
+                backgroundImage: `url(${ImgPrevD}) !important`,
                 '&:hover': {
-                    backgroundImage: `url(${ImgPrevL})`,
+                    backgroundImage: `url(${ImgPrevL}) !important`,
                 }
             },
         },
@@ -76,7 +73,7 @@ const MovieList = (props) => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        autoplay: false,
+        autoplay: true,
         pauseOnHover: true,
 
     }), []);
@@ -85,7 +82,7 @@ const MovieList = (props) => {
             return (
                 <div key={index}
                 >
-                    <Grid container spacing={1} justify="flex-start" className={classes.divGrid}>
+                    <Grid container spacing={1} justify="center" className={classes.divGrid}>
                         {
                             page.map((movieItem, index) => {
                                 return (

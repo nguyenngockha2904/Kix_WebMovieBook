@@ -127,7 +127,7 @@ const ImageMovie = (props) => {
                     </div>
                 </div>
                 <div className={classes.bgDivImg} >
-                    <div className={classes.bgDetail} onClick={props.handleClickChooseMovie}></div>
+                    <div className={classes.bgDetail} ></div>
                     <Button variant="contained" color="inherit" className={classes.play_videoIcon}
                         onClick={props.handleShowModalVideo}
                     >
