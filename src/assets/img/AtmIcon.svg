@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="315.508" height="223" viewBox="0 0 315.508 223">
+  <g id="AtmIcon" transform="translate(-566 -1156)">
+    <line id="Line_21" data-name="Line 21" x2="311" y2="1" transform="translate(570.5 1213.5)" fill="none" stroke="#2b3a51" stroke-width="5"/>
+    <g id="Rectangle_31" data-name="Rectangle 31" transform="translate(566 1156)" fill="none" stroke="#2b3a51" stroke-width="5">
+      <rect width="315" height="223" rx="20" stroke="none"/>
+      <rect x="2.5" y="2.5" width="310" height="218" rx="17.5" fill="none"/>
+    </g>
+    <text id="ATM" transform="translate(617 1319)" fill="#2b3a51" font-size="100" font-family="SegoeUI-Bold, Segoe UI" font-weight="700"><tspan x="0" y="0">ATM</tspan></text>
+  </g>
+</svg>

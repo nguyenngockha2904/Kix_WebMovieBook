@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="142" height="117" viewBox="0 0 142 117">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #4c00a9;
+      }
+
+      .cls-4 {
+        fill: #350053;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect class="cls-1" width="142" height="117"/>
+    </clipPath>
+  </defs>
+  <g id="bottomDop" class="cls-2">
+    <g id="Group_94" data-name="Group 94">
+      <circle id="Ellipse_9" data-name="Ellipse 9" class="cls-3" cx="58.5" cy="58.5" r="58.5" transform="translate(25)"/>
+      <path id="Path_204" data-name="Path 204" class="cls-4" d="M42,0A42,42,0,1,1,0,42,42,42,0,0,1,42,0Z" transform="translate(0 33)"/>
+    </g>
+  </g>
+</svg>

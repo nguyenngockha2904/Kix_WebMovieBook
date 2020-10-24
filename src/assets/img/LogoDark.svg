@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="106" viewBox="0 0 112 106">
+  <defs>
+    <style>
+      .cls-1, .cls-3, .cls-4 {
+        fill: #440074;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3, .cls-4 {
+        stroke: #440074;
+      }
+
+      .cls-4 {
+        stroke-width: 0.5px;
+      }
+    </style>
+  </defs>
+  <g id="LogoDark" transform="translate(-720 -520)">
+    <path id="Path_3" data-name="Path 3" class="cls-1" d="M29,0H83a29,29,0,0,1,29,29V77a29,29,0,0,1-29,29H29A29,29,0,0,1,0,77V29A29,29,0,0,1,29,0Z" transform="translate(720 520)"/>
+    <g id="Logo" transform="translate(99 -47)">
+      <g id="Group_1" data-name="Group 1">
+        <rect id="Rectangle_1" data-name="Rectangle 1" class="cls-2" width="28" height="75" rx="9" transform="translate(647 584)"/>
+      </g>
+      <g id="Group_5" data-name="Group 5">
+        <g id="Group_4" data-name="Group 4" transform="matrix(-0.695, 0.719, -0.719, -0.695, 1581.894, 584.283)">
+          <rect id="Rectangle_1-2" data-name="Rectangle 1" class="cls-2" width="25.778" height="52.411" rx="9" transform="translate(647 584)"/>
+        </g>
+      </g>
+      <rect id="Rectangle_4" data-name="Rectangle 4" class="cls-2" width="13" height="1" transform="matrix(0.719, -0.695, 0.695, 0.719, 687.459, 606.087)"/>
+      <rect id="Rectangle_5" data-name="Rectangle 5" class="cls-2" width="13" height="1" transform="translate(695.24 595.982) rotate(45)"/>
+      <g id="Group_6" data-name="Group 6" transform="matrix(-0.105, 0.995, -0.995, -0.105, 1399.185, -17.898)">
+        <g id="Group_4-2" data-name="Group 4" transform="matrix(-0.695, 0.719, -0.719, -0.695, 1585.407, 587.676)">
+          <rect id="Rectangle_1-3" data-name="Rectangle 1" class="cls-2" width="25.778" height="40.498" rx="9" transform="translate(647 584)"/>
+        </g>
+        <rect id="Rectangle_3" data-name="Rectangle 3" class="cls-1" width="14" height="2" rx="1" transform="matrix(0.719, -0.695, 0.695, 0.719, 688.74, 639.782)"/>
+        <path id="Path_205" data-name="Path 205" class="cls-1" d="M1,0H14a1,1,0,0,1,0,2H1A1,1,0,0,1,1,0Z" transform="matrix(0.719, -0.695, 0.695, 0.719, 683.415, 634.927)"/>
+        <rect id="Rectangle_7" data-name="Rectangle 7" class="cls-1" width="14" height="2" rx="1" transform="translate(718.874 627.102) rotate(43)"/>
+        <rect id="Rectangle_8" data-name="Rectangle 8" class="cls-1" width="14" height="2" rx="1" transform="translate(723.219 620.612) rotate(43)"/>
+      </g>
+      <g id="Group_3" data-name="Group 3" transform="translate(647.16 588.664)">
+        <path id="Path_1" data-name="Path 1" class="cls-3" d="M0,3.721,3.029,1.86,0,0Z" transform="matrix(0.017, 1, -1, 0.017, 16.072, 7.749)"/>
+        <path id="Path_2" data-name="Path 2" class="cls-4" d="M20.127,4.173l-4.733-2.74a2.542,2.542,0,0,0-2.547,0L8.114,4.173A2.555,2.555,0,0,0,6.84,6.384v5.477a2.555,2.555,0,0,0,1.274,2.211l4.733,2.74a2.542,2.542,0,0,0,2.547,0l4.733-2.739A2.555,2.555,0,0,0,21.4,11.863V6.384a2.555,2.555,0,0,0-1.274-2.211Zm-1.6,6.237c-.062.862-.219,1.752-1.318,1.817a54.188,54.188,0,0,1-6.184,0c-1.1-.064-1.256-.955-1.318-1.817a17.271,17.271,0,0,1,0-2.574c.062-.862.219-1.752,1.318-1.817a54.188,54.188,0,0,1,6.184,0c1.1.064,1.256.955,1.318,1.817a17.279,17.279,0,0,1,0,2.574Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
