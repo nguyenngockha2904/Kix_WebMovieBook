@@ -1,5 +1,5 @@
 import { Box, Button, makeStyles, withWidth } from '@material-ui/core';
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import CGVlogo from '../../assets/img/logoCine/cgv_logo.png';
 import BHDLogo from '../../assets/img/logoCine/BHD_logo.png';
 import CNXLogo from '../../assets/img/logoCine/cnx_logo.jpg';
@@ -14,8 +14,323 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, memo } from 'react';
 import { getALLGroupTheatherWithIdTheatherSystem, getALLInfoFollowTheaterSystem } from '../../redux/action/TheaterSystemAction';
 import { createAction } from '../../redux/action';
-import { SET_DATA_LIST_MOVIE_WITH_THEATER } from '../../redux/action/type';
+import { SET_DATA_LIST_MOVIE_WITH_THEATER, SET_DATA_MOVIE_WITH_DATE } from '../../redux/action/type';
+//#region Group icon Cinema
+import BHDIcon from '../../assets/img/logoTheater/bhd.jpg';
+import CGVIcon from '../../assets/img/logoTheater/cgv.jpg';
+import CineStarIcon from '../../assets/img/logoTheater/cns.jpg';
+import GalaxyIcon from '../../assets/img/logoTheater/glx.jpg';
+import LotteCinimaIcon from '../../assets/img/logoTheater/lotte.jpg';
+import MegaGSIcon from '../../assets/img/logoTheater/megags.jpg';
+import NoImage from '../../assets/img/logoTheater/noImage.jpg';
+//#endregion
+const returnIconTheader = (value) => {
+    switch (value.toLowerCase()) {
+        case 'bhd': {
+            return BHDIcon;
+        }
+        case 'cgv': {
+            return CGVIcon;
+        }
+        case 'cns': {
+            return CineStarIcon;
+        }
+        case 'glx': {
+            return GalaxyIcon;
+        }
+        case 'megags': {
+            return MegaGSIcon;
+        }
+        case 'lotte': {
+            return LotteCinimaIcon;
+        }
+        default: {
+            return NoImage;
+        }
+    }
+};
+
+
+const GroupCine = (props) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const propsTheaterSystem = useSelector((state) => {
+        return state.qlTheaterSystem
+    });
+    const listTheaterSystem = useSelector((state) => {
+        return state.qlTheaterSystem.listTheaterSystem
+    });
+
+    const listRapT = useSelector((state) => {
+        return state.qlTheaterSystem.theaterSystemInfo.lstCumRap
+    });
+    const lstLichChieu = useSelector((state) => {
+        return state.qlTheaterSystem.lstLichChieu
+    });
+    const lstMovieWithDate = useSelector((state) => {
+        return state.qlTheaterSystem.lstMovieWithDate
+    });
+
+
+    const listHeThongRap = useMemo(() => {
+        let lst = [];
+        for (let item of listTheaterSystem) {
+            lst.push({ ...item, isActived: false });
+        }
+        return lst;
+    }, [listTheaterSystem]);
+    useEffect(() => {
+        dispatch(getALLInfoFollowTheaterSystem('BHDStar', () => { }));
+        listHeThongRap[0].isActived = true;
+    }, []);
+
+
+    const listRap = useMemo(() => {
+        let lst = [];
+        if (listRapT) {
+            for (let index in listRapT) {
+                lst.push({ ...listRapT[index], isActived: index === 0 ? true : false });
+            }
+        }
+        return lst;
+    }, [listRapT]);
+
+
+    const listDay = useMemo(() => {
+        let listD = [];
+        let dayCheck = '';
+        let listTest = [];
+        // convert
+        lstLichChieu.map((item) => {
+            let date = new Date(item.ngayChieuGioChieu);
+            let dayString = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}/${date.getFullYear()}`;
+            let day = '';
+            if (date.getDay() === 0) {
+                day = 'Chủ Nhật';
+            }
+            if (date.getDay() === 1) {
+                day = 'Thứ 2';
+            }
+            if (date.getDay() === 2) {
+                day = 'Thứ 3';
+            }
+            if (date.getDay() === 3) {
+                day = 'Thứ 4';
+            }
+            if (date.getDay() === 4) {
+                day = 'Thứ 5';
+            }
+            if (date.getDay() === 5) {
+                day = 'Thứ 6';
+            }
+            if (date.getDay() === 6) {
+                day = 'Thứ Bảy';
+            }
+            let d = {
+                day,
+                da: `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+                dateFormat: dayString,
+                isActived: false,
+            }
+            listD.push(d);
+        });
+        let mangSPTheoGia = listD.sort((sp_tieptheo, sp) => {
+            return parseInt(sp_tieptheo.da) - parseInt(sp.da);
+        });
+        mangSPTheoGia.map((item) => {
+            if (dayCheck !== item.da) {
+                listTest.push(item);
+            }
+            dayCheck = item.da;
+        });
+
+        return listTest;
+
+    }, [lstLichChieu]);
+
+
+
+    const handleClickTabTheaterSystem = useCallback((idTheaterSystem) => () => {
+        dispatch(getALLInfoFollowTheaterSystem(idTheaterSystem, () => {
+            listRap[0].isActived = true;
+        }));
+        for (let item of listHeThongRap) {
+            item.isActived = false;
+        }
+        let index = listHeThongRap.findIndex(i => i.maHeThongRap === idTheaterSystem);
+        if (index !== -1) {
+            listHeThongRap[index].isActived = true;
+        }
+    }, [listHeThongRap]);
+    const renderHethongRap = useCallback(() => {
+
+        return listHeThongRap.map((item, index) => {
+            return (
+                <div key={index} className={classes.tabItemRapRespone} style={{ opacity: item.isActived ? '1' : '0.5' }}>
+                    <div className={classes.tabItemRap}>
+                        <Button variant="contained" color="inherit" className={classes.buttonImg}
+                            onClick={handleClickTabTheaterSystem(item.maHeThongRap)}
+                        ><img src={item.logo} alt={item.biDanh} className={classes.logoCine} /></Button>
+                    </div>
+                    {(index !== (listHeThongRap.length - 1)) && <div className={classes.line}></div>}
+                </div>
+            )
+        })
+    }, [listHeThongRap]);
+
+
+    const handleClickTabRap = useCallback((value) => () => {
+        let index = listRap.findIndex(m => m.maCumRap === value.maCumRap);
+        for (let item of listRap) {
+            item.isActived = false;
+        }
+        if (index !== -1) {
+            listRap[index].isActived = true;
+        }
+        dispatch(createAction(SET_DATA_LIST_MOVIE_WITH_THEATER, value.danhSachPhim));
+    }, [listRap]);
+    const renderListRap = useCallback(() => {
+        if (listRap) {
+            return listRap.map((item, index) => {
+                return (
+                    <Button variant="contained" color="inherit" key={index} onClick={handleClickTabRap(item)} className={classes.tabRapPhimButton}
+                        style={{ opacity: item.isActived ? '1' : '0.5' }}
+                    >
+                        <div className={`${classes.tabRapPhimItem} `}>
+                            <div className={classes.divRapImg}>
+                                <img src={returnIconTheader(item.tenCumRap.trim().slice(0, item.tenCumRap.trim().indexOf(' ')))} alt={returnIconTheader(item.tenCumRap.trim().slice(0, item.tenCumRap.trim().indexOf(' ')))} className={classes.movieTheaterImg} />
+                            </div>
+                            <div className={classes.RapphimContent}>
+                                <div className={classes.nameRapPhim}>
+                                    {/* note */}
+                                    <div className={classes.hightlineTenRap}>{item.tenCumRap.trim().slice(0, item.tenCumRap.trim().indexOf(' '))}</div>
+                                    {item.tenCumRap.trim().slice(item.tenCumRap.trim().indexOf(' '))}
+                                </div>
+                                <div className={classes.address}>{item.diaChi}</div>
+                                <Box textAlign="left">
+                                    <div className={classes.btnDetail}>[chi tiết]</div>
+                                </Box>
+                            </div>
+                        </div>
+                        {(index !== (listRap.length - 1)) && <div className={classes.line}></div>}
+                    </Button>
+                )
+            });
+        }
+
+    }, [listRap]);
+
+
+    const handleChooseDay = useCallback((value) => () => {
+        let index = listDay.findIndex(d => d.dateFormat === value.dateFormat);
+        for (let i in listDay) {
+            listDay[i].isActived = false;
+        }
+        if (index !== -1) {
+            listDay[index].isActived = true;
+        }
+        dispatch(createAction(SET_DATA_MOVIE_WITH_DATE, value.dateFormat));
+        // console.log(value);
+    }, [listDay]);
+
+    const renderListDate = useCallback(() => {
+
+        return listDay.map((item, index) => {
+            return (
+                <Button key={index} variant="contained" color="inherit" className={`${classes.dateItem}`}
+                    // disabled={index > 5 ? true : false}
+                    style={{ color: item.isActived ? '#6b00b6' : '#000', }}
+                    onClick={handleChooseDay(item)}
+
+                >
+                    <div className={classes.textFomart}>{item.day}</div>
+                    <div className={`${classes.textFomart} ${classes.date}`}>{item.da}</div>
+                </Button >
+            )
+        });
+    }, [listDay]);
+
+
+
+    const renderListPhim = useCallback(() => {
+
+        // let listRap = propsTheaterSystem.listMovieWithTheater;
+        // console.log(propsTheaterSystem.listMovieWithTheater);
+        if (lstMovieWithDate) {
+            return lstMovieWithDate.map((item, index) => {
+                return (
+                    <div key={index}>
+                        <div className={classes.phimItem}>
+                            <div className={classes.phimInfo}>
+                                <div className={classes.divRapImg}>
+                                    <img src={item.hinhAnh} alt="CGVMovieTheater" className={classes.movieTheaterImg} />
+                                </div>
+                                <div>
+                                    <div className={classes.namePhim}>
+                                        <div className={classes.general}>C18</div>
+                                        {(item.tenPhim).slice(0, 40)}{item.tenPhim.length > 100 && '...'}
+                                    </div>
+                                    <div className={classes.totalTime}>91 phút - TIX 7.9 - IMDb 0</div>
+                                </div>
+                            </div>
+                            <div className={classes.Grouptime}>
+                                <div className={classes.typeAudio}>
+                                    2D lồng tiếng
+                                </div>
+                                <div className={classes.timeMovie}>
+                                    {
+                                        item.lstLichChieu.map((lc, index) => {
+                                            let d = new Date(lc.ngayChieuGioChieu);
+                                            return (
+                                                <div className={classes.timeMovie_Item} key={index}>
+                                                    <div className={classes.timeStart}>
+                                                        {d.getHours() > 9 ? d.getHours() : '0' + d.getHours()}:{d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes()}
+                                                    </div>
+                                                    <div>
+                                                        ~ {(d.getHours() + 1) > 24 ? ((d.getHours() + 1) - 24) : d.getHours() + 1}:31
+                                                </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        {(index !== (listRap.length - 1)) && <div className={classes.line} style={{ width: '90%' }}></div>}
+                    </div>
+                )
+            });
+        }
+    }, [lstMovieWithDate]);
+    return (
+        <Fragment>
+            <div className={classes.root}>
+                <div className={classes.tabRap}>
+                    {renderHethongRap()}
+                </div>
+                <div className={classes.contentRap}>
+                    <div className={classes.titleTab}>Rạp</div>
+                    <div className={classes.tabRapPhim}>
+                        {renderListRap()}
+                    </div>
+                    <div className={classes.titleTab}>Phim</div>
+                    <div className={classes.tabContent}>
+                        <div className={classes.divDate}>
+                            {renderListDate()}
+                        </div>
+                        <div className={classes.ShowTimeDetail}>
+                            {renderListPhim()}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Fragment>
+    );
+};
+
 const useStyles = makeStyles((theme) => ({
+    //#region test
     root: {
         maxWidth: theme.spacing(94),
         width: '100%',
@@ -112,7 +427,7 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
     },
     contentRap: {
-        width: '100%',
+        width: '91%',
         maxHeight: theme.spacing(57),
         display: 'flex',
         [theme.breakpoints.down(`${770}`)]: {
@@ -121,8 +436,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     tabRapPhim: {
-        width: theme.spacing(46),
-        maxHeight: theme.spacing(57),
+        width: '30%',
         borderRight: '1px solid rgb(214 214 214)',
         overflow: 'auto',
         '&::-webkit-scrollbar ': {
@@ -176,7 +490,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         padding: theme.spacing(1.5, 0),
         overflow: 'hidden',
-        opacity: '0.7',
         cursor: 'pointer',
         width: '100%',
         '&:hover': {
@@ -342,148 +655,72 @@ const useStyles = makeStyles((theme) => ({
         color: '#108f3e',
 
     },
+    //#endregion
+    tabContent: {
+        width: '70%',
+    },
+    divDate: {
+        display: 'flex',
+        overflowX: 'auto',
+        '&::-webkit-scrollbar ': {
+            width: '4px',
+            height: '8px',
+        },
+        '&::-webkit-scrollbar-track': {
+            background: 'rgb(214 214 214 / 28%)',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            background: '#80808047',
+            borderRadius: '5px',
+        },
+    },
+    dateItem: {
+        display: 'block',
+        background: 'transparent !important',
+        boxShadow: ' 0 0 black',
+        transition: 'none',
+        minWidth: theme.spacing(12.2),
+        padding: theme.spacing(0.8),
 
+        '&:hover': {
+            background: 'transparent',
+        },
+        '&.active': {
+            color: '#fb4226',
+        }
+    },
+    textFomart: {
+        fontSize: theme.spacing(1.4),
+        fontFamily: 'SF Medium',
+        textAlign: 'center',
+        whiteSpace: 'nowrap',
+    },
+    date: {
+        fontSize: theme.spacing(1.9),
+        letterSpacing: '2px',
+        fontFamily: 'system-ui',
+    },
+
+    ShowTimeDetail: {
+        padding: theme.spacing(0, 1.4),
+        margin: theme.spacing(1.4, 0),
+        overflow: 'auto',
+        maxHeight: theme.spacing(45),
+        '&::-webkit-scrollbar ': {
+            width: '8px',
+            height: '8px',
+        },
+        '&::-webkit-scrollbar-track': {
+            background: 'rgb(214 214 214 / 28%)',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            background: '#80808047',
+            borderRadius: '5px',
+        },
+
+    },
 }));
 
-const GroupCine = (props) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
 
-    const [idTheaterSystem, setIdTheaterSystem] = useState('BHDStar');
-    const propsTheaterSystem = useSelector((state) => {
-        return state.qlTheaterSystem
-    });
-
-    useEffect(() => {
-        dispatch(getALLInfoFollowTheaterSystem(idTheaterSystem, () => { }));
-    }, []);
-    const handleClickTabRap = useCallback((value) => () => {
-        dispatch(createAction(SET_DATA_LIST_MOVIE_WITH_THEATER, value));
-    }, []);
-    const handleClickTabTheaterSystem = useCallback((idTheaterSystem) => () => {
-        dispatch(getALLInfoFollowTheaterSystem(idTheaterSystem, () => { }));
-    }, []);
-    const renderHethongRap = useCallback(() => {
-        let listHeThongRap = propsTheaterSystem.listTheaterSystem;
-        return listHeThongRap.map((item, index) => {
-            return (
-                <div key={index} className={classes.tabItemRapRespone}>
-                    <div className={classes.tabItemRap}>
-                        <Button variant="contained" color="inherit" className={classes.buttonImg}
-                            onClick={handleClickTabTheaterSystem(item.maHeThongRap)}
-                        ><img src={item.logo} alt={item.biDanh} className={classes.logoCine} /></Button>
-                    </div>
-                    {(index !== (listHeThongRap.length - 1)) && <div className={classes.line}></div>}
-                </div>
-            )
-        })
-    }, [propsTheaterSystem.listTheaterSystem]);
-    const renderListRap = useCallback(() => {
-        let listRap = propsTheaterSystem.theaterSystemInfo.lstCumRap;
-        if (listRap) {
-            return listRap.map((item, index) => {
-                return (
-                    <Button variant="contained" color="inherit" key={index} onClick={handleClickTabRap(item.danhSachPhim)} className={classes.tabRapPhimButton}>
-                        <div className={`${classes.tabRapPhimItem} `}>
-                            <div className={classes.divRapImg}>
-                                <img src={CGVMovieTheater} alt="CGVMovieTheater" className={classes.movieTheaterImg} />
-                            </div>
-                            <div className={classes.RapphimContent}>
-                                <div className={classes.nameRapPhim}>
-                                    {/* note */}
-                                    <div className={classes.hightlineTenRap}>{item.tenCumRap.trim().slice(0, item.tenCumRap.trim().indexOf(' '))}</div>
-                                    {item.tenCumRap.trim().slice(item.tenCumRap.trim().indexOf(' '))}
-                                </div>
-                                <div className={classes.address}>{item.diaChi}</div>
-                                <Box textAlign="left">
-                                    <div className={classes.btnDetail}>[chi tiết]</div>
-                                </Box>
-                            </div>
-                        </div>
-                        {(index !== (listRap.length - 1)) && <div className={classes.line}></div>}
-                    </Button>
-                )
-            });
-        }
-
-    }, [propsTheaterSystem.theaterSystemInfo.lstCumRap]);
-    const renderListPhim = useCallback(() => {
-
-        let listRap = propsTheaterSystem.listMovieWithTheater;
-        // console.log(propsTheaterSystem.listMovieWithTheater);
-        if (listRap) {
-            return listRap.map((item, index) => {
-                return (
-                    <div key={index}>
-                        <div className={classes.phimItem}>
-                            <div className={classes.phimInfo}>
-                                <div className={classes.divRapImg}>
-                                    <img src={item.hinhAnh} alt="CGVMovieTheater" className={classes.movieTheaterImg} />
-                                </div>
-                                <div>
-                                    <div className={classes.namePhim}>
-                                        <div className={classes.general}>C18</div>
-                                        {(item.tenPhim).slice(0, 40)}{item.tenPhim.length > 100 && '...'}
-                                    </div>
-                                    <div className={classes.totalTime}>91 phút - TIX 7.9 - IMDb 0</div>
-                                </div>
-                            </div>
-                            <div className={classes.Grouptime}>
-                                <div className={classes.typeAudio}>
-                                    2D lồng tiếng
-                                </div>
-                                <div className={classes.timeMovie}>
-                                    <div className={classes.timeMovie_Item}>
-                                        <div className={classes.timeStart}>
-                                            15:00
-                                                </div>
-                                        <div>
-                                            ~ 16:31
-                                                </div>
-                                    </div>
-                                    {
-                                        item.lstLichChieuTheoPhim.map((lc, index) => {
-                                            let d = new Date(lc.ngayChieuGioChieu);
-                                            return (
-                                                <div className={classes.timeMovie_Item} key={index}>
-                                                    <div className={classes.timeStart}>
-                                                        {d.getHours()}:{d.getMinutes()}
-                                                    </div>
-                                                    <div>
-                                                        ~ {(d.getHours() + 1) > 24 ? ((d.getHours() + 1) - 24) : d.getHours() + 1}:31
-                                                </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        {(index !== (listRap.length - 1)) && <div className={classes.line} style={{ width: '90%' }}></div>}
-                    </div>
-                )
-            });
-        }
-    }, [propsTheaterSystem.listMovieWithTheater]);
-    return (
-        <Fragment>
-            <div className={classes.root}>
-                <div className={classes.tabRap}>
-                    {renderHethongRap()}
-                </div>
-                <div className={classes.contentRap}>
-                    <div className={classes.titleTab}>Rạp</div>
-                    <div className={classes.tabRapPhim}>
-                        {renderListRap()}
-                    </div>
-                    <div className={classes.titleTab}>Phim</div>
-                    <div className={classes.contentPhim}>
-                        {renderListPhim()}
-                    </div>
-                </div>
-            </div>
-        </Fragment>
-    );
-};
 
 export default memo(withWidth()(GroupCine));

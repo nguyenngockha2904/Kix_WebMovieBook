@@ -74,11 +74,11 @@ const Home = () => {
             className={classes.homeRoot}
         >   {isLoading ? <Loading /> :
             <Fragment>
-                <Header />
+                {/* <Header />
                 <div className={classes.space}></div>
                 <Carousel />
                 <div className={classes.spaceHomeTool}></div>
-                <HomeMovie />
+                <HomeMovie /> */}
                 <div className={classes.spaceGroupCine}></div>
                 <GroupCine />
                 <div className={classes.space}></div>
