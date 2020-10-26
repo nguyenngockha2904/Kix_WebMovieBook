@@ -260,15 +260,22 @@ const GroupCine = (props) => {
             return (
                 <Button key={index} variant="contained" color="inherit" className={`${classes.dateItem}`}
                     style={{
-                        color: item.isActived ? 'rgb(99 188 75)' : '#000',
+                        color: item.isActived ? '#6b00b6' : '#000',
                         backgroundColor: 'transparent',
-                        boxShadow: item.isActived && '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
+
                     }}
                     onClick={handleChooseDay(item)}
 
                 >
                     <div className={classes.textFomart}>{item.day}</div>
-                    <div className={`${classes.textFomart} ${classes.date}`}>{item.da}</div>
+                    <div className={`${classes.textFomart} ${classes.date}`}
+                        style={{
+                            color: item.isActived && '#fff',
+                            background: item.isActived && '#6b00b6',
+                            borderRadius: item.isActived && '50%',
+                            padding: item.isActived && '3px',
+                        }}
+                    >{item.da}</div>
                 </Button >
             )
         });
@@ -402,7 +409,6 @@ const useStyles = makeStyles((theme) => ({
             border: 'none',
             borderTop: '1px solid #80808080',
             width: '100%',
-            marginBottom: theme.spacing(2),
             overflowX: 'scroll',
             '&::-webkit-scrollbar ': {
                 width: '3px',
@@ -626,6 +632,12 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'capitalize',
         width: '100%',
         fontSize: theme.spacing(1.4),
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.2),
+            '& $general': {
+                fontSize: theme.spacing(1.2),
+            },
+        },
     },
     general: {
         color: '#fff',
@@ -641,9 +653,10 @@ const useStyles = makeStyles((theme) => ({
     totalTime: {
         margin: 0,
         lineHeight: '1.7',
-        fontSize: theme.spacing(1.2),
+        fontSize: theme.spacing(1.1),
         color: '#9b9b9b',
         textTransform: 'capitalize',
+
     },
     Grouptime: {
         padding: theme.spacing(0, 1),
@@ -654,6 +667,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.6),
         color: '#000',
         marginBottom: theme.spacing(0.5),
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.2),
+        },
     },
     timeMovie: {
         display: 'flex',
@@ -756,6 +772,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.9),
         letterSpacing: '2px',
         fontFamily: 'system-ui',
+        display: 'inline',
     },
 
     ShowTimeDetail: {
