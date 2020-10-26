@@ -78,12 +78,12 @@ const MovieDetailShowTime = () => {
                     <Button variant="contained" color="inherit" className={classes.tabItemRap}
                         onClick={handleChooseTheaterSystem(item)} style={{ opacity: item.isActived ? '1' : '0.5' }}
                     >
-                        <Box mr={1}>
+                        <div className={classes.groupButtonImg}>
                             <div className={classes.buttonImg}
                             ><img src={item.logo} alt={logoCine} className={classes.logoCine} />
 
                             </div>
-                        </Box>
+                        </div>
                         <div className={classes.titleTheater}>{item.tenHeThongRap}</div>
                     </Button>
                     {index !== (propsMovieSystem.heThongRapChieu.length - 1) && <div className={classes.line}></div>}
@@ -281,6 +281,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down(`${1201}`)]: {
             width: 'auto',
             margin: '5%',
+            padding: '2% 0',
         },
         [theme.breakpoints.down(`${960}`)]: {
             display: 'block',
@@ -307,10 +308,16 @@ const useStyles = makeStyles((theme) => ({
             display: 'flex',
             width: '100%',
             justifyContent: ' center',
+            '& $line': {
+                display: 'none',
+            },
+            '& $titleTheater': {
+                display: 'none',
+            },
         },
     },
     tabItemRapRespone: {
-        width: '25%',
+        width: 'auto',
     },
     tabItemRap: {
         display: 'flex',
@@ -324,7 +331,18 @@ const useStyles = makeStyles((theme) => ({
         opacity: '0.7',
         '&:hover': {
             background: 'transparent',
-        }
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            minWidth: '1px',
+            padding: '0px',
+            borderRadius: '50%',
+        },
+    },
+    groupButtonImg: {
+        marginRight: theme.spacing(1),
+        [theme.breakpoints.down(`${960}`)]: {
+            marginRight: '0',
+        },
     },
     buttonImg: {
         borderRadius: '50%',
