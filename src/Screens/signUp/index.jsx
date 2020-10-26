@@ -47,8 +47,14 @@ const SignUp = () => {
         <Fragment>
             {isloading ? <Loader /> :
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{
+                        opacity: 0,
+                        y: 50
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
                     className={classes.root}>
                     <div className={classes.groupBg}>
                         <img src={signUpBanner} alt="signUpBanner" className={classes.bgMain} />

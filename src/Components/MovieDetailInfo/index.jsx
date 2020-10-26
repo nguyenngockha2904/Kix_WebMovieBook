@@ -11,11 +11,7 @@ const useStyles = makeStyles((theme) => ({
         width: '60%',
         margin: 'auto',
         [theme.breakpoints.down(`${1201}`)]: {
-            width: '80%',
-            margin: '5%',
-        },
-        [theme.breakpoints.down(`${1025}`)]: {
-            width: '100%',
+            width: 'auto',
             margin: '5%',
         },
         [theme.breakpoints.down(`${620}`)]: {

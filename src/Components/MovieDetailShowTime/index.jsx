@@ -279,13 +279,13 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'start',
         margin: 'auto',
         [theme.breakpoints.down(`${1201}`)]: {
-            width: '80%',
+            width: 'auto',
             margin: '5%',
         },
-        [theme.breakpoints.down(`${1025}`)]: {
-            width: '100%',
-            margin: '5%',
+        [theme.breakpoints.down(`${960}`)]: {
+            display: 'block',
         },
+
 
     },
     groupTabs: {
@@ -303,9 +303,14 @@ const useStyles = makeStyles((theme) => ({
             background: '#80808080',
             borderRadius: '5px',
         },
+        [theme.breakpoints.down(`${960}`)]: {
+            display: 'flex',
+            width: '100%',
+            justifyContent: ' center',
+        },
     },
     tabItemRapRespone: {
-
+        width: '25%',
     },
     tabItemRap: {
         display: 'flex',
