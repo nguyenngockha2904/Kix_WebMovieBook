@@ -1,5 +1,5 @@
 import { Box, Button, makeStyles, withWidth } from '@material-ui/core';
-import React, { Fragment, useCallback, useMemo, useState } from 'react';
+import React, { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import CGVlogo from '../../assets/img/logoCine/cgv_logo.png';
 import BHDLogo from '../../assets/img/logoCine/BHD_logo.png';
 import CNXLogo from '../../assets/img/logoCine/cnx_logo.jpg';
@@ -54,6 +54,9 @@ const returnIconTheader = (value) => {
 const GroupCine = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const refPhim = useRef(null);
+    const refDay = useRef(null);
+    const refRap = useRef(null);
     const propsTheaterSystem = useSelector((state) => {
         return state.qlTheaterSystem
     });
@@ -94,7 +97,11 @@ const GroupCine = (props) => {
         }
         return lst;
     }, [listRapT]);
-
+    useEffect(() => {
+        if (listRap.length !== 0) {
+            listRap[0].isActived = true;
+        }
+    }, [listRap]);
 
     const listDay = useMemo(() => {
         let listD = [];
@@ -148,11 +155,22 @@ const GroupCine = (props) => {
 
     }, [lstLichChieu]);
 
+    useEffect(() => {
+        if (lstLichChieu.length !== 0) {
+            let date = new Date(lstLichChieu[0].ngayChieuGioChieu);
+            let dayString = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}/${date.getFullYear()}`;
+            dispatch(createAction(SET_DATA_MOVIE_WITH_DATE, dayString));
+            listDay[0].isActived = true;
+        }
+    }, [lstLichChieu]);
 
 
     const handleClickTabTheaterSystem = useCallback((idTheaterSystem) => () => {
+        refDay.current.scrollIntoView({ block: "nearest", inline: "nearest" });
+        refPhim.current.scrollIntoView({ block: "nearest", inline: "nearest" });
+        refRap.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+
         dispatch(getALLInfoFollowTheaterSystem(idTheaterSystem, () => {
-            listRap[0].isActived = true;
         }));
         for (let item of listHeThongRap) {
             item.isActived = false;
@@ -169,6 +187,7 @@ const GroupCine = (props) => {
                 <div key={index} className={classes.tabItemRapRespone} style={{ opacity: item.isActived ? '1' : '0.5' }}>
                     <div className={classes.tabItemRap}>
                         <Button variant="contained" color="inherit" className={classes.buttonImg}
+                            style={{ boxShadow: item.isActived && '0px 0px 7px 1px #9E9E9E' }}
                             onClick={handleClickTabTheaterSystem(item.maHeThongRap)}
                         ><img src={item.logo} alt={item.biDanh} className={classes.logoCine} /></Button>
                     </div>
@@ -180,7 +199,11 @@ const GroupCine = (props) => {
 
 
     const handleClickTabRap = useCallback((value) => () => {
+        refPhim.current.scrollIntoView({ block: "nearest", inline: "nearest" });
+        refDay.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+
         let index = listRap.findIndex(m => m.maCumRap === value.maCumRap);
+
         for (let item of listRap) {
             item.isActived = false;
         }
@@ -222,6 +245,7 @@ const GroupCine = (props) => {
 
 
     const handleChooseDay = useCallback((value) => () => {
+        refPhim.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
         let index = listDay.findIndex(d => d.dateFormat === value.dateFormat);
         for (let i in listDay) {
             listDay[i].isActived = false;
@@ -238,8 +262,11 @@ const GroupCine = (props) => {
         return listDay.map((item, index) => {
             return (
                 <Button key={index} variant="contained" color="inherit" className={`${classes.dateItem}`}
-                    // disabled={index > 5 ? true : false}
-                    style={{ color: item.isActived ? '#6b00b6' : '#000', }}
+                    style={{
+                        color: item.isActived ? 'rgb(99 188 75)' : '#000',
+                        backgroundColor: 'transparent',
+                        boxShadow: item.isActived && '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
+                    }}
                     onClick={handleChooseDay(item)}
 
                 >
@@ -251,11 +278,10 @@ const GroupCine = (props) => {
     }, [listDay]);
 
 
-
+    const handleClickTimeMovie = useCallback((value) => () => {
+        console.log(value);
+    }, []);
     const renderListPhim = useCallback(() => {
-
-        // let listRap = propsTheaterSystem.listMovieWithTheater;
-        // console.log(propsTheaterSystem.listMovieWithTheater);
         if (lstMovieWithDate) {
             return lstMovieWithDate.map((item, index) => {
                 return (
@@ -282,14 +308,16 @@ const GroupCine = (props) => {
                                         item.lstLichChieu.map((lc, index) => {
                                             let d = new Date(lc.ngayChieuGioChieu);
                                             return (
-                                                <div className={classes.timeMovie_Item} key={index}>
+                                                <Button className={classes.timeMovie_Item} key={index}
+                                                    onClick={handleClickTimeMovie(lc)}
+                                                >
                                                     <div className={classes.timeStart}>
                                                         {d.getHours() > 9 ? d.getHours() : '0' + d.getHours()}:{d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes()}
                                                     </div>
                                                     <div>
                                                         ~ {(d.getHours() + 1) > 24 ? ((d.getHours() + 1) - 24) : d.getHours() + 1}:31
                                                 </div>
-                                                </div>
+                                                </Button>
                                             )
                                         })
                                     }
@@ -311,14 +339,18 @@ const GroupCine = (props) => {
                 <div className={classes.contentRap}>
                     <div className={classes.titleTab}>Rạp</div>
                     <div className={classes.tabRapPhim}>
+                        <div ref={refRap}></div>
                         {renderListRap()}
                     </div>
                     <div className={classes.titleTab}>Phim</div>
                     <div className={classes.tabContent}>
                         <div className={classes.divDate}>
+                            <div ref={refDay}></div>
+
                             {renderListDate()}
                         </div>
                         <div className={classes.ShowTimeDetail}>
+                            <div ref={refPhim}></div>
                             {renderListPhim()}
 
                         </div>
@@ -428,7 +460,7 @@ const useStyles = makeStyles((theme) => ({
     },
     contentRap: {
         width: '91%',
-        maxHeight: theme.spacing(57),
+        height: theme.spacing(55.8),
         display: 'flex',
         [theme.breakpoints.down(`${770}`)]: {
             display: 'block',
@@ -492,12 +524,6 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         cursor: 'pointer',
         width: '100%',
-        '&:hover': {
-            opacity: '1',
-        },
-        '&:focus': {
-            opacity: '1',
-        }
     },
     active: {
         opacity: '1',
@@ -676,13 +702,13 @@ const useStyles = makeStyles((theme) => ({
     },
     dateItem: {
         display: 'block',
-        background: 'transparent !important',
         boxShadow: ' 0 0 black',
         transition: 'none',
         minWidth: theme.spacing(12.2),
         padding: theme.spacing(0.8),
 
         '&:hover': {
+            color: 'rgb(107, 0, 182) !important',
             background: 'transparent',
         },
         '&.active': {

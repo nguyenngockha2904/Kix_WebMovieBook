@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useRef, useState } from 'react';
 import Carousel from '../../Layouts/Carousel';
 import HomeMovie from '../../Layouts/MovieHome';
 import { makeStyles } from '@material-ui/core';
@@ -36,6 +36,8 @@ const Home = () => {
     const classes = useStyle();
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
+    const refHomeMovie = useRef(null);
+    const refGroupCine = useRef(null);
     // console.log('home render');  
     const request = useSelector((state) => {
         return state.parent.request
@@ -51,17 +53,18 @@ const Home = () => {
                 setIsLoading(false);
                 setTitle('Kix - Hệ thống mua vé xem phim đỉnh nhất việt nam !!');
                 setTimeout(() => {
-                    if (request === 1) {
-                        window.scrollTo({ top: 500, behavior: 'smooth' });
-                    } else if (request === 2) {
-                        window.scrollTo({ top: 1700, behavior: 'smooth' });
-                    } else if (request === 1.1) {
-                        window.scrollTo({ top: 460, behavior: 'smooth' });
-                    } else if (request === 2.1) {
-                        window.scrollTo({ top: 2030, behavior: 'smooth' });
-                    } else {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
+                    // if (request === 1) {
+                    //     window.scrollTo({ top: 500, behavior: 'smooth' });
+                    // } else if (request === 2) {
+                    //     window.scrollTo({ top: 1700, behavior: 'smooth' });
+                    // } else if (request === 1.1) {
+                    //     window.scrollTo({ top: 460, behavior: 'smooth' });
+                    // } else if (request === 2.1) {
+                    //     window.scrollTo({ top: 2030, behavior: 'smooth' });
+                    // } else {
+                    //     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }, 300);
 
             }));
@@ -74,11 +77,14 @@ const Home = () => {
             className={classes.homeRoot}
         >   {isLoading ? <Loading /> :
             <Fragment>
-                {/* <Header />
+                <Header refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
+
                 <div className={classes.space}></div>
                 <Carousel />
-                <div className={classes.spaceHomeTool}></div>
-                <HomeMovie /> */}
+                <div ref={refHomeMovie}></div>
+                <div className={classes.space}></div>
+                <HomeMovie />
+                <div ref={refGroupCine}></div>
                 <div className={classes.spaceGroupCine}></div>
                 <GroupCine />
                 <div className={classes.space}></div>

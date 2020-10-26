@@ -46,8 +46,11 @@ const TheaterSystem = (state = initialState, { payload, type }) => {
                         lstLichChieu.push(item);
                     }
                 })
-                let movie = { tenPhim: item.tenPhim, hinhAnh: item.hinhAnh, maPhim: item.maPhim, lstLichChieu };
-                listTam.push(movie);
+
+                if (lstLichChieu.length !== 0) {
+                    let movie = { tenPhim: item.tenPhim, hinhAnh: item.hinhAnh, maPhim: item.maPhim, lstLichChieu };
+                    listTam.push(movie);
+                }
             });
             state.lstMovieWithDate = listTam;
             return { ...state };

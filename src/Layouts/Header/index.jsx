@@ -245,10 +245,11 @@ const Header = (props) => {
     const handleShowTT = useCallback((value) => () => {
         setIsShowTT(value);
     }, []);
-    const handleScrollTo = useCallback((type, x, y) => () => {
+    const handleScrollTo = useCallback((type, ref, x, y) => () => {
         if (isPage.role === 1) {
-            window.scrollTo({ top: x, behavior: 'smooth' });
+            // window.scrollTo({ top: x, behavior: 'smooth' });
             setIsShowCollapse(false);
+            ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         } else {
             dispatch(createAction(SET_REQUEST_PAGE, type));
             history.replace('/');
@@ -307,7 +308,7 @@ const Header = (props) => {
                                     <Button
                                         color="inherit"
                                         className={classes.navLink}
-                                        onClick={handleScrollTo(1.1, 460, 0)}
+                                        onClick={handleScrollTo(1.1, props.refHomeMovie, 460, 0)}
                                     >
                                         Lịch Chiếu
                             </Button>
@@ -324,7 +325,7 @@ const Header = (props) => {
                                     <Button
                                         color="inherit"
                                         className={classes.navLink}
-                                        onClick={handleScrollTo(2.1, 2030, 0)}
+                                        onClick={handleScrollTo(2.1, props.refGroupCine, 2030, 0)}
                                     >
                                         Cụm rạp
                             </Button>
@@ -460,7 +461,7 @@ const Header = (props) => {
                         <Button
                             color="inherit"
                             className={classes.navLink}
-                            onClick={handleScrollTo(1, 500, 0)}
+                            onClick={handleScrollTo(1, props.refHomeMovie, 500, 0)}
 
                         >
                             Lịch Chiếu
@@ -472,7 +473,7 @@ const Header = (props) => {
                         <Button
                             color="inherit"
                             className={classes.navLink}
-                            onClick={handleScrollTo(2, 1700, 0)}
+                            onClick={handleScrollTo(2, props.refGroupCine, 1700, 0)}
                         >
                             Cụm rạp
                         </Button>
