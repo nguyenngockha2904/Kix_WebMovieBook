@@ -121,6 +121,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.4),
         fontFamily: 'SF Medium',
         letterSpacing: '1px',
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     GroupName: {
         display: 'flex',
@@ -141,11 +144,17 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-block',
         textAlign: 'center',
         minWidth: theme.spacing(3.3),
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.3),
+        },
     },
     nameFilm: {
         fontSize: theme.spacing(2.4),
         fontFamily: 'SF Medium',
         color: '#fff',
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.8),
+        },
     },
     groupBtnPay: {
 
@@ -167,6 +176,9 @@ const useStyles = makeStyles((theme) => ({
         color: '#fff',
         '&:hover': {
             backgroundImage: 'linear-gradient(45deg, #6b00b6, #440074)',
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.2),
         },
         [theme.breakpoints.down(`${620}`)]: {
             margin: theme.spacing(1, 0),

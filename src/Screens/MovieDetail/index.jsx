@@ -50,7 +50,11 @@ const useStyles = makeStyles((theme) => ({
         '& $img': {
             cursor: 'pointer',
         },
-
+        [theme.breakpoints.down(`${960}`)]: {
+            '&:hover $navLink': {
+                fontSize: theme.spacing(1.8),
+            },
+        },
     },
 
     navItem_active: {
@@ -61,6 +65,11 @@ const useStyles = makeStyles((theme) => ({
         '& $navLink': {
             color: '#6b00b6',
             fontSize: theme.spacing(2.3),
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            '& $navLink': {
+                fontSize: theme.spacing(1.8),
+            },
         },
     },
     navLink: {

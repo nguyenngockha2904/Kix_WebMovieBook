@@ -1,5 +1,5 @@
 import { Box, makeStyles, Button, Hidden, Avatar } from '@material-ui/core';
-import React, { Fragment, memo, useCallback, useEffect, useMemo } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import logoCine from '../../assets/img/logoCine/cgv_logo.png';
 import theaterImage from '../../assets/img/CGV_movie_theater.jpg';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,6 +46,7 @@ const MovieDetailShowTime = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
+    const refDate = useRef();
     const propsMovieSystem = useSelector((state) => {
         return state.qlMovie.movieInfoSystem
     });
@@ -69,7 +70,9 @@ const MovieDetailShowTime = () => {
 
     const handleChooseTheaterSystem = useCallback((value) => () => {
         let maHeThong = value.maHeThongRap;
+        refDate.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
         dispatch(createAction(SET_DATA_lIST_LICH_CHIEU, maHeThong));
+
     }, []);
     const renderListTheaterSystem = useCallback(() => {
         return propsMovieSystem.heThongRapChieu.map((item, index) => {
@@ -177,7 +180,20 @@ const MovieDetailShowTime = () => {
                     onClick={handleChooseDay(item)}
                 >
                     <div className={classes.textFomart}>{item.day}</div>
-                    <div className={`${classes.textFomart} ${classes.date}`}>{item.da}</div>
+                    <div className={`${classes.textFomart} ${classes.date}`}
+
+                        //                 color: #fff;
+                        // background: rgb(107, 0, 182);
+
+                        // border-radius: 50%;
+                        // padding: 3px;
+                        style={{
+                            color: item.isActived && '#fff',
+                            background: item.isActived && '#6b00b6',
+                            borderRadius: item.isActived && '50%',
+                            padding: item.isActived && '3px',
+                        }}
+                    >{item.da}</div>
                 </Button >
             )
         });
@@ -249,6 +265,7 @@ const MovieDetailShowTime = () => {
                     </div>
                     <div className={classes.tabContent}>
                         <div className={classes.divDate}>
+                            <div ref={refDate}></div>
                             {renderListDate()}
                         </div>
                         <div className={classes.ShowTimeDetail}>
@@ -280,8 +297,7 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         [theme.breakpoints.down(`${1201}`)]: {
             width: 'auto',
-            margin: '5%',
-            padding: '2% 0',
+            margin: '0% 5%',
         },
         [theme.breakpoints.down(`${960}`)]: {
             display: 'block',
@@ -308,6 +324,7 @@ const useStyles = makeStyles((theme) => ({
             display: 'flex',
             width: '100%',
             justifyContent: ' center',
+            borderBottom: '1px solid #80808080',
             '& $line': {
                 display: 'none',
             },
@@ -318,6 +335,7 @@ const useStyles = makeStyles((theme) => ({
     },
     tabItemRapRespone: {
         width: 'auto',
+        margin: '8px 3%',
     },
     tabItemRap: {
         display: 'flex',
@@ -371,7 +389,10 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
     },
     tabContent: {
-        maxWidth: '75%',
+        width: '75%',
+        [theme.breakpoints.down(`${960}`)]: {
+            width: '100%',
+        },
     },
     divDate: {
         display: 'flex',
@@ -401,18 +422,30 @@ const useStyles = makeStyles((theme) => ({
         },
         '&.active': {
             color: '#fb4226',
-        }
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            '& $textFomart': {
+                fontSize: theme.spacing(1.2),
+            },
+            '& $date': {
+                fontSize: theme.spacing(1.4),
+            },
+        },
     },
     textFomart: {
         fontSize: theme.spacing(1.4),
         fontFamily: 'SF Medium',
         textAlign: 'center',
         whiteSpace: 'nowrap',
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.2),
+        },
     },
     date: {
-        fontSize: theme.spacing(1.9),
+        fontSize: theme.spacing(1.6),
         letterSpacing: '2px',
         fontFamily: 'system-ui',
+        display: 'inline',
     },
     ShowTimeDetail: {
         padding: theme.spacing(0, 1.4),
@@ -454,9 +487,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.3),
+            '& $group_name_address': {
+                fontSize: theme.spacing(1.3),
+            },
+        },
     },
     group_name1: {
         justifyContent: 'space-between',
+
     },
     hightLine: {
         color: '#FB4226',
@@ -481,12 +521,16 @@ const useStyles = makeStyles((theme) => ({
             width: '3px',
             height: '8px',
         },
+        flexWrap: 'wrap',
         '&::-webkit-scrollbar-track': {
             background: 'rgb(214 214 214 / 28%)',
         },
         '&::-webkit-scrollbar-thumb': {
             background: '#80808047',
             borderRadius: '5px',
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+
         },
     },
     itemTime: {
@@ -501,14 +545,21 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(0.5),
         borderRadius: '5px',
         border: '1px solid #e4e4e4',
-        margin: theme.spacing(1.3),
+        margin: theme.spacing(.5, 1.3),
         marginLeft: 0,
         '&:hover': {
             background: 'rgba(246,246,246,.5)',
             '& $timeStart': {
                 color: ' #6b00b6',
             }
-        }
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.2),
+
+            '& $timeStart': {
+                fontSize: theme.spacing(1.4),
+            },
+        },
     },
     timeStart: {
         fontSize: theme.spacing(1.8),
