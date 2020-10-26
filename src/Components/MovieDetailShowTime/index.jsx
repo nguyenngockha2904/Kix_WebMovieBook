@@ -191,7 +191,7 @@ const MovieDetailShowTime = () => {
                             color: item.isActived && '#fff',
                             background: item.isActived && '#6b00b6',
                             borderRadius: item.isActived && '50%',
-                            padding: item.isActived && '3px',
+                            padding: item.isActived && '3px 4px',
                         }}
                     >{item.da}</div>
                 </Button >

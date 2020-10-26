@@ -74,16 +74,16 @@ const Home = () => {
             className={classes.homeRoot}
         >   {isLoading ? <Loading /> :
             <Fragment>
-                <Header refNav={refNav} refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
+                {/* <Header refNav={refNav} refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
                 <div ref={refNav} className={classes.space}></div>
-                <Carousel />
+                <Carousel /> */}
                 <div ref={refHomeMovie}></div>
                 <div className={classes.space}></div>
                 <HomeMovie />
-                <div ref={refGroupCine}></div>
+                {/*    <div ref={refGroupCine}></div>
                 <div className={classes.spaceGroupCine}></div>
                 <GroupCine />
-                <div className={classes.space}></div>
+                <div className={classes.space}></div> */}
             </Fragment>
             }
             <Footer />

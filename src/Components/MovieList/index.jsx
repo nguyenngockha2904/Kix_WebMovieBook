@@ -58,15 +58,12 @@ const MovieList = (props) => {
         return props
     }, [props]);
     const listMovies = useSelector((state) => {
-        if (index === 0) {
-            return state.qlMovie.listMoviePhanTrang
-        }
-        if (index === 1) {
-            return state.qlMovie.listMoviePhanTrang.reverse()
-        }
+
+        return state.qlMovie.listMoviePhanTrang
+
     })
     useEffect(() => {
-        console.log(props.width);
+        // console.log(props.index);
         dispatch(createAction(SET_DATA_LIST_MOVIE_PHAN_TRANG, props.width));
     }, [props.width]);
     const settings = useMemo(() => ({

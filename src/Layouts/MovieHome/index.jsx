@@ -1,17 +1,19 @@
 
 
-import React, { Fragment, memo, useCallback } from 'react';
+import React, { Fragment, memo, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
 import MovieList from '../../Components/MovieList';
 import { useSelector } from 'react-redux';
 
 import ModalVideoMovie from '../../Components/ModalShowVideo';
+import { withWidth } from '@material-ui/core';
+import TabDangChieu from '../../Components/TabDangChieu';
+import TabSapChieu from '../../Components/TabSapChieu';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -46,7 +48,7 @@ const a11yProps = (index) => {
     };
 }
 
-const MovieHome = () => {
+const MovieHome = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
@@ -55,16 +57,16 @@ const MovieHome = () => {
         setValue(newValue);
     }, []);
 
-    const handleChangeIndex = useCallback((index) => {
-        setValue(index);
-    }, []);
-
     const isShow = useSelector((state) => {
         return state.qlMovie.ModalVideoMovie.isShow
     });
     const role = useSelector((state) => {
         return state.qlMovie.ModalVideoMovie.role
     });
+    let width = useMemo(() => {
+        return props.width;
+    }, [props.width]);
+    console.log(width);
     return (
         <div className={classes.root}>
             <AppBar position="static" color="default">
@@ -76,22 +78,28 @@ const MovieHome = () => {
                     variant="fullWidth"
                     aria-label="full width tabs example"
                 >
-                    <Tab label="Đang Chiếu" {...a11yProps(0)} />
-                    <Tab label="Sắp Chiếu" {...a11yProps(1)} />
+                    <Tab label="Đang Chiếu" {...a11yProps(0)} style={{ textTransform: 'capitalize' }} />
+                    <Tab label="Sắp Chiếu" {...a11yProps(1)} style={{ textTransform: 'capitalize' }} />
                 </Tabs>
             </AppBar>
-            <SwipeableViews
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                index={value}
-                onChangeIndex={handleChangeIndex}
-            >
-                <TabPanel value={value} index={0} dir={theme.direction} className={classes.tabContent}>
-                    <MovieList index={0} />
-                </TabPanel>
-                <TabPanel value={value} index={1} dir={theme.direction} className={classes.tabContent}>
-                    <MovieList index={1} />
-                </TabPanel>
-            </SwipeableViews>
+            {width === 'md' || width === 'lg' || width === 'xl' ?
+                <Fragment>
+                    <TabPanel value={value} index={0} className={classes.tabContent}>
+                        <MovieList index={0} />
+                    </TabPanel>
+                    <TabPanel value={value} index={1} className={classes.tabContent}>
+                        <MovieList index={1} />
+                    </TabPanel>
+                </Fragment>
+                : <Fragment>
+                    <TabPanel value={value} index={0} className={classes.tabContent}>
+                        <TabDangChieu currentPage={0} />
+                    </TabPanel>
+                    <TabPanel value={value} index={1} className={classes.tabContent}>
+                        <TabDangChieu currentPage={2} />
+                    </TabPanel>
+
+                </Fragment>}
             {isShow && role === 2 && < ModalVideoMovie />}
         </div>
     );
@@ -178,4 +186,4 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default memo(MovieHome);
+export default memo(withWidth()(MovieHome));

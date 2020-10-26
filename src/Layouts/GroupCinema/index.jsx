@@ -273,7 +273,7 @@ const GroupCine = (props) => {
                             color: item.isActived && '#fff',
                             background: item.isActived && '#6b00b6',
                             borderRadius: item.isActived && '50%',
-                            padding: item.isActived && '3px',
+                            padding: item.isActived && '3px 4px',
                         }}
                     >{item.da}</div>
                 </Button >
@@ -697,10 +697,11 @@ const useStyles = makeStyles((theme) => ({
             color: '#6b00b6',
         },
         [theme.breakpoints.down(`${960}`)]: {
-            fontSize: theme.spacing(1.4),
+            fontSize: theme.spacing(1.1),
             margin: theme.spacing(0, 0.5, 1, 0),
+            padding: theme.spacing(0.3, 0.7),
             '& $timeStart': {
-                fontSize: theme.spacing(1.4),
+                fontSize: theme.spacing(1.2),
             },
         },
     },
@@ -769,7 +770,7 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: 'nowrap',
     },
     date: {
-        fontSize: theme.spacing(1.9),
+        fontSize: theme.spacing(1.7),
         letterSpacing: '2px',
         fontFamily: 'system-ui',
         display: 'inline',
@@ -791,8 +792,12 @@ const useStyles = makeStyles((theme) => ({
             background: '#80808047',
             borderRadius: '5px',
         },
+        [theme.breakpoints.down(`${960}`)]: {
+            padding: '0',
+        },
         [theme.breakpoints.down(`${770}`)]: {
             maxHeight: theme.spacing(24),
+            padding: '0',
             '&::-webkit-scrollbar ': {
                 width: '3px',
             },
