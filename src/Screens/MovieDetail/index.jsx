@@ -1,5 +1,5 @@
 import { Box, Button, makeStyles } from '@material-ui/core';
-import React, { Fragment, memo, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Footer from '../../Layouts/footer';
 import 'react-circular-progressbar/dist/styles.css';
 import MovieDetailContent from '../../Components/MovieDetailContent';
@@ -86,6 +86,7 @@ const MovieDetail = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const params = useParams();
+    const refMuaVe = useRef();
     const [isLoading, setIsloadding] = useState(true);
     const [isTabLichChieu, setIsTabLichChieu] = useState(true);
 
@@ -97,7 +98,7 @@ const MovieDetail = () => {
             dispatch(createAction(SET_TYPE_PAGE, 2));
             setTimeout(() => {
                 if (request === 3) {
-                    window.scrollTo({ top: 450, behavior: 'smooth' });
+                    refMuaVe.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
                 } else {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
@@ -108,7 +109,7 @@ const MovieDetail = () => {
 
     }, []);
     const handleShowTabLichChieu = useCallback((value) => () => {
-        window.scrollTo({ top: 450, behavior: 'smooth' });
+        refMuaVe.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         setIsTabLichChieu(value);
     }, []);
     const isShowModalVideoMovie = useSelector((state) => {
@@ -118,6 +119,7 @@ const MovieDetail = () => {
         <Fragment >
             {isLoading ? <Loading /> :
                 <Fragment>
+
                     <Header />
                     <div className={classes.root}>
                         <motion.div className={classes.divTop}
@@ -130,9 +132,10 @@ const MovieDetail = () => {
                                 y: 0,
                             }}
                         >
-                            <MovieDetailContent role={2} item={{}} />
+                            <MovieDetailContent role={2} item={{}} refMuaVe={refMuaVe} />
                         </motion.div>
                         <div className={classes.divContent}>
+                            <div ref={refMuaVe}></div>
                             <div className={classes.tabTitle}>
                                 <div
                                     className={`${classes.navItem} ${isTabLichChieu ? classes.navItem_active : ''}`}

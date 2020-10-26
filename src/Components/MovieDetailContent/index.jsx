@@ -249,7 +249,7 @@ const MovieDetailContent = (props) => {
     }, []);
     const handleClickBuy = useCallback(() => {
         if (role === 2) {
-            window.scrollTo({ top: 450, behavior: 'smooth' });
+            props.refMuaVe.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         } else {
             dispatch(createAction(SET_REQUEST_PAGE, 3));
             history.replace(`/detail/${item.maPhim}`);

@@ -53,18 +53,14 @@ const Home = () => {
                 setIsLoading(false);
                 setTitle('Kix - Hệ thống mua vé xem phim đỉnh nhất việt nam !!');
                 setTimeout(() => {
-                    // if (request === 1) {
-                    //     window.scrollTo({ top: 500, behavior: 'smooth' });
-                    // } else if (request === 2) {
-                    //     window.scrollTo({ top: 1700, behavior: 'smooth' });
-                    // } else if (request === 1.1) {
-                    //     window.scrollTo({ top: 460, behavior: 'smooth' });
-                    // } else if (request === 2.1) {
-                    //     window.scrollTo({ top: 2030, behavior: 'smooth' });
-                    // } else {
-                    //     window.scrollTo({ top: 0, behavior: 'smooth' });
-                    // }
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    if (request === 1) {
+                        refHomeMovie.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+                    } else if (request === 2) {
+                        refGroupCine.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+
                 }, 300);
 
             }));
@@ -77,14 +73,13 @@ const Home = () => {
             className={classes.homeRoot}
         >   {isLoading ? <Loading /> :
             <Fragment>
-                <Header refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
-
+                {/* <Header refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
                 <div className={classes.space}></div>
                 <Carousel />
                 <div ref={refHomeMovie}></div>
                 <div className={classes.space}></div>
                 <HomeMovie />
-                <div ref={refGroupCine}></div>
+                <div ref={refGroupCine}></div> */}
                 <div className={classes.spaceGroupCine}></div>
                 <GroupCine />
                 <div className={classes.space}></div>

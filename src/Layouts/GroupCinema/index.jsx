@@ -57,9 +57,6 @@ const GroupCine = (props) => {
     const refPhim = useRef(null);
     const refDay = useRef(null);
     const refRap = useRef(null);
-    const propsTheaterSystem = useSelector((state) => {
-        return state.qlTheaterSystem
-    });
     const listTheaterSystem = useSelector((state) => {
         return state.qlTheaterSystem.listTheaterSystem
     });
@@ -73,8 +70,6 @@ const GroupCine = (props) => {
     const lstMovieWithDate = useSelector((state) => {
         return state.qlTheaterSystem.lstMovieWithDate
     });
-
-
     const listHeThongRap = useMemo(() => {
         let lst = [];
         for (let item of listTheaterSystem) {
@@ -86,7 +81,9 @@ const GroupCine = (props) => {
         dispatch(getALLInfoFollowTheaterSystem('BHDStar', () => { }));
         listHeThongRap[0].isActived = true;
     }, []);
-
+    useEffect(() => {
+        console.log(props.width);
+    }, [props.width]);
 
     const listRap = useMemo(() => {
         let lst = [];
@@ -462,6 +459,9 @@ const useStyles = makeStyles((theme) => ({
         width: '91%',
         height: theme.spacing(55.8),
         display: 'flex',
+        [theme.breakpoints.down(`${960}`)]: {
+            width: '100%',
+        },
         [theme.breakpoints.down(`${770}`)]: {
             display: 'block',
             paddingBottom: theme.spacing(3),
@@ -480,6 +480,9 @@ const useStyles = makeStyles((theme) => ({
         '&::-webkit-scrollbar-thumb': {
             background: '#80808080',
             borderRadius: '5px',
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            width: '35%',
         },
         [theme.breakpoints.down(`${770}`)]: {
             width: '96%',
@@ -606,6 +609,9 @@ const useStyles = makeStyles((theme) => ({
     },
     phimItem: {
         padding: theme.spacing(1.5),
+        [theme.breakpoints.down(`${960}`)]: {
+            padding: theme.spacing(1.5, 0),
+        },
     },
     phimInfo: {
         display: 'flex',
@@ -673,7 +679,14 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '1px',
         '&:hover $timeStart': {
             color: '#6b00b6',
-        }
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.4),
+            margin: theme.spacing(0, 0.5, 1, 0),
+            '& $timeStart': {
+                fontSize: theme.spacing(1.4),
+            },
+        },
     },
     timeStart: {
         fontSize: theme.spacing(1.8),
@@ -684,6 +697,15 @@ const useStyles = makeStyles((theme) => ({
     //#endregion
     tabContent: {
         width: '70%',
+        [theme.breakpoints.down(`${960}`)]: {
+            width: '65%',
+        },
+        [theme.breakpoints.down(`${770}`)]: {
+            padding: '16px 0px',
+            width: '96%',
+            margin: 'auto',
+            boxShadow: ' 0px 5px 16px -4px #80808080',
+        }
     },
     divDate: {
         display: 'flex',
@@ -713,7 +735,16 @@ const useStyles = makeStyles((theme) => ({
         },
         '&.active': {
             color: '#fb4226',
-        }
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            fontSize: theme.spacing(1.4),
+            '& $textFomart': {
+                fontSize: theme.spacing(1.3),
+            },
+            '& $date': {
+                fontSize: theme.spacing(1.3),
+            },
+        },
     },
     textFomart: {
         fontSize: theme.spacing(1.4),
@@ -743,7 +774,12 @@ const useStyles = makeStyles((theme) => ({
             background: '#80808047',
             borderRadius: '5px',
         },
-
+        [theme.breakpoints.down(`${770}`)]: {
+            maxHeight: theme.spacing(24),
+            '&::-webkit-scrollbar ': {
+                width: '3px',
+            },
+        }
     },
 }));
 
