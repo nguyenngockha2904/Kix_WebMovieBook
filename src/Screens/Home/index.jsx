@@ -76,7 +76,7 @@ const Home = () => {
             <Fragment>
                 <Header refNav={refNav} refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
                 <div ref={refNav} className={classes.space}></div>
-                <Carousel />
+                {/* <Carousel /> */}
                 <div ref={refHomeMovie}></div>
                 <div className={classes.space}></div>
                 <HomeMovie />
