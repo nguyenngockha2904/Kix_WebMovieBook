@@ -82,7 +82,7 @@ const GroupCine = (props) => {
         listHeThongRap[0].isActived = true;
     }, []);
     useEffect(() => {
-        console.log(props.width);
+        // console.log(props.width);
     }, [props.width]);
 
     const listRap = useMemo(() => {

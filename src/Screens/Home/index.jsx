@@ -38,6 +38,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const refHomeMovie = useRef(null);
     const refGroupCine = useRef(null);
+    const refNav = useRef(null);
     // console.log('home render');  
     const request = useSelector((state) => {
         return state.parent.request
@@ -73,13 +74,13 @@ const Home = () => {
             className={classes.homeRoot}
         >   {isLoading ? <Loading /> :
             <Fragment>
-                {/* <Header refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
-                <div className={classes.space}></div>
+                <Header refNav={refNav} refHomeMovie={refHomeMovie} refGroupCine={refGroupCine} />
+                <div ref={refNav} className={classes.space}></div>
                 <Carousel />
                 <div ref={refHomeMovie}></div>
                 <div className={classes.space}></div>
                 <HomeMovie />
-                <div ref={refGroupCine}></div> */}
+                <div ref={refGroupCine}></div>
                 <div className={classes.spaceGroupCine}></div>
                 <GroupCine />
                 <div className={classes.space}></div>

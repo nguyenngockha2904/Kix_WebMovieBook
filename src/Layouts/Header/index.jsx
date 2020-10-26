@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useCallback, useState } from 'react';
+import React, { Fragment, memo, useCallback, useRef, useState } from 'react';
 import { AppBar, Box, Button, FormControl, makeStyles, Select, Toolbar } from '@material-ui/core';
 import avatarIcon from '../../assets/img/avatarIcon.svg';
 import LogoLight from '../../assets/img/LogoLight.svg';
@@ -247,15 +247,12 @@ const Header = (props) => {
     }, []);
     const handleScrollTo = useCallback((type, ref) => () => {
         if (isPage.role === 1) {
-            // window.scrollTo({ top: x, behavior: 'smooth' });
             setIsShowCollapse(false);
             ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         } else {
             dispatch(createAction(SET_REQUEST_PAGE, type));
 
             history.replace('/');
-            setTimeout(() => {
-            }, 300);
 
         }
     }, [isPage.role]);
@@ -263,7 +260,17 @@ const Header = (props) => {
 
         history.replace(`${value}`);
     }, []);
+    const handleCLickLogo = useCallback(() => {
+        if (isPage.role === 1) {
+            setIsShowCollapse(false);
+            props.refNav.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+        } else {
+            dispatch(createAction(SET_REQUEST_PAGE, 0));
 
+            history.replace('/');
+
+        }
+    }, [isPage.role]);
     return (
         <AppBar color="inherit" className={classes.header}>
             {/* side bar */}
@@ -447,7 +454,7 @@ const Header = (props) => {
             >
                 <Button
                     className={classes.menuButton}
-                    onClick={handleGoTo('/')}
+                    onClick={handleCLickLogo}
                 >
                     <img
                         src={LogoLight}
