@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
         zIndex: '2',
         background: '#fffffff2',
         borderRadius: theme.spacing(1),
+        marginTop: theme.spacing(5.4),
     },
     divH: {
         display: 'flex',

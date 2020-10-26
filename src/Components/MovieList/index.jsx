@@ -62,6 +62,14 @@ const MovieList = (props) => {
         return state.qlMovie.listMoviePhanTrang
 
     })
+    const listMoviePhanTrang = useMemo(() => {
+        let lst = [];
+
+        for (let i = props.index; i < props.index + 2; i++) {
+            lst.push(listMovies[i]);
+        }
+        return lst
+    }, [listMovies, props.index]);
     useEffect(() => {
         // console.log(props.index);
         dispatch(createAction(SET_DATA_LIST_MOVIE_PHAN_TRANG, props.width));
@@ -75,7 +83,7 @@ const MovieList = (props) => {
 
     }), []);
     const renderListMovie = useCallback(() => {
-        return listMovies.map((page, index) => {
+        return listMoviePhanTrang.map((page, index) => {
             return (
                 <div key={index}
                 >

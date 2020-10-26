@@ -13,8 +13,21 @@ const useStyle = makeStyles((theme) => ({
 
         '&:hover $bgContent': {
             opacity: 1,
-        }
+        },
+        [theme.breakpoints.down(`${960}`)]: {
+            marginBottom: 0,
+            '& $bgContent': {
+                display: 'none',
+            },
+        },
+        [theme.breakpoints.down(`${460}`)]: {
+            marginBottom: 0,
+        },
+        // [theme.breakpoints.down(`${460}`)]: {
 
+        //     borderRadius: '10px',
+        //     background: '#80808026',
+        // }
     },
     divContent: {
         marginTop: theme.spacing(1),
@@ -87,7 +100,7 @@ const MovieItem = (props) => {
     const classes = useStyle();
     const dispatch = useDispatch();
     let history = useHistory();
-    const { maPhim, hinhAnh, moTa, tenPhim, danhGia, trailer } = props.movieItem;
+    const { maPhim, hinhAnh, moTa, tenPhim, danhGia, trailer, ngayKhoiChieu } = props.movieItem;
     const handleShowModalVideo = useCallback((value) => () => {
         dispatch(createAction(SHOW_MODAL_VIDEO, { value, role: 2 }));
     }, []);
@@ -97,9 +110,9 @@ const MovieItem = (props) => {
         // history.replace(`/detail/${maPhim}`);
     }, []);
     return (
-        <Grid item xs={6} sm={6} md={3} className={classes.root}>
+        <Grid item xs={6} sm={4} md={3} className={classes.root}>
 
-            <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} danhGia={danhGia} hinhAnh={hinhAnh} />
+            <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} danhGia={danhGia} hinhAnh={hinhAnh} ngayKhoiChieu={ngayKhoiChieu} handleClickChooseMovie={handleClickChooseMovie(maPhim)} />
             <div className={classes.divContent}>
                 <div className={classes.nameMovie}>
                     <div className={classes.general}>C18</div>

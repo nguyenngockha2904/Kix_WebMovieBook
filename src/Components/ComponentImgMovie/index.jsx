@@ -19,10 +19,13 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(31.8),
         borderRadius: theme.spacing(0.5),
         [theme.breakpoints.down(`${460}`)]: {
-            height: theme.spacing(20),
+            height: theme.spacing(24.5),
             borderRadius: '10px',
             boxShadow: '0 0 6px 2px #9e9e9e85',
-        }
+        },
+        [theme.breakpoints.down(`${321}`)]: {
+            height: theme.spacing(20),
+        },
     },
     groupRating: {
         position: 'absolute',
@@ -67,6 +70,25 @@ const useStyles = makeStyles((theme) => ({
         transition: 'all 0.3s',
         borderRadius: theme.spacing(0.5),
         backgroundImage: 'linear-gradient(transparent, #000000ad)',
+        [theme.breakpoints.down(`${960}`)]: {
+            display: 'none',
+        },
+    },
+    ngayKhoiChieu: {
+        display: 'none',
+        [theme.breakpoints.down(`${460}`)]: {
+            display: 'block',
+            position: 'absolute',
+            bottom: '5%',
+            right: '5%',
+            color: '#fff',
+            background: '#31434cb8',
+            padding: '5px 3px',
+            borderRadius: '4px',
+            fontSize: '14px',
+            lineHeight: '1',
+            fontWeight: '400',
+        }
     },
     bgDetail: {
         position: 'absolute',
@@ -75,6 +97,9 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         bottom: 0,
         opacity: 0,
+        [theme.breakpoints.up(`${960}`)]: {
+            display: 'none',
+        }
     },
     play_videoIcon: {
         position: 'absolute',
@@ -91,6 +116,9 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             opacity: '0.7',
             background: '#312f2f33',
+        },
+        [theme.breakpoints.down(`${460}`)]: {
+            display: 'none',
         }
     },
     videoIcon: {
@@ -121,6 +149,11 @@ const ImageMovie = (props) => {
         })
 
     }, [props.danhGia]);
+    const changeFormatDate = useCallback((value) => {
+        let d = new Date(value);
+        let date = `${d.getDate() > 10 ? d.getDate() : ('0' + d.getDate())}/${(d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1)}`;
+        return date;
+    }, []);
     return (
         <Fragment>
             <div className={classes.divImg}>
@@ -134,14 +167,17 @@ const ImageMovie = (props) => {
                         </div>
                     </div>
                 </div>
+                <div className={classes.bgDetail} onClick={props.handleClickChooseMovie}></div>
                 <div className={classes.bgDivImg} >
-                    <div className={classes.bgDetail} ></div>
                     <Button variant="contained" color="inherit" className={classes.play_videoIcon}
                         onClick={props.handleShowModalVideo}
                     >
                         <img src={play_videoIcon} alt="play_videoIcon" className={classes.videoIcon} />
+
                     </Button>
+
                 </div>
+                <div className={classes.ngayKhoiChieu}>{changeFormatDate(props.ngayKhoiChieu)}</div>
             </div>
         </Fragment>
     );

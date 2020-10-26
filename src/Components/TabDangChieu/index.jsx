@@ -11,36 +11,35 @@ const TabDangChieu = (props) => {
     const listMovies = useSelector((state) => {
         return state.qlMovie.listMoviePhanTrang
     });
-
-    const listMoviePhanTrang = useMemo(() => {
-        return listMovies
-    }, [listMovies]);
     const currentPage = useMemo(() => {
         return props.currentPage
     }, [props.currentPage]);
+    const listMoviePhanTrang = useMemo(() => {
+        let lst = [];
+
+        for (let i = currentPage; i < currentPage + 2; i++) {
+            listMovies[i].map((item) => {
+                lst.push(item);
+            })
+        }
+        return lst
+    }, [listMovies, currentPage]);
+
     useEffect(() => {
-        // console.log(props.index);
-        // dispatch(createAction(SET_DATA_LIST_MOVIE_PHAN_TRANG, props.width));
     }, [props.width]);
     const renderListMovie = useCallback(() => {
-        // console.log(listMoviePhanTrang[page]);
-        return listMoviePhanTrang[currentPage].map((item, index) => {
+        return listMoviePhanTrang.map((item, index) => {
             return (
-                // <div key={index}>
-                //     <div>{item.tenPhim}</div>
-                //     <img src={item.hinhAnh} alt="item.hinhAnh" />
-
-                // </div>
                 <MovieItem movieItem={item} key={index} />
             )
         })
-    }, [listMoviePhanTrang, currentPage]);
+    }, [listMoviePhanTrang,]);
 
 
 
 
     return (
-        <Grid container spacing={1} style={{ padding: ' 5px' }}>
+        <Grid container spacing={1} style={{ padding: ' 5px', borderRadius: '10px', }}>
             {renderListMovie()}
         </Grid>
     );

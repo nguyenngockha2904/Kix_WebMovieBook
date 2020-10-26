@@ -529,15 +529,15 @@ const useStyles = makeStyles((theme) => ({
             background: '#80808047',
             borderRadius: '5px',
         },
-        [theme.breakpoints.down(`${960}`)]: {
-
+        [theme.breakpoints.down(`${414}`)]: {
+            flexWrap: 'nowrap',
         },
     },
     itemTime: {
         background: 'rgba(246,246,246,.5)',
         boxShadow: ' 0 0 black',
         transition: 'none',
-        minWidth: theme.spacing(12.2),
+        minWidth: theme.spacing(11.6),
         color: '#9b9b9b',
         fontFamily: 'SF Medium',
         fontSize: theme.spacing(1.4),

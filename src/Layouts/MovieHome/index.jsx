@@ -96,7 +96,7 @@ const MovieHome = (props) => {
                         <TabDangChieu currentPage={0} />
                     </TabPanel>
                     <TabPanel value={value} index={1} className={classes.tabContent}>
-                        <TabDangChieu currentPage={2} />
+                        <TabDangChieu currentPage={1} />
                     </TabPanel>
 
                 </Fragment>}
@@ -125,6 +125,9 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiTabs-flexContainer': {
             justifyContent: 'center',
             alignItems: 'center',
+        },
+        [theme.breakpoints.down(`${460}`)]: {
+            width: '100%',
         }
     },
     tabTitle: {
@@ -182,6 +185,9 @@ const useStyles = makeStyles((theme) => ({
     },
     tabContent: {
         marginTop: theme.spacing(2),
+        [theme.breakpoints.down(`${460}`)]: {
+            padding: '5px',
+        }
     },
 }));
 
