@@ -18,11 +18,19 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         height: theme.spacing(31.8),
         borderRadius: theme.spacing(0.5),
+        [theme.breakpoints.down(`${460}`)]: {
+            height: theme.spacing(20),
+            borderRadius: '10px',
+            boxShadow: '0 0 6px 2px #9e9e9e85',
+        }
     },
     groupRating: {
         position: 'absolute',
         top: 0,
         right: 0,
+        [theme.breakpoints.down(`${460}`)]: {
+            display: 'none',
+        }
     },
     rating: {
         background: '#2B3A51',

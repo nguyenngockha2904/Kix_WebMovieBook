@@ -40,7 +40,7 @@ const TabDangChieu = (props) => {
 
 
     return (
-        <Grid container spacing={1}>
+        <Grid container spacing={1} style={{ padding: ' 5px' }}>
             {renderListMovie()}
         </Grid>
     );

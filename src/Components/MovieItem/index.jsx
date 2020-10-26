@@ -19,6 +19,9 @@ const useStyle = makeStyles((theme) => ({
     divContent: {
         marginTop: theme.spacing(1),
         position: 'relative',
+        [theme.breakpoints.down(`${460}`)]: {
+            display: "none",
+        }
     },
     general: {
         color: '#fff',
@@ -94,7 +97,7 @@ const MovieItem = (props) => {
         // history.replace(`/detail/${maPhim}`);
     }, []);
     return (
-        <Grid item xs={12} sm={4} md={3} className={classes.root}>
+        <Grid item xs={6} sm={6} md={3} className={classes.root}>
 
             <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} danhGia={danhGia} hinhAnh={hinhAnh} />
             <div className={classes.divContent}>
