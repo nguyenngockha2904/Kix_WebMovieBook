@@ -101,8 +101,8 @@ const Carousel = () => {
     const settings = useMemo(() => ({
         dots: true,
         speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
+        slidesToShow: 2,
+        slidesToScroll: 2,
         autoplay: true,
         pauseOnHover: true,
         fade: true,
@@ -115,7 +115,6 @@ const Carousel = () => {
                     <div className={classes.divTop} key={index}>
                         <MovieDetailContent role={1} item={item} />
                     </div>
-
                 )
             })
         }

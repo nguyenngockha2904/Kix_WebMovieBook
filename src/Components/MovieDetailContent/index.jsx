@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
         right: 0,
         bottom: 0,
         filter: 'blur(10px)',
-        backgroundAttachment: 'fixed',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backdropFilter: 'brightness(0.5)',
@@ -326,7 +325,7 @@ const MovieDetailContent = (props) => {
                     {/* Progress bar */}
                     <Box display="flex" justifyContent="center" alignItems="center" width="100%">
                         <div className={classes.progressBar}>
-                            <CircularProgressbar
+                            {role === 2 && <CircularProgressbar
                                 value={per}
                                 maxValue={1}
                                 text={`${danhGia}`}
@@ -357,13 +356,13 @@ const MovieDetailContent = (props) => {
                                         fill: '#0000004d',
                                     },
                                 }}
-                            />
+                            />}
                         </div>
                     </Box>
-                    <div className={classes.groupStar}>
+                    {role === 2 && <div className={classes.groupStar}>
                         {renderRating()}
                         <img src={onePerTwoIcon} alt="onePerTwo" className={classes.starIcon} />
-                    </div>
+                    </div>}
                     {role === 2 && <Box className={classes.defaultText} textAlign="center">
                         {person} người đánh giá
                     </Box>}
