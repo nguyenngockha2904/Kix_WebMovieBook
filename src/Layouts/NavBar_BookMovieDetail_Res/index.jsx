@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         zIndex: '5',
+        boxShadow: '0 0 4px 0px #fff',
     },
     groupBtnBack: {
         color: '#fff',
