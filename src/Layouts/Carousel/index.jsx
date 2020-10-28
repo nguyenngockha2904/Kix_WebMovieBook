@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles, } from '@material-ui/core';
+import { Box, Button, makeStyles, withWidth, } from '@material-ui/core';
 import React, { useCallback, useMemo, useState, memo } from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -11,7 +11,7 @@ import { getMovieInfoWithMovieId } from '../../redux/action/movieAction';
 import { useHistory } from 'react-router-dom';
 import MovieDetailContent from '../../Components/MovieDetailContent';
 import ModalVideoMovie from '../../Components/ModalShowVideo';
-const Carousel = () => {
+const Carousel = (props) => {
     const classes = useStyle();
     const dispatch = useDispatch();
 
@@ -260,94 +260,101 @@ const Carousel = () => {
             history.push(`/chitietphongve/${value}`);
         }
     }, []);
-
+    const width = useMemo(() => {
+        return props.width;
+    }, [props.width]);
     return (
         <div
             className={classes.slider}
         >   <Slider {...settings} className={classes.Carousel}>
                 {renderCarousel()}
             </Slider>
-            <div className={classes.homeTools}>
-                <Box display="flex" width="30%" justifyContent="between" height="40px" >
-                    <div className={classes.navItem} style={{ position: 'inherit', width: '266px' }}>
-                        <div className={classes.buttonGroup} onClick={handleShowTabPhim(!isShowTabPhim)}>
-                            <span className={classes.title}>
-                                {movie}
-                            </span>
-                            <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
-                        </div>
-                        {isShowTabPhim &&
-                            <div className={`${classes.divContent} ${classes.divTabPhim}`}>
-                                {renderListMovie()}
+            {(width === 'md' || width === 'lg' || width === 'xl') &&
+                <div className={classes.homeTools}>
+                    <Box display="flex" width="30%" justifyContent="between" height="40px" >
+                        <div className={classes.navItem} style={{ position: 'inherit', width: '266px' }}>
+                            <div className={classes.buttonGroup} onClick={handleShowTabPhim(!isShowTabPhim)}>
+                                <span className={classes.title}>
+                                    {movie}
+                                </span>
+                                <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
                             </div>
-                        }
-                    </div>
-                </Box>
-                <Box display="flex" width="70%" justifyContent="between" height="40px">
-                    <div className={classes.navItem} style={{ paddingLeft: '15px' }}>
-                        <div className={classes.buttonGroup} onClick={handleShowTabRap(!isShowTabRap)}>
-                            <span className={classes.title}>
-                                {theater.tenCumRap}
-                            </span>
-                            <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
+                            {isShowTabPhim &&
+                                <div className={`${classes.divContent} ${classes.divTabPhim}`}>
+                                    {renderListMovie()}
+                                </div>
+                            }
                         </div>
-                        {isShowTabRap &&
-                            <div className={classes.divContent}>
-                                {(propMovie.movieInfoSystem.heThongRapChieu) ? renderListTheater() : <div className={classes.itemContent}>
-                                    Vui lòng chọn phim
+                    </Box>
+                    <Box display="flex" width="70%" justifyContent="between" height="40px">
+                        <div className={classes.navItem} style={{ paddingLeft: '15px' }}>
+                            <div className={classes.buttonGroup} onClick={handleShowTabRap(!isShowTabRap)}>
+                                <span className={classes.title}>
+                                    {theater.tenCumRap}
+                                </span>
+                                <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
+                            </div>
+                            {isShowTabRap &&
+                                <div className={classes.divContent}>
+                                    {(!propMovie.movieInfoSystem.heThongRapChieu) ? renderListTheater() : <div className={classes.itemContent}>
+                                        Vui lòng chọn phim
                             </div>}
-                            </div>
-                        }
-                    </div>
-                    <div className={classes.navItem}>
-                        <div className={classes.buttonGroup} onClick={handleShowTabNgayXem(!isShowTabNgayXem)}>
-                            <span className={classes.title}>
-                                {dateTime}
-                            </span>
-                            <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
+                                </div>
+                            }
                         </div>
-                        {isShowTabNgayXem &&
-                            <div className={`${classes.divContent} ${classes.divContentDate}`}>
-                                {movie !== 'Phim' ? (
-                                    theater.tenCumRap !== 'Rạp' ? renderListDate() :
-                                        <div className={classes.itemContent} >
-                                            Vui lòng chọn Rạp
+                        <div className={classes.navItem}>
+                            <div className={classes.buttonGroup} onClick={handleShowTabNgayXem(!isShowTabNgayXem)}>
+                                <span className={classes.title}>
+                                    {dateTime}
+                                </span>
+                                <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
+                            </div>
+                            {isShowTabNgayXem &&
+                                <div className={`${classes.divContent} ${classes.divContentDate}`}>
+                                    {movie !== 'Phim' ? (
+                                        theater.tenCumRap !== 'Rạp' ? renderListDate() :
+                                            <div className={classes.itemContent} >
+                                                Chọn Rạp
                                         </div>
 
-                                ) :
-                                    <div className={classes.itemContent} >
-                                        Phim và Rạp
+                                    ) :
+                                        <div className={classes.itemContent} >
+                                            Chọn Phim và Rạp
                                    </div>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <div className={classes.navItem}>
-                        <div className={classes.buttonGroup} onClick={handleShowTabXuatChieu(!isShowTabXuatChieu)}>
-                            <span className={classes.title}>
-                                {!suatChieu.ngayChieuGioChieu ? 'Suất chiếu' : covertTimeFormat(suatChieu.ngayChieuGioChieu)}
-                            </span>
-                            <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
+                                    }
+                                </div>
+                            }
                         </div>
-                        {isShowTabXuatChieu &&
-                            <div className={`${classes.divContent} ${classes.divContentLast}`}>
-                                {renderListLichChieu()}
-
+                        <div className={classes.navItem}>
+                            <div className={classes.buttonGroup} onClick={handleShowTabXuatChieu(!isShowTabXuatChieu)}>
+                                <span className={classes.title}>
+                                    {!suatChieu.ngayChieuGioChieu ? 'Suất chiếu' : covertTimeFormat(suatChieu.ngayChieuGioChieu)}
+                                </span>
+                                <img src={dropdownIcon} alt="dropdownIcon" className={classes.dropdownIcon} />
                             </div>
-                        }
-                    </div>
-                    <div className={`${classes.navItem} ${classes.PayNav}`}>
-                        <Button className={classes.buttonPay} onClick={handleBuyTicket(suatChieu.maLichChieu)}>
-                            Mua vé ngay
+                            {isShowTabXuatChieu &&
+                                <div className={`${classes.divContent} ${classes.divContentLast}`}>
+                                    {renderListLichChieu()}
+
+                                </div>
+                            }
+                        </div>
+                        <div className={`${classes.navItem} ${classes.PayNav}`}>
+                            <Button className={classes.buttonPay} onClick={handleBuyTicket(suatChieu.maLichChieu)}>
+                                Mua vé ngay
                         </Button>
-                    </div>
+                        </div>
 
-                </Box>
+                    </Box>
 
-            </div>
+                </div>
+
+
+            }
             {(isShowTabPhim || isShowTabRap || isShowTabNgayXem || isShowTabXuatChieu) && <div className={classes.divBgDropdown} onClick={handleClickBgClose}>
 
             </div>}
+
             {isShowModalVideoMovie.isShow && isShowModalVideoMovie.role === 1 && <ModalVideoMovie />}
         </div>
     );
@@ -385,6 +392,9 @@ const useStyle = makeStyles((theme) => ({
             [theme.breakpoints.up(`${978}`)]: {
                 height: theme.spacing(5),
                 width: theme.spacing(10),
+            },
+            [theme.breakpoints.down(`${960}`)]: {
+                display: 'none !important',
             }
         },
         '& .slick-next': {
@@ -426,6 +436,9 @@ const useStyle = makeStyles((theme) => ({
             },
             [theme.breakpoints.up(`${978}`)]: {
                 bottom: '17%',
+            },
+            [theme.breakpoints.down(`${960}`)]: {
+                display: 'none !important',
             }
         }
 
@@ -628,4 +641,4 @@ const useStyle = makeStyles((theme) => ({
 })
 );
 
-export default memo(Carousel);
+export default memo(withWidth()(Carousel));

@@ -5,75 +5,13 @@ import play_videoIcon from '../../assets/img/play_videoIcon.svg';
 import iconStarMid from '../../assets/img/iconStarMid.svg';
 import iconStarFull from '../../assets/img/iconStarFull.svg';
 import onePerTwoIcon from '../../assets/img/onePerTwoIcon.svg';
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_REQUEST_PAGE, SHOW_MODAL_VIDEO } from '../../redux/action/type';
 import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-
-
-const useStylesCircularProgress = makeStyles((theme) => ({
-    root: {
-        position: 'relative',
-    },
-    bottom: {
-        color: '#eeeeee91',
-    },
-    top: {
-        color: 'rgb(169 255 68)',
-        animationDuration: '550ms',
-        position: 'absolute',
-        left: 0,
-    },
-    circle: {
-        strokeLinecap: 'round',
-    },
-    label: {
-        color: 'rgb(169 255 68)',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: ' translate(-50%,-50%)',
-        fontSize: '34px',
-    },
-}));
-
-function CircularProgressCustom(props) {
-    const classes = useStylesCircularProgress();
-
-    return (
-        <div className={classes.root}>
-            <CircularProgress
-                variant="determinate"
-                className={classes.bottom}
-                size={100}
-                thickness={2.6}
-                {...props}
-                value={100}
-            />
-            <CircularProgress
-                variant="determinate"
-
-                className={classes.top}
-                classes={{
-                    circle: classes.circle,
-                }}
-                size={100}
-                value={props.value}
-                thickness={2.6}
-                {...props}
-            />
-            <div className={classes.label}>{props.value / 10}</div>
-        </div>
-    );
-}
-
-
+import CircularProgressCustom from '../CircularProgressCustom';
 
 
 const MovieDetailContent = (props) => {
@@ -188,38 +126,6 @@ const MovieDetailContent = (props) => {
                     {/* Progress bar */}
                     <Box display="flex" justifyContent="center" alignItems="center" width="100%">
                         <div className={classes.progressBar}>
-                            {/* {role === 2 && <CircularProgressbar
-                                value={per}
-                                maxValue={1}
-                                text={`${danhGia}`}
-                                background={true}
-                                strokeWidth={5}
-                                styles={{
-                                    root: {},
-                                    path: {
-                                        stroke: 'rgb(169 255 68)',
-                                        strokeLinecap: 'butt',
-                                        transition: 'stroke-dashoffset 0.5s ease 0s',
-                                        transform: 'rotate(0 )',
-                                        transformOrigin: 'center center',
-                                    },
-                                    trail: {
-                                        stroke: 'rgb(117 113 113 / 65%)',
-                                        strokeLinecap: 'butt',
-                                        transform: 'rotate(0.25turn)',
-                                        transformOrigin: 'center center',
-                                        width: '20px',
-                                    },
-                                    text: {
-                                        fill: 'rgb(169 255 68)',
-                                        fontSize: '40px',
-                                        fontFamily: 'SF Medium',
-                                    },
-                                    background: {
-                                        fill: '#0000004d',
-                                    },
-                                }}
-                            />} */}
                             <CircularProgressCustom value={per} />
                         </div>
                     </Box>
