@@ -1,4 +1,4 @@
-import { Box, makeStyles, } from '@material-ui/core';
+import { Box, makeStyles, withWidth, } from '@material-ui/core';
 import React, { Fragment, memo, useCallback, useMemo, useState, } from 'react';
 import NavBarBook from '../../Layouts/NavBar_BookMovieDetail';
 import ChonVeComponent from '../../Components/ChonVeComponent';
@@ -19,6 +19,8 @@ import { getPhongVeItem_byMaLichChieu } from '../../redux/action/movieAction';
 import Loader from '../../Layouts/Loading';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
+import ChonGheResp from '../../Components/ChonGheResp';
+import NavBar_BookMovieDetail_Res from '../../Layouts/NavBar_BookMovieDetail_Res';
 
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
@@ -48,7 +50,7 @@ const returnIconTheader = (value) => {
 
 
 
-const BookMovieDetail = () => {
+const BookMovieDetail = (props) => {
     const classes = useStyles();
     const params = useParams();
     const dispatch = useDispatch();
@@ -78,39 +80,73 @@ const BookMovieDetail = () => {
         document.title = title;
         return () => document.title = prevTitle;
     }, []);
-    const getStepContent = useCallback((stepIndex) => {
-        switch (stepIndex) {
-            case 0: //tab chọn loại vé
-                return (
-                    <ChonVeComponent handleNext={handleNext} logoCine={logoCine} />
-                );
-            case 1:
-                return (
-                    <Box my={8}>
-                        <ChonGheComponent handleNext={handleNext} logoCine={logoCine} />
-                    </Box>
-                );
+    const width = useMemo(() => {
+        return props.width;
+    }, [props.width]);
+    const getStepContent = useCallback((stepIndex, width) => {
+        // 
+        if (width === 'md' || width === 'lg' || width === 'xl') {
+            switch (stepIndex) {
+                case 0: //tab chọn loại vé
+                    return (
+                        <ChonVeComponent handleNext={handleNext} logoCine={logoCine} />
+                    );
+                case 1:
+                    return (
+                        <Box my={8}>
+                            <ChonGheComponent handleNext={handleNext} logoCine={logoCine} />
+                        </Box>
+                    );
 
-            case 2:
-                return (
-                    <Box my={8}>
-                        Kết quả đặt vé
-                    </Box>
-                );
+                case 2:
+                    return (
+                        <Box my={8}>
+                            Kết quả đặt vé
+                        </Box>
+                    );
 
-            default:
-                return (
-                    <Box my={8}>
-                        Thành công !!
-                    </Box>
-                );
+                default:
+                    return (
+                        <Box my={8}>
+                            Thành công !!
+                        </Box>
+                    );
+            }
+        } else {
+            switch (stepIndex) {
+                case 0: //tab chọn loại vé
+                    return (
+                        <ChonGheResp />
+                    );
+                case 1:
+                    return (
+                        <Box my={8}>
+
+                        </Box>
+                    );
+
+                case 2:
+                    return (
+                        <Box my={8}>
+                            Kết quả đặt vé
+                        </Box>
+                    );
+
+                default:
+                    return (
+                        <Box my={8}>
+                            Thành công !!
+                        </Box>
+                    );
+            }
         }
+
     }, [logoCine]);
     return (
         <Fragment>
-            <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} />
+            {(width === 'md' || width === 'lg' || width === 'xl') ? <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} /> : <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} />}
             {isloading ? <Loader /> : <Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, width)}
             </Fragment>}
 
         </Fragment>
@@ -120,4 +156,4 @@ const useStyles = makeStyles((theme) => ({
 
 
 }));
-export default memo(BookMovieDetail);
+export default memo(withWidth()(BookMovieDetail));
