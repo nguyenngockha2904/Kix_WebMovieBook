@@ -2,7 +2,6 @@
 
 import React, { Fragment, memo, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -13,7 +12,6 @@ import { useSelector } from 'react-redux';
 import ModalVideoMovie from '../../Components/ModalShowVideo';
 import { withWidth } from '@material-ui/core';
 import TabDangChieu from '../../Components/TabDangChieu';
-import TabSapChieu from '../../Components/TabSapChieu';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 

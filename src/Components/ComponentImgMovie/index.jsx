@@ -2,9 +2,9 @@ import { Box, makeStyles, Button } from '@material-ui/core';
 import React, { Fragment, memo, useCallback } from 'react';
 import iconStarFull from '../../assets/img/iconStarFull.svg';
 import iconStarMid from '../../assets/img/iconStarMid.svg';
-import iconStarWeak from '../../assets/img/iconStarWeak.svg';
 import onePerTwoIcon from '../../assets/img/onePerTwoIcon.svg';
 import play_videoIcon from '../../assets/img/play_videoIcon.svg';
+import CircularProgressCustom from '../CircularProgressCustom';
 const useStyles = makeStyles((theme) => ({
     divImg: {
         position: 'relative',
@@ -32,11 +32,20 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         right: 0,
         [theme.breakpoints.down(`${460}`)]: {
-            display: 'none',
+            '& $rating': {
+                display: 'none',
+            },
+        }
+    },
+    CircularProgressCustomdiv: {
+        display: 'none',
+        [theme.breakpoints.down(`${460}`)]: {
+            display: 'block',
+            margin: '5px',
         }
     },
     rating: {
-        background: '#2B3A51',
+        background: '#2b3a51d1',
         margin: theme.spacing(1.5),
         textAlign: 'center',
         padding: theme.spacing(.4, .8),
@@ -88,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
             fontSize: '14px',
             lineHeight: '1',
             fontWeight: '400',
+            fontFamily: 'SF Medium',
         }
     },
     bgDetail: {
@@ -165,7 +175,12 @@ const ImageMovie = (props) => {
                             {renderRating()}
                             <img src={onePerTwoIcon} alt="onePerTwo" className={classes.starIcon} />
                         </div>
+
                     </div>
+                    <div className={classes.CircularProgressCustomdiv}>
+                        <CircularProgressCustom value={(props.danhGia / 10) * 100} size={30} thickness={2} fontsizelabel={14} colorBottom="#fff" colorTop='rgb(169 255 68)' colorBg='#2b3a51d1' />
+                    </div>
+
                 </div>
                 <div className={classes.bgDetail} onClick={props.handleClickChooseMovie}></div>
                 <div className={classes.bgDivImg} >
@@ -175,7 +190,6 @@ const ImageMovie = (props) => {
                         <img src={play_videoIcon} alt="play_videoIcon" className={classes.videoIcon} />
 
                     </Button>
-
                 </div>
                 <div className={classes.ngayKhoiChieu}>{changeFormatDate(props.ngayKhoiChieu)}</div>
             </div>

@@ -88,7 +88,14 @@ const MovieDetailContent = (props) => {
             <div className={classes.WraperContent} style={{ margin: role === 1 ? '9%' : '5%' }}>
                 <div className={classes.filmInfo}>
                     <div className={classes.groupImgFilm}>
-                        <img src={hinhAnh} alt="hinhAnh" className={classes.imgFilm} />
+                        <div className={classes.groupImgContent}>
+                            <img src={hinhAnh} alt="hinhAnh" className={classes.imgFilm} />
+                            <div className={classes.CircularProgressDiv}>
+                                <CircularProgressCustom value={per} size={40} thickness={2.6} fontsizelabel={20} colorBottom="#fff" colorTop='rgb(169 255 68)' colorBg='#2b3a51d1' />
+                            </div>
+                        </div>
+
+
                         <div className={classes.groupPlayVideo}>
                             <Button variant="contained" color="inherit" className={classes.play_videoIcon}
                                 onClick={handleShowModalVideo(role === 2 ? propsItem : item)}
@@ -97,7 +104,9 @@ const MovieDetailContent = (props) => {
                             </Button>
                             <Box position="absolute" top="0" right="0" display="flex" justifyContent="center" alignItems="center">
                             </Box>
+
                         </div>
+
                     </div>
                     <div className={classes.filmInfoContent}>
                         <div className={classes.defaultText}>
@@ -126,7 +135,7 @@ const MovieDetailContent = (props) => {
                     {/* Progress bar */}
                     <Box display="flex" justifyContent="center" alignItems="center" width="100%">
                         <div className={classes.progressBar}>
-                            <CircularProgressCustom value={per} />
+                            <CircularProgressCustom value={per} size={100} thickness={2.6} fontsizelabel={34} colorBottom='#eeeeee91' colorTop='rgb(169 255 68)' colorBg='transparent' />
                         </div>
                     </Box>
                     <div className={classes.groupStar}>
@@ -196,6 +205,8 @@ const useStyles = makeStyles((theme) => ({
     },
     groupImgFilm: {
         position: 'relative',
+        width: theme.spacing(21.4),
+        height: theme.spacing(32.3),
         marginRight: theme.spacing(1.4),
         '&:hover $groupPlayVideo': {
             opacity: '1',
@@ -203,18 +214,42 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down(`${620}`)]: {
             display: 'flex',
             justifyContent: 'center',
+            width: '50%',
+            height: 'auto',
+            margin: 'auto',
+            minWidth: '200px',
+            minHeight: '100px',
+        },
+
+
+    },
+    CircularProgressDiv: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        display: 'none',
+        margin: '5px',
+        [theme.breakpoints.down(`${769}`)]: {
+            display: 'block',
+
+        },
+    },
+    groupImgContent: {
+        width: '100%',
+        height: theme.spacing(32.3),
+        borderRadius: '10px',
+        boxShadow: '0 0 8px 1px #fff',
+        [theme.breakpoints.down(`${620}`)]: {
+            height: theme.spacing(28.8),
         },
 
     },
     imgFilm: {
-        width: theme.spacing(21.4),
-        height: theme.spacing(32.3),
-        borderRadius: '5px',
-        boxShadow: '0 0 8px 1px #fff',
-        [theme.breakpoints.down(`${620}`)]: {
-            width: '50%',
-            height: '50%',
-        },
+        width: '100%',
+        height: '100%',
+        borderRadius: '10px',
+        minWidth: '200px',
+        minHeight: '100px',
     },
     groupPlayVideo: {
         position: 'absolute',
@@ -292,7 +327,7 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: 'pre-wrap',
         width: '90%',
         [theme.breakpoints.down(`${960}`)]: {
-            fontSize: theme.spacing(1.8),
+            fontSize: theme.spacing(1.6),
         },
     },
     groupBtnPay: {

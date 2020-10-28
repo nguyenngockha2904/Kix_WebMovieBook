@@ -4,14 +4,15 @@ import React, { memo } from 'react';
 const CircularProgressCustom = (props) => {
     const classes = useStylesCircularProgress();
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={{ background: `${props.colorBg}` }}>
             <CircularProgress
                 variant="determinate"
                 className={classes.bottom}
-                size={100}
-                thickness={2.6}
+                size={props.size}
+                thickness={props.thickness}
                 {...props}
                 value={100}
+                style={{ color: `${props.colorBottom}` }}
             />
             <CircularProgress
                 variant="determinate"
@@ -20,18 +21,21 @@ const CircularProgressCustom = (props) => {
                 classes={{
                     circle: classes.circle,
                 }}
-                size={100}
+                size={props.size}
                 value={props.value}
-                thickness={2.6}
+                thickness={props.thickness}
                 {...props}
+                style={{ color: `${props.colorTop}` }}
             />
-            <div className={classes.label}>{props.value / 10}</div>
+            <div className={classes.label} style={{ fontSize: props.fontsizelabel, color: `${props.colorTop}` }}>{props.value / 10}</div>
         </div>
     );
 };
 const useStylesCircularProgress = makeStyles((theme) => ({
     root: {
         position: 'relative',
+        display: 'inline-flex',
+        borderRadius: '50%',
     },
     bottom: {
         color: '#eeeeee91',
@@ -52,6 +56,7 @@ const useStylesCircularProgress = makeStyles((theme) => ({
         left: '50%',
         transform: ' translate(-50%,-50%)',
         fontSize: '34px',
+        fontFamily: 'SF Medium',
     },
 }));
 export default memo(CircularProgressCustom);
