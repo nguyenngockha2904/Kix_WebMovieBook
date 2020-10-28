@@ -158,7 +158,7 @@ const ChonGheComponent = (props) => {
                         </div>
                         <div className={classes.gheType}>
                             ({item.loaiGhe.toLowerCase() === "thuong" ? "thường" : " vip"})
-                            </div>
+                        </div>
                     </div>
                     <div className={`${classes.textDefault} ${classes.totalMonney}`} >
                         {(item.giaVe).toLocaleString()}<div className={classes.moneyDefault}>đ</div>
@@ -299,9 +299,9 @@ const ChonGheComponent = (props) => {
                             </Box>
                             <div className={classes.theaterContent}>
                                 <div className={classes.nameThear}>
-                                    <Box className={classes.hightline}>
+                                    <div className={classes.hightline}>
                                         {tenCumRap.trim().slice(0, tenCumRap.trim().indexOf(' '))}
-                                    </Box>
+                                    </div>
                                     {tenCumRap.trim().slice(tenCumRap.trim().indexOf(' '))}
                                 </div>
                                 <Box className={classes.timeMovie} my={0.5}>

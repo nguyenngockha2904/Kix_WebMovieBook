@@ -1,9 +1,10 @@
 import { Avatar, Button, Grid, makeStyles } from '@material-ui/core';
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
-
+import Countdown from 'react-countdown';
+import { useHistory } from 'react-router-dom';
 //#region Ghe SVG
 const ChangeGheSVG = (color, number, disable, type = 0) => {
     return (
@@ -11,16 +12,16 @@ const ChangeGheSVG = (color, number, disable, type = 0) => {
 
             <defs>
                 <linearGradient id="linear-gradient" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
-                    <stop offset="0" stop-color="#f0a22b" />
-                    <stop offset="1" stop-color="#f7a928" />
+                    <stop offset="0" stopColor="#f0a22b" />
+                    <stop offset="1" stopColor="#f7a928" />
                 </linearGradient>
             </defs>
             <g id="gheIcon1" transform="translate(-170 -1017)">
                 <path id="gheIcon" d="M382.9,194.5V156.2a42.593,42.593,0,0,0-42.5-42.5H172.9a42.593,42.593,0,0,0-42.5,42.5v38.3a42.643,42.643,0,0,0-27.5,39.7V396.7h25V374.2H385.4v22.5h25V234.2A42.4,42.4,0,0,0,382.9,194.5Zm-210-55.8H340.4a17.584,17.584,0,0,1,17.5,17.5v35.6a42.51,42.51,0,0,0-40,42.4v45H195.4v-45a42.51,42.51,0,0,0-40-42.4V156.2A17.584,17.584,0,0,1,172.9,138.7Z" transform="translate(67.1 1022.3)" fill={`${color}`} />
                 <text id="_50" data-name="50" transform={`${number < 99 ? 'translate(266 1125)' : 'translate(237 1125)'}`} fill={`${color}`} fontSize="100" fontFamily="SegoeUI-Bold, Segoe UI" fontWeight="700"><tspan x="0" y="0">{number}</tspan></text>
                 {disable && <Fragment>
-                    <line id="Line_19" data-name="Line 19" x2="253" y2="180" transform="translate(197.5 1192.5)" fill="none" stroke="#fff" stroke-width="20" />
-                    <line id="Line_20" data-name="Line 20" x1="253" y2="180" transform="translate(197.5 1192.5)" fill="none" stroke="#fff" stroke-width="20" />
+                    <line id="Line_19" data-name="Line 19" x2="253" y2="180" transform="translate(197.5 1192.5)" fill="none" stroke="#fff" strokeWidth="20" />
+                    <line id="Line_20" data-name="Line 20" x1="253" y2="180" transform="translate(197.5 1192.5)" fill="none" stroke="#fff" strokeWidth="20" />
                 </Fragment>}
                 {type === 1 && <Fragment>
                     <g id="layer1" transform="translate(412.001 297.522)">
@@ -50,12 +51,33 @@ const ChangeGheSVG = (color, number, disable, type = 0) => {
 const ChonGheResp = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
     const phongVeInfo = useSelector((state) => {
         return state.qlMovie.PhongVeItemByMaLichChieu
     });
     const listGheDaDat = useSelector((state) => {
         return state.qlMovie.listGheDaDat
     });
+    let tongTien = useMemo(() => {
+        let tt = 0;
+        if (listGheDaDat.length !== 0) {
+            for (let item of listGheDaDat) {
+                tt += item.giaVe;
+            }
+        }
+        return tt;
+    }, [listGheDaDat]);
+    const dateTime = useMemo(() => {
+        return Date.now() + 285000;
+    }, []);
+    const renderer = useCallback(({ hours, minutes, seconds, completed }) => {
+        if (completed) {
+            history.replace('/');
+            return <span>hết giờ</span>;
+        } else {
+            return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
+        }
+    }, []);
 
     const renderDayGhe = useCallback(() => {
         let list = phongVeInfo.danhSachGhe;
@@ -92,8 +114,29 @@ const ChonGheResp = () => {
             )
         });
     }, [phongVeInfo.danhSachGhe]);
+    const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu } = useMemo(() => {
+        return phongVeInfo.thongTinPhim
+    });
+    const renderListGheDaDat = useCallback(() => {
+        let list = [];
+        if (listGheDaDat.length !== 0) {
 
+            list = listGheDaDat.sort((sp_tieptheo, sp) => {
+                return parseInt(sp_tieptheo.stt) - parseInt(sp.stt);
+            });
+        }
+        return list.map((item, index) => {
+            return (
+                <div className={classes.grouGheDD} key={index}>
+                    <div className={`${classes.textDefault} ${classes.textDef}`}>
+                        Ghế {item.tenGhe}
+                    </div>
+                    <div className={classes.timeSub}>{item.loaiGhe.toLowerCase() === "thuong" ? "(thường)" : " (vip)"} </div>{index !== (list.length - 1) ? ',' : ''}
+                </div>
+            )
+        });
 
+    }, [listGheDaDat]);
     return (
         <div className={classes.root}>
             <div className={classes.wrapper}>
@@ -159,12 +202,69 @@ const ChonGheResp = () => {
 
             </div>
             <div className={classes.divInfo}>
-                hi im kha
+                <div className={classes.wrapperInfo}>
+                    <div className={classes.filmInfo}>
+                        <div className={classes.contentFilm}>
+                            <p className={`${classes.textDefault} ${classes.namePhim}`}>{tenPhim}</p>
+                            <div>
+                                <div className={classes.general}>C18</div>
+                                <span className={classes.timeSub}>91 phút 2d - Phụ Đề</span>
+                            </div>
+                        </div>
+                        <div className={classes.timeCountDown}>
+                            <Countdown
+                                date={dateTime}
+                                renderer={renderer}
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.nameThear}>
+                        <div className={classes.hightline}>
+                            {tenCumRap.trim().slice(0, tenCumRap.trim().indexOf(' '))}
+                        </div>
+                        {tenCumRap.trim().slice(tenCumRap.trim().indexOf(' '))}
+                    </div>
+                    <div className={classes.infoTimeShow}>
+                        <div className={classes.infoDivItem}>
+                            <div className={classes.timeSub}>Ngày Chiếu</div>
+                            <div className={`${classes.textDefault} ${classes.textDef}`}>{ngayChieu}</div>
+                        </div>
+                        <div className={classes.infoDivItem}>
+                            <div className={classes.timeSub}>Suất Chiếu</div>
+                            <div className={`${classes.textDefault} ${classes.textDef}`}>{gioChieu}</div>
+                        </div>
+                        <div className={classes.infoDivItem}>
+                            <div className={classes.timeSub}>Rạp/Phòng</div>
+                            <div className={`${classes.textDefault} ${classes.textDef}`}>{tenRap}</div>
+                        </div>
+
+                    </div>
+                    <div className={classes.infoTimeShow}>
+                        <div className={classes.infoDivItem}>
+                            <div className={classes.timeSub}>Ghế đã chọn</div>
+                            <div className={classes.gheContent}>{listGheDaDat.length !== 0 ? renderListGheDaDat() : '...'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.priceTotal}>
+                    <div className={classes.timeSub}>Tổng tiền :</div>
+                    <div className={`${classes.textDefault} ${classes.totalMonney}`} >
+                        {(tongTien).toLocaleString()}đ
+                    </div>
+                </div>
+                <div className={classes.GroupButtonNext}>
+                    <Button className={classes.buttonNext}>Tiếp tục</Button>
+                </div>
             </div>
+
+
+
         </div>
     );
 };
 const useStyles = makeStyles((theme) => ({
+    //#region done
     root: {
         position: 'absolute',
         top: 0,
@@ -273,10 +373,134 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.5px',
 
     },
+    //#endregion
     divInfo: {
-        height: '100%',
+        height: 'auto',
+        background: '#ebebeb',
+        borderRadius: '10px',
+        padding: '8px',
+    },
+    wrapperInfo: {
         background: '#fff',
+        borderRadius: '10px',
+        padding: '6px',
+        height: '160px',
+        overflow: 'auto',
+    },
+    filmInfo: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& $textDefault': {
+            color: '#000',
+        }
+    },
+    contentFilm: {
+    },
+    namePhim: {
+        margin: 0,
+        letterSpacing: '0',
+        fontFamily: 'SF Medium',
+    },
+    timeSub: {
+        color: '#808080',
+        letterSpacing: 0,
+        whiteSpace: 'nowrap',
+        fontSize: theme.spacing(1.1),
+        textTransform: 'capitalize',
+        fontFamily: 'unset',
+    },
+    general: {
+        marginRight: theme.spacing(0.6),
+        backgroundImage: 'linear-gradient(45deg, #6b00b6, #440074)',
+        color: '#fff',
+        fontSize: theme.spacing(1.1),
+        borderRadius: theme.spacing(0.5),
+        padding: theme.spacing(0.3),
+        display: 'inline-block',
+        textAlign: 'center',
+        minWidth: theme.spacing(2.5),
+    },
+    timeCountDown: {
+        color: '#44c020',
+        fontSize: theme.spacing(2),
+        fontFamily: '-webkit-pictograph',
+        background: '#0000000d',
         borderRadius: '5px',
+        padding: '1px 5px',
+    },
+    nameThear: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        letterSpacing: '0.5px',
+        fontSize: theme.spacing(1.3),
+        textTransform: 'capitalize',
+        margin: '5px 0',
+    },
+    hightline: {
+        color: '#440074',
+        fontFamily: 'SF Medium',
+
+    },
+    infoTimeShow: {
+        display: 'flex',
+        margin: '5px 0',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    infoDivItem: {
+    },
+    textDef: {
+        fontFamily: 'SF Medium',
+        color: '#000',
+    },
+    gheContent: {
+        display: 'flex',
+        justifyContent: 'end',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    grouGheDD: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: '5px',
+        marginTop: '5px',
+    },
+    gheType: {
+        fontSize: theme.spacing(1.2),
+        margin: theme.spacing(0, 0.5),
+    },
+    priceTotal: {
+        marginTop: '2px',
+        background: '#fff',
+        borderRadius: '10px',
+        padding: '10px 6px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& $timeSub': {
+            fontSize: theme.spacing(1.4),
+        }
+    },
+    totalMonney: {
+        color: '#000',
+        fontFamily: 'SF Medium',
+        fontSize: theme.spacing(1.9),
+    },
+    GroupButtonNext: {
+        background: '#fff',
+        borderRadius: '10px',
+        marginTop: '6px',
+    },
+    buttonNext: {
+        minWidth: '1px',
+        width: '100%',
+        color: '#fff',
+        background: ' linear-gradient(45deg, #6b00b6, #440074)',
+        borderRadius: '6px',
     },
 }));
 export default ChonGheResp;
