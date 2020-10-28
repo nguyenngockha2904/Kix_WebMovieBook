@@ -178,7 +178,7 @@ const ImageMovie = (props) => {
 
                     </div>
                     <div className={classes.CircularProgressCustomdiv}>
-                        <CircularProgressCustom value={(props.danhGia / 10) * 100} size={30} thickness={2} fontsizelabel={14} colorBottom="#fff" colorTop='rgb(169 255 68)' colorBg='#2b3a51d1' />
+                        <CircularProgressCustom value={(props.danhGia / 10) * 100} size={30} thickness={2} fontsizelabel={14} colorbottom="#fff" colortop='rgb(169 255 68)' colorbg='#2b3a51d1' />
                     </div>
 
                 </div>

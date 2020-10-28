@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 const CircularProgressCustom = (props) => {
     const classes = useStylesCircularProgress();
     return (
-        <div className={classes.root} style={{ background: `${props.colorBg}` }}>
+        <div className={classes.root} style={{ background: `${props.colorbg}` }}>
             <CircularProgress
                 variant="determinate"
                 className={classes.bottom}
@@ -12,7 +12,7 @@ const CircularProgressCustom = (props) => {
                 thickness={props.thickness}
                 {...props}
                 value={100}
-                style={{ color: `${props.colorBottom}` }}
+                style={{ color: `${props.colorbottom}` }}
             />
             <CircularProgress
                 variant="determinate"
@@ -25,9 +25,9 @@ const CircularProgressCustom = (props) => {
                 value={props.value}
                 thickness={props.thickness}
                 {...props}
-                style={{ color: `${props.colorTop}` }}
+                style={{ color: `${props.colortop}` }}
             />
-            <div className={classes.label} style={{ fontSize: props.fontsizelabel, color: `${props.colorTop}` }}>{props.value / 10}</div>
+            <div className={classes.label} style={{ fontSize: props.fontsizelabel, color: `${props.colortop}` }}>{props.value / 10}</div>
         </div>
     );
 };

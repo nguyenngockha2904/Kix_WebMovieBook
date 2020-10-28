@@ -91,7 +91,7 @@ const MovieDetailContent = (props) => {
                         <div className={classes.groupImgContent}>
                             <img src={hinhAnh} alt="hinhAnh" className={classes.imgFilm} />
                             <div className={classes.CircularProgressDiv}>
-                                <CircularProgressCustom value={per} size={40} thickness={2.6} fontsizelabel={20} colorBottom="#fff" colorTop='rgb(169 255 68)' colorBg='#2b3a51d1' />
+                                <CircularProgressCustom value={per} size={40} thickness={2.6} fontsizelabel={20} colorbottom="#fff" colortop='rgb(169 255 68)' colorbg='#2b3a51d1' />
                             </div>
                         </div>
 
@@ -135,7 +135,7 @@ const MovieDetailContent = (props) => {
                     {/* Progress bar */}
                     <Box display="flex" justifyContent="center" alignItems="center" width="100%">
                         <div className={classes.progressBar}>
-                            <CircularProgressCustom value={per} size={100} thickness={2.6} fontsizelabel={34} colorBottom='#eeeeee91' colorTop='rgb(169 255 68)' colorBg='transparent' />
+                            <CircularProgressCustom value={per} size={100} thickness={2.6} fontsizelabel={34} colorbottom='#eeeeee91' colortop='rgb(169 255 68)' colorbg='transparent' />
                         </div>
                     </Box>
                     <div className={classes.groupStar}>
@@ -362,6 +362,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        minWidth: '154px',
     },
     progressBar: {
         width: '50%',

@@ -101,8 +101,8 @@ const Carousel = (props) => {
     const settings = useMemo(() => ({
         dots: true,
         speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 2,
+        slidesToShow: 1,
+        slidesToScroll: 1,
         autoplay: true,
         pauseOnHover: true,
         fade: true,
@@ -110,7 +110,7 @@ const Carousel = (props) => {
     const renderCarousel = useCallback(() => {
 
         if (listMovies[0].length !== 0) {
-            return listMovies[0].slice(1, 6).map((item, index) => {
+            return listMovies[0].slice(1, 8).map((item, index) => {
                 return (
                     <div className={classes.divTop} key={index}>
                         <MovieDetailContent role={1} item={item} />
@@ -155,6 +155,7 @@ const Carousel = (props) => {
     }, []);
     const renderListTheater = useCallback(() => {
         let listTheater = [];
+        console.log(propMovie.movieInfoSystem.heThongRapChieu);
         if (propMovie.movieInfoSystem.heThongRapChieu) {
             for (let htr of propMovie.movieInfoSystem.heThongRapChieu) {
                 for (let r of htr.cumRapChieu) {
@@ -296,9 +297,11 @@ const Carousel = (props) => {
                             </div>
                             {isShowTabRap &&
                                 <div className={classes.divContent}>
-                                    {(!propMovie.movieInfoSystem.heThongRapChieu) ? renderListTheater() : <div className={classes.itemContent}>
+                                    {(propMovie.movieInfoSystem.heThongRapChieu.length !== 0) ? renderListTheater() : <div className={classes.itemContent}>
                                         Vui lòng chọn phim
-                            </div>}
+                                    </div>
+
+                                    }
                                 </div>
                             }
                         </div>

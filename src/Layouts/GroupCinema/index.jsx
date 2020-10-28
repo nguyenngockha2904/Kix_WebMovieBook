@@ -23,6 +23,7 @@ import GalaxyIcon from '../../assets/img/logoTheater/glx.jpg';
 import LotteCinimaIcon from '../../assets/img/logoTheater/lotte.jpg';
 import MegaGSIcon from '../../assets/img/logoTheater/megags.jpg';
 import NoImage from '../../assets/img/logoTheater/noImage.jpg';
+import { useHistory } from 'react-router-dom';
 //#endregion
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
@@ -54,6 +55,7 @@ const returnIconTheader = (value) => {
 const GroupCine = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
     const refPhim = useRef(null);
     const refDay = useRef(null);
     const refRap = useRef(null);
@@ -283,7 +285,8 @@ const GroupCine = (props) => {
 
 
     const handleClickTimeMovie = useCallback((value) => () => {
-        console.log(value);
+        // console.log(value.maLichChieu);
+        history.push(`/chitietphongve/${value.maLichChieu}`);
     }, []);
     const renderListPhim = useCallback(() => {
         if (lstMovieWithDate) {
