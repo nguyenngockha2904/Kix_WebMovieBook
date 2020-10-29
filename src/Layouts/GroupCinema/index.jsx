@@ -1,18 +1,8 @@
 import { Box, Button, makeStyles, withWidth } from '@material-ui/core';
-import React, { Fragment, useCallback, useMemo, useRef, useState } from 'react';
-import CGVlogo from '../../assets/img/logoCine/cgv_logo.png';
-import BHDLogo from '../../assets/img/logoCine/BHD_logo.png';
-import CNXLogo from '../../assets/img/logoCine/cnx_logo.jpg';
-import DcineLogo from '../../assets/img/logoCine/Dcine_logo.jpg';
-import DDCLogo from '../../assets/img/logoCine/DDC_logo.png';
-import GalaxyLogo from '../../assets/img/logoCine/galaxy_logo.png';
-import LotteLogo from '../../assets/img/logoCine/lotte_logo.png';
-import MegaLogo from '../../assets/img/logoCine/megaLogo.png';
-import CGVMovieTheater from '../../assets/img/CGV_movie_theater.jpg';
-import { ClassSharp } from '@material-ui/icons';
+import React, { Fragment, useCallback, useMemo, useRef, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, memo } from 'react';
-import { getALLGroupTheatherWithIdTheatherSystem, getALLInfoFollowTheaterSystem } from '../../redux/action/TheaterSystemAction';
+import { getALLInfoFollowTheaterSystem } from '../../redux/action/TheaterSystemAction';
 import { createAction } from '../../redux/action';
 import { SET_DATA_LIST_MOVIE_WITH_THEATER, SET_DATA_MOVIE_WITH_DATE } from '../../redux/action/type';
 //#region Group icon Cinema

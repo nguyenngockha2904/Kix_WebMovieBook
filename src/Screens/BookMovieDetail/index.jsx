@@ -13,14 +13,15 @@ import MegaGSIcon from '../../assets/img/logoCine/megaLogo.png';
 import NoImage from '../../assets/img/logoCine/noImage.svg';
 //#endregion
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPhongVeItem_byMaLichChieu } from '../../redux/action/movieAction';
 import Loader from '../../Layouts/Loading';
 import { SET_IS_ACTVED_GHE_ITEM, SET_TYPE_PAGE } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
 import ChonGheResp from '../../Components/ChonGheResp';
 import NavBar_BookMovieDetail_Res from '../../Layouts/NavBar_BookMovieDetail_Res';
+import ThanhToanResComponent from '../../Components/ThanhToanResComponent';
 
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
@@ -52,6 +53,7 @@ const BookMovieDetail = (props) => {
     const classes = useStyles();
     const params = useParams();
     const dispatch = useDispatch();
+    const history = useHistory();
     const [isloading, setIsLoading] = useState(true);
     const [activeStep, setActiveStep] = React.useState(0);
     const [logoCine, setLogoCine] = useState(returnIconTheader(''));
@@ -86,6 +88,18 @@ const BookMovieDetail = (props) => {
             dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, ''));
         }
     }, []);
+    const dateTime = useMemo(() => {
+        return Date.now() + 285000;
+    }, []);
+    const renderer = useCallback(({ hours, minutes, seconds, completed }) => {
+        if (completed) {
+            history.replace('/');
+            return <span>hết giờ</span>;
+        } else {
+            return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
+        }
+    }, []);
+
     const getStepContent = useCallback((stepIndex, width) => {
         // 
         if (width === 'md' || width === 'lg' || width === 'xl') {
@@ -100,14 +114,6 @@ const BookMovieDetail = (props) => {
                             <ChonGheComponent handleNext={handleNext} logoCine={logoCine} />
                         </Box>
                     );
-
-                case 2:
-                    return (
-                        <Box my={8}>
-                            Kết quả đặt vé
-                        </Box>
-                    );
-
                 default:
                     return (
                         <Box my={8}>
@@ -119,22 +125,12 @@ const BookMovieDetail = (props) => {
             switch (stepIndex) {
                 case 0: //tab chọn loại vé
                     return (
-                        <ChonGheResp />
+                        <ChonGheResp handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
                     );
                 case 1:
                     return (
-                        <Box my={8}>
-
-                        </Box>
+                        <ThanhToanResComponent />
                     );
-
-                case 2:
-                    return (
-                        <Box my={8}>
-                            Kết quả đặt vé
-                        </Box>
-                    );
-
                 default:
                     return (
                         <Box my={8}>
@@ -147,8 +143,9 @@ const BookMovieDetail = (props) => {
     }, [logoCine]);
     return (
         <Fragment>
-            {(width === 'md' || width === 'lg' || width === 'xl') ? <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} /> : <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} />}
+
             {isloading ? <Loader /> : <Fragment>
+                {(width === 'md' || width === 'lg' || width === 'xl') ? <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} /> : <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />}
                 {getStepContent(activeStep, width)}
             </Fragment>}
 

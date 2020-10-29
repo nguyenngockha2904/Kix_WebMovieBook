@@ -1,10 +1,11 @@
-import { Avatar, Button, Grid, makeStyles } from '@material-ui/core';
-import React, { Fragment, useCallback, useMemo } from 'react';
+import { Avatar, Button, Grid, makeStyles, Snackbar } from '@material-ui/core';
+import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
 import Countdown from 'react-countdown';
 import { useHistory } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
 //#region Ghe SVG
 const ChangeGheSVG = (color, number, disable, type = 0) => {
     return (
@@ -48,10 +49,15 @@ const ChangeGheSVG = (color, number, disable, type = 0) => {
 
 
 
-const ChonGheResp = () => {
+const ChonGheResp = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
+    const [open, setOpen] = useState({ isShow: false, message: '' });
+    // const [timeCount,setTimeCount]= useState({ minutes:0, seconds: }); 
+    const { handleNext, dateTime, renderer, } = useMemo(() => {
+        return props
+    }, [props]);
     const phongVeInfo = useSelector((state) => {
         return state.qlMovie.PhongVeItemByMaLichChieu
     });
@@ -67,17 +73,6 @@ const ChonGheResp = () => {
         }
         return tt;
     }, [listGheDaDat]);
-    const dateTime = useMemo(() => {
-        return Date.now() + 285000;
-    }, []);
-    const renderer = useCallback(({ hours, minutes, seconds, completed }) => {
-        if (completed) {
-            history.replace('/');
-            return <span>hết giờ</span>;
-        } else {
-            return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
-        }
-    }, []);
 
     const renderDayGhe = useCallback(() => {
         let list = phongVeInfo.danhSachGhe;
@@ -116,7 +111,7 @@ const ChonGheResp = () => {
     }, [phongVeInfo.danhSachGhe]);
     const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu } = useMemo(() => {
         return phongVeInfo.thongTinPhim
-    });
+    }, [phongVeInfo.thongTinPhim]);
     const renderListGheDaDat = useCallback(() => {
         let list = [];
         if (listGheDaDat.length !== 0) {
@@ -137,6 +132,22 @@ const ChonGheResp = () => {
         });
 
     }, [listGheDaDat]);
+
+    const handleClickNext = useCallback(() => {
+        if (listGheDaDat.length === 0) {
+            setOpen({ isShow: true, message: 'Vui lòng chọn ghế để tiếp tục!' });
+        } else {
+            handleNext(1);
+        }
+
+    }, [listGheDaDat]);
+    const handleClose = useCallback((event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen({ isShow: false, message: '' });
+    }, []);
+
     return (
         <div className={classes.root}>
             <div className={classes.wrapper}>
@@ -254,12 +265,14 @@ const ChonGheResp = () => {
                     </div>
                 </div>
                 <div className={classes.GroupButtonNext}>
-                    <Button className={classes.buttonNext}>Tiếp tục</Button>
+                    <Button className={classes.buttonNext} onClick={handleClickNext}>Tiếp tục</Button>
                 </div>
             </div>
-
-
-
+            <Snackbar open={open.isShow} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="warning">
+                    {open.message}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };
@@ -272,6 +285,9 @@ const useStyles = makeStyles((theme) => ({
         bottom: 0,
         right: 0,
         background: '#020202',
+        '& .MuiAlert-standardWarning': {
+            boxShadow: ' 0 0 3px 1px #fff',
+        },
     },
     wrapper: {
         // position: 'absolute',
@@ -365,7 +381,6 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     textDefault: {
-        whiteSpace: 'nowrap',
         fontSize: theme.spacing(1.4),
         textTransform: 'capitalize',
         color: '#fff',
@@ -376,7 +391,7 @@ const useStyles = makeStyles((theme) => ({
     //#endregion
     divInfo: {
         height: 'auto',
-        background: '#ebebeb',
+        background: '#e4e4e4',
         borderRadius: '10px',
         padding: '8px',
     },
@@ -433,7 +448,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        letterSpacing: '0.5px',
+        letterSpacing: '-0.5px',
         fontSize: theme.spacing(1.3),
         textTransform: 'capitalize',
         margin: '5px 0',

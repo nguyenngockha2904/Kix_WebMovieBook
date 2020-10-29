@@ -1,26 +1,69 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { useCallback, useMemo } from 'react';
+import React, { Fragment, memo, useCallback, useMemo } from 'react';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import { useHistory } from 'react-router-dom';
+import Countdown from 'react-countdown';
+import { useSelector } from 'react-redux';
 const NavBar_BookMovieDetail_Res = (props) => {
     const classes = useStyles();
     const history = useHistory();
+    const { dateTime, renderer, activeStep, handleNext } = useMemo(() => {
+        return props
+    }, [props]);
+    const phongVeInfo = useSelector((state) => {
+        return state.qlMovie.PhongVeItemByMaLichChieu
+    });
+    const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu } = useMemo(() => {
+        return phongVeInfo.thongTinPhim
+    }, [phongVeInfo.thongTinPhim]);
     const texttitle = useMemo(() => {
-        switch (props.activeStep) {
+        switch (activeStep) {
             case 0: {
                 return 'Chọn Chỗ Ngồi'
             }
         }
-    }, [props.activeStep]);
-    const handleClickBack = useCallback(() => {
-        history.replace('/');
+    }, [activeStep]);
+    const handleClickBack = useCallback((activeStep) => () => {
+        if (activeStep === 0) {
+            history.replace('/');
+        } else if (activeStep === 1) {
+            handleNext(0);
+        }
     }, []);
     return (
         <div className={classes.root}>
             <div className={classes.groupBtnBack}>
-                <Button className={classes.btnBack} onClick={handleClickBack}><ArrowBackIosRoundedIcon style={{ color: '#fff', }} /></Button>
+                <Button className={classes.btnBack} onClick={handleClickBack(activeStep)}><ArrowBackIosRoundedIcon style={{ color: '#fff', }} /></Button>
             </div>
-            <div className={` ${classes.textDefault} ${classes.titleNav}`}>{texttitle}</div>
+            {activeStep === 0 ? <Fragment>
+                <div className={` ${classes.textDefault} ${classes.titleNav}`}>Chọn Chỗ Ngồi</div>
+            </Fragment>
+                :
+                <Fragment>
+                    <div className={classes.wapperDiv}>
+                        <div className={classes.Content}>
+                            <div className={classes.nameThear}>
+                                <div className={classes.hightline}>
+                                    {tenCumRap.trim().slice(0, tenCumRap.trim().indexOf(' '))}
+                                </div>
+                                {tenCumRap.trim().slice(tenCumRap.trim().indexOf(' '))}
+                            </div>
+                            <div className={classes.contentRap}>
+                                <div className={`${classes.textDefault} ${classes.textSecond}`}>{ngayChieu}</div>
+                                <div className={`${classes.textDefault} ${classes.textSecond}`}>{gioChieu}</div>
+                                <div className={`${classes.textDefault} ${classes.textSecond}`}>- {tenRap}</div>
+                            </div>
+                        </div>
+                        <div className={classes.timeCountDown}>
+                            <Countdown
+                                date={dateTime}
+                                renderer={renderer}
+                            />
+                        </div>
+                    </div>
+
+                </Fragment>}
+
         </div>
     );
 };
@@ -32,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         position: 'fixed',
         padding: '10px 0',
-        height: '35px',
+        height: '40px',
         top: 0,
         left: 0,
         right: 0,
@@ -55,7 +98,6 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '500',
     },
     textDefault: {
-        whiteSpace: 'nowrap',
         fontSize: theme.spacing(1.4),
         textTransform: 'capitalize',
         color: '#fff',
@@ -63,6 +105,47 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.5px',
 
     },
+    timeCountDown: {
+        color: '#44c020',
+        fontSize: theme.spacing(1.7),
+        fontFamily: '-webkit-pictograph',
+        background: '#0000000d',
+        borderRadius: '5px',
+        padding: '1px 5px',
+    },
+    wapperDiv: {
+        display: 'flex',
+        justifyContent: ' space-between',
+        width: '100%',
+        padding: '6px',
+        alignItems: ' center',
+    },
+    Content: {
+        padding: 0,
+    },
+    nameThear: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        fontSize: theme.spacing(1.1),
+        textTransform: 'capitalize',
+        letterSpacing: '-0.5px',
+        margin: '5px 0',
+        fontFamily: 'SF Medium',
+    },
+    hightline: {
+        color: '#9500ff',
+        fontFamily: 'SF Medium',
 
+    },
+    contentRap: {
+        alignItems: 'center',
+        display: 'flex',
+    },
+    textSecond: {
+        fontSize: ' 10px',
+        marginRight: '5px',
+        color: '#cccbcb',
+        letterSpacing: 0,
+    },
 }));
-export default NavBar_BookMovieDetail_Res;
+export default memo(NavBar_BookMovieDetail_Res);
