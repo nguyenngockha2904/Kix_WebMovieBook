@@ -17,7 +17,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getPhongVeItem_byMaLichChieu } from '../../redux/action/movieAction';
 import Loader from '../../Layouts/Loading';
-import { SET_TYPE_PAGE } from '../../redux/action/type';
+import { SET_IS_ACTVED_GHE_ITEM, SET_TYPE_PAGE } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
 import ChonGheResp from '../../Components/ChonGheResp';
 import NavBar_BookMovieDetail_Res from '../../Layouts/NavBar_BookMovieDetail_Res';
@@ -47,8 +47,6 @@ const returnIconTheader = (value) => {
         }
     }
 };
-
-
 
 const BookMovieDetail = (props) => {
     const classes = useStyles();
@@ -83,6 +81,11 @@ const BookMovieDetail = (props) => {
     const width = useMemo(() => {
         return props.width;
     }, [props.width]);
+    useEffect(() => {
+        return () => {
+            dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, ''));
+        }
+    }, []);
     const getStepContent = useCallback((stepIndex, width) => {
         // 
         if (width === 'md' || width === 'lg' || width === 'xl') {

@@ -115,8 +115,6 @@ const ChonGheComponent = (props) => {
         return date;
     }, []);
     const handleChooseGhe = useCallback((item) => () => {
-
-
         dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, item));
     }, [amount]);
     const renderListGhe = useCallback(() => {

@@ -184,22 +184,25 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         }
         case SET_IS_ACTVED_GHE_ITEM: {
             // console.log(payload.maGhe);
-            let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
-            let i = state.listGheDaDat.findIndex(item => item.maGhe === payload.maGhe);
-            if (index !== -1) {
-                let magtam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
-                magtam[index].isActived = !magtam[index].isActived;
-                state.PhongVeItemByMaLichChieu = { ...state.PhongVeItemByMaLichChieu, danhSachGhe: magtam };
-                if (i === -1) {
-                    state.listGheDaDat = [...state.listGheDaDat, magtam[index]]
-                } else {
-                    let magTam = [...state.listGheDaDat];
-                    magTam.splice(i, 1);
-                    state.listGheDaDat = magTam;
+            if (payload) {
+                let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
+                let i = state.listGheDaDat.findIndex(item => item.maGhe === payload.maGhe);
+                if (index !== -1) {
+                    let magtam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+                    magtam[index].isActived = !magtam[index].isActived;
+                    state.PhongVeItemByMaLichChieu = { ...state.PhongVeItemByMaLichChieu, danhSachGhe: magtam };
+                    if (i === -1) {
+                        state.listGheDaDat = [...state.listGheDaDat, magtam[index]]
+                    } else {
+                        let magTam = [...state.listGheDaDat];
+                        magTam.splice(i, 1);
+                        state.listGheDaDat = magTam;
+                    }
+
                 }
-
+            } else {
+                state.listGheDaDat = [];
             }
-
             return { ...state };
         }
         case SET_DATA_AMOUNT_GHE: {

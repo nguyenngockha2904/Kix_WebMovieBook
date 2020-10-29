@@ -1,8 +1,10 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import { useHistory } from 'react-router-dom';
 const NavBar_BookMovieDetail_Res = (props) => {
     const classes = useStyles();
+    const history = useHistory();
     const texttitle = useMemo(() => {
         switch (props.activeStep) {
             case 0: {
@@ -10,10 +12,13 @@ const NavBar_BookMovieDetail_Res = (props) => {
             }
         }
     }, [props.activeStep]);
+    const handleClickBack = useCallback(() => {
+        history.replace('/');
+    }, []);
     return (
         <div className={classes.root}>
             <div className={classes.groupBtnBack}>
-                <Button className={classes.btnBack}><ArrowBackIosRoundedIcon style={{ color: '#fff', }} /></Button>
+                <Button className={classes.btnBack} onClick={handleClickBack}><ArrowBackIosRoundedIcon style={{ color: '#fff', }} /></Button>
             </div>
             <div className={` ${classes.textDefault} ${classes.titleNav}`}>{texttitle}</div>
         </div>
