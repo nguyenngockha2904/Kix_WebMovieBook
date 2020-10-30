@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles } from '@material-ui/core';
+import { AppBar, Box, Button, makeStyles, Tab, Tabs } from '@material-ui/core';
 import React, { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Footer from '../../Layouts/footer';
 import 'react-circular-progressbar/dist/styles.css';
@@ -14,6 +14,7 @@ import { createAction } from '../../redux/action';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
 import Header from '../../Layouts/Header';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(6.4),
@@ -55,7 +56,27 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
-
+    divContent: {
+        '& .MuiAppBar-colorDefault': {
+            backgroundColor: 'transparent',
+        },
+        '& .MuiTab-fullWidth': {
+            maxWidth: 'max-content',
+        },
+        '& .MuiPaper-elevation4': {
+            boxShadow: 'none',
+        },
+        '& .MuiTabs-flexContainer': {
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        '& .MuiTab-textColorPrimary': {
+            color: '#fff',
+        },
+        '& .MuiTab-textColorPrimary.Mui-selected': {
+            color: '#6b00b6 !important',
+        }
+    },
     navItem_active: {
 
         '&:hover $navLink': {
@@ -90,6 +111,43 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+const TabPanel = (props) => {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
+            {...other}
+            style={{ overflow: 'hidden' }}
+        >
+            {value === index && (
+                <Fragment>
+                    {children}
+                </Fragment>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+};
+
+const a11yProps = (index) => {
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+    };
+}
+
+
+
+
 const MovieDetail = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -97,7 +155,10 @@ const MovieDetail = () => {
     const refMuaVe = useRef();
     const [isLoading, setIsloadding] = useState(true);
     const [isTabLichChieu, setIsTabLichChieu] = useState(true);
-
+    const [value, setValue] = React.useState(0);
+    const handleChange = useCallback((event, newValue) => {
+        setValue(newValue);
+    }, []);
     const request = useSelector((state) => {
         return state.parent.request
     });
@@ -146,59 +207,29 @@ const MovieDetail = () => {
 
                         <div className={classes.divContent}>
                             <div ref={refMuaVe} style={{ padding: '35px' }}></div>
-                            <div className={classes.tabTitle}>
-                                <div
-                                    className={`${classes.navItem} ${isTabLichChieu ? classes.navItem_active : ''}`}
-                                    onClick={handleShowTabLichChieu(true)}
+                            <AppBar position="static" color="default" style={{
+                                marginBottom: ' 10px',
+                            }}>
+                                <Tabs
+                                    value={value}
+                                    onChange={handleChange}
+                                    indicatorColor="primary"
+                                    textColor="primary"
+                                    variant="fullWidth"
+                                    aria-label="full width tabs example"
                                 >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                    >
-                                        Lịch Chiếu
-                                </Button>
-                                    <div className={classes.tagActive}></div>
-                                </div>
-                                <div
-                                    className={`${classes.navItem} ${!isTabLichChieu ? classes.navItem_active : ''}`}
-                                    onClick={handleShowTabLichChieu(false)}
-                                >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                    >
-                                        Thông tin
-                                </Button>
-                                    <div className={classes.tagActive}></div>
-                                </div>
-                            </div>
-                            {isTabLichChieu ?
-                                <motion.div className={classes.tabContent}
-                                    initial={{
-                                        opacity: 0,
-                                        y: 50
-                                    }}
-                                    animate={{
-                                        opacity: 1,
-                                        y: 0
-                                    }}
-                                >
+                                    <Tab label="Lịch Chiếu" {...a11yProps(0)} style={{ textTransform: 'capitalize' }} />
+                                    <Tab label="Thông Tin" {...a11yProps(1)} style={{ textTransform: 'capitalize' }} />
+                                </Tabs>
+                            </AppBar>
+                            <Fragment>
+                                <TabPanel value={value} index={0} className={classes.tabContent}>
                                     <MovieDetailShowTime />
-                                </motion.div>
-                                :
-                                <motion.div className={classes.tabContent}
-                                    initial={{
-                                        opacity: 0,
-                                        y: 50
-                                    }}
-                                    animate={{
-                                        opacity: 1,
-                                        y: 0
-                                    }}
-                                >
+                                </TabPanel>
+                                <TabPanel value={value} index={1} className={classes.tabContent}>
                                     <MovieDetailInfo />
-                                </motion.div>
-                            }
+                                </TabPanel>
+                            </Fragment>
                         </div>
                     </div>
                     <Footer />

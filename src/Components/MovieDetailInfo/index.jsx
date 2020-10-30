@@ -86,7 +86,15 @@ const MovieDetailInfo = () => {
         return propsItem
     }, []);
     return (
-        <div
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: 50
+            }}
+            animate={{
+                opacity: 1,
+                y: 0,
+            }}
             style={{ width: '100%' }}
         >
 
@@ -130,7 +138,7 @@ const MovieDetailInfo = () => {
                     <iframe width="560" height="315" src={trailer} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className={classes.video}></iframe>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

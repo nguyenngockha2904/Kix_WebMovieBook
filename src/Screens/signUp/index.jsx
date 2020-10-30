@@ -371,16 +371,12 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
     },
     BtnSubmit: {
+        minWidth: '1px',
+        width: '100%',
         color: '#fff',
-        backgroundImage: 'linear-gradient(45deg, #6b00b6, #440074)',
-        padding: '11px 20px',
         textTransform: 'capitalize',
-        fontSize: '11px',
-        lineHeight: '0.75',
-        transition: '0.2s all',
-        '&:hover': {
-            backgroundImage: 'linear-gradient(45deg, #440074,#440074)',
-        }
+        background: ' linear-gradient(45deg, #6b00b6, #440074)',
+        borderRadius: '6px',
     },
     //#endregion
 }));
