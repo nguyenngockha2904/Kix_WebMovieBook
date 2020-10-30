@@ -26,6 +26,7 @@ let initialState = {
         thongTinPhim: {},
         danhSachGhe: [],
     },
+    listGhePhanMang: [],
     listGheVip: [],
     listGheThuong: [],
     listGheDaDat: [],
@@ -177,6 +178,17 @@ const MovieReducer = (state = initialState, { type, payload }) => {
                 state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
                 state.listGheThuong = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe === "Thuong");
                 state.listGheVip = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe === "Vip");
+                let list = danhSachGhetam;
+                let listMovieDiv = [];
+                let todosPerPage = 12;
+                let solan = (list.length % todosPerPage) !== 0 ? ((list.length / todosPerPage) + 1) : (list.length / todosPerPage);
+                for (let i = 1; i <= solan; i++) {
+                    const indexOfLastTodo = i * todosPerPage;
+                    const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+                    const listItem = { list: list.slice(indexOfFirstTodo, indexOfLastTodo), tenday: String.fromCharCode(64 + i) };
+                    listMovieDiv = [...listMovieDiv, listItem];
+                }
+                state.listGhePhanMang = listMovieDiv;
             } else {
                 state.PhongVeItemByMaLichChieu = {};
             }

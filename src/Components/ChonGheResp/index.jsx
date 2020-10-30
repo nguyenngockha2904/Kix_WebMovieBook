@@ -64,6 +64,9 @@ const ChonGheResp = (props) => {
     const listGheDaDat = useSelector((state) => {
         return state.qlMovie.listGheDaDat
     });
+    const listGhePhanMang = useSelector((state) => {
+        return state.qlMovie.listGhePhanMang
+    });
     let tongTien = useMemo(() => {
         let tt = 0;
         if (listGheDaDat.length !== 0) {
@@ -73,42 +76,35 @@ const ChonGheResp = (props) => {
         }
         return tt;
     }, [listGheDaDat]);
-
-    const renderDayGhe = useCallback(() => {
-        let list = phongVeInfo.danhSachGhe;
-        let solan = list.length % 12 !== 0 ? (list.length / 12 + 1) : list.length / 12;
-        let listrender = [];
-        for (let i = 0; i < solan + 1; i++) {
-            listrender.push(i);
-        }
-        return listrender.map((item, index) => {
-            return (
-                <Grid item xs={12} key={index} className={classes.dayGheItem}>
-                    <span>{String.fromCharCode(65 + index)}</span>
-                </Grid>
-            )
-        })
-    }, []);
     const handleChooseGhe = useCallback((item) => () => {
         dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, item));
     }, []);
+
     const renderListGhe = useCallback(() => {
-        return phongVeInfo.danhSachGhe.map((item, index) => {
+        return listGhePhanMang.map((item, index) => {
             return (
-                <Grid item xs={1} key={index}>
-                    <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat} onClick={handleChooseGhe(item)}>
-                        <Avatar variant="square" className={classes.GheIcon}>{
-                            !item.isActived ?
-                                ChangeGheSVG((!item.daDat ? '#92a0a9' : '#CFD3D7'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
-                                :
-                                ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1)
-                        }</Avatar>
-                    </Button>
-                </Grid>
+                <div key={index} className={classes.groupGheDay} style={{ marginBottom: index === (listGhePhanMang.length - 1) && '51px' }}>
+                    <div className={classes.dayGheItem}>{item.tenday}</div>
+                    <div className={classes.groupGheitem}>
+                        {item.list.map((item, index) => {
+                            return (
+                                <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat} onClick={handleChooseGhe(item)} key={index}>
+                                    <Avatar variant="square" className={classes.GheIcon}>{
+                                        !item.isActived ?
+                                            ChangeGheSVG((!item.daDat ? '#92a0a9' : '#CFD3D7'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
+                                            :
+                                            ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1)
+                                    }</Avatar>
+                                </Button>
+
+                            )
+                        })}
+                    </div>
+                </div>
 
             )
         });
-    }, [phongVeInfo.danhSachGhe]);
+    }, [listGhePhanMang]);
     const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu } = useMemo(() => {
         return phongVeInfo.thongTinPhim
     }, [phongVeInfo.thongTinPhim]);
@@ -159,10 +155,7 @@ const ChonGheResp = (props) => {
                     </div>
                 </div>
                 <div className={classes.GroupGhe}>
-                    <Grid container className={classes.listDayGhe}>
-                        {renderDayGhe()}
-                    </Grid>
-                    <Grid container className={classes.listGhe}>
+                    <Grid container spacing={1} className={classes.listGhe}>
                         {renderListGhe()}
                     </Grid>
                 </div>
@@ -317,6 +310,11 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.3),
         letterSpacing: '1.3px',
     },
+    groupGheDay: {
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+    },
     GroupGhe: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -335,6 +333,7 @@ const useStyles = makeStyles((theme) => ({
         width: '5%',
         height: '714px',
     },
+
     listGhe: {
         width: '90%',
         margin: 'auto',
@@ -347,7 +346,17 @@ const useStyles = makeStyles((theme) => ({
         color: '#3E515D',
         justifyContent: 'center',
         display: 'flex',
-        alignSelf: 'center',
+        alignSelf: 'flex-end',
+        marginRight: '0%',
+        paddingBottom: '9px',
+        width: '0%',
+    },
+    groupGheitem: {
+        width: '80%',
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     getItem: {
         minWidth: theme.spacing(0.5),

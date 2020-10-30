@@ -66,9 +66,11 @@ const ChonGheComponent = (props) => {
             return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
         }
     }, []);
-
     const phongVeInfo = useSelector((state) => {
         return state.qlMovie.PhongVeItemByMaLichChieu
+    });
+    const listGhePhanMang = useSelector((state) => {
+        return state.qlMovie.listGhePhanMang
     });
     const listGheDaDat = useSelector((state) => {
         return state.qlMovie.listGheDaDat
@@ -84,21 +86,6 @@ const ChonGheComponent = (props) => {
     });
     const handleChange = useCallback((event) => {
         setThanhToan(parseInt(event.target.value));
-    }, []);
-    const renderDayGhe = useCallback(() => {
-        let list = phongVeInfo.danhSachGhe;
-        let solan = list.length % 12 !== 0 ? (list.length / 12 + 1) : list.length / 12;
-        let listrender = [];
-        for (let i = 0; i < solan + 1; i++) {
-            listrender.push(i);
-        }
-        return listrender.map((item, index) => {
-            return (
-                <Grid item xs={12} key={index} className={classes.dayGheItem}>
-                    <span>{String.fromCharCode(65 + index)}</span>
-                </Grid>
-            )
-        })
     }, []);
     let tongTien = useMemo(() => {
         let tt = 0;
@@ -117,23 +104,33 @@ const ChonGheComponent = (props) => {
     const handleChooseGhe = useCallback((item) => () => {
         dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, item));
     }, [amount]);
+
     const renderListGhe = useCallback(() => {
-        return phongVeInfo.danhSachGhe.map((item, index) => {
+        return listGhePhanMang.map((item, index) => {
             return (
-                <Grid item xs={1} key={index}>
-                    <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat} onClick={handleChooseGhe(item)}>
-                        <Avatar variant="square" className={classes.GheIcon}>{
-                            !item.isActived ?
-                                ChangeGheSVG((!item.daDat ? '#3E515D' : '#CFD3D7'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
-                                :
-                                ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1)
-                        }</Avatar>
-                    </Button>
-                </Grid>
+                <div key={index} className={classes.groupGheDay} style={{ marginBottom: index === (listGhePhanMang.length - 1) && '51px' }}>
+                    <div className={classes.dayGheItem}>{item.tenday}</div>
+                    <div className={classes.groupGheitem}>
+                        {item.list.map((item, index) => {
+                            return (
+
+                                <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat} onClick={handleChooseGhe(item)} key={index}>
+                                    <Avatar variant="square" className={classes.GheIcon}>{
+                                        !item.isActived ?
+                                            ChangeGheSVG((!item.daDat ? '#3E515D' : '#CFD3D7'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
+                                            :
+                                            ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1)
+                                    }</Avatar>
+                                </Button>
+
+                            )
+                        })}
+                    </div>
+                </div>
 
             )
         });
-    }, [phongVeInfo.danhSachGhe]);
+    }, [listGhePhanMang]);
     const handleBuyTicket = useCallback(() => {
         handleNext(3)
     }, []);
@@ -225,15 +222,20 @@ const ChonGheComponent = (props) => {
                             </div>
                         </div>
                         <div className={classes.GroupGhe}>
-                            <Grid container className={classes.listDayGhe}>
-                                {renderDayGhe()}
-                            </Grid>
                             <Grid container spacing={1} className={classes.listGhe}>
                                 {renderListGhe()}
                             </Grid>
                         </div>
 
                         <div className={classes.GroupDiscriptionGhe}>
+                            <div className={classes.DcirpItem}>
+                                <Avatar variant="square" className={classes.GheIcon} >
+                                    {ChangeGheSVG('#CFD3D7', '', true)}
+                                </Avatar>
+                                <div className={classes.textDefault}>
+                                    ghế đã có người chọn
+                                </div>
+                            </div>
                             <div className={classes.DcirpItem}>
                                 <Avatar variant="square" className={classes.GheIcon} >
                                     {ChangeGheSVG('#3E515D', '', false, 1)}
@@ -244,29 +246,21 @@ const ChonGheComponent = (props) => {
                             </div>
                             <div className={classes.DcirpItem}>
                                 <Avatar variant="square" className={classes.GheIcon} >
+                                    {ChangeGheSVG('#6b00b6', '', false)}
+                                </Avatar>
+                                <div className={classes.textDefault}>
+                                    ghế đang chọn
+                            </div>
+                            </div>
+                            <div className={classes.DcirpItem}>
+                                <Avatar variant="square" className={classes.GheIcon} >
                                     {ChangeGheSVG('#3E515D', '', false)}
                                 </Avatar>
                                 <div className={classes.textDefault}>
                                     ghế thường
                                 </div>
                             </div>
-                            <div className={classes.DcirpItem}>
-                                <Avatar variant="square" className={classes.GheIcon} >
-                                    {ChangeGheSVG('#6b00b6', '', false)}
-                                </Avatar>
-                                <div className={classes.textDefault}>
-                                    ghế đang chọn
-                                </div>
-                            </div>
-                            <div className={classes.DcirpItem}>
-                                <Avatar variant="square" className={classes.GheIcon} >
-                                    {ChangeGheSVG('#CFD3D7', '', true)}
-                                </Avatar>
-                                <div className={classes.textDefault}>
-                                    ghế đã có người chọn
-                                </div>
 
-                            </div>
                             <div className={classes.DcirpItem}>
                                 <Avatar variant="square" className={classes.GheIcon} >
                                     {ChangeGheSVG('#CFD3D7', '', false)}
@@ -389,6 +383,9 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         bottom: 0,
+        // [theme.breakpoints.down(`${900}`)]: {
+        //     fontSize: theme.spacing(1.2),
+        // },
     },
     textDefault: {
         whiteSpace: 'nowrap',
@@ -397,6 +394,9 @@ const useStyles = makeStyles((theme) => ({
         color: '#808080',
         fontFamily: 'unset',
         letterSpacing: '0.5px',
+        [theme.breakpoints.down(`${1220}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
 
     },
     //#endregion
@@ -421,7 +421,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
-        padding: theme.spacing(2.5, 0),
+        padding: theme.spacing(1, 0),
         maxHeight: '10%',
     },
     GroupImgTheater: {
@@ -443,6 +443,9 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.5px',
         fontSize: theme.spacing(1.3),
         textTransform: 'capitalize',
+        [theme.breakpoints.down(`${1220}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     hightline: {
         color: '#fb4226',
@@ -479,7 +482,7 @@ const useStyles = makeStyles((theme) => ({
 
     //#region   ContentBody jss
     contentBody: {
-
+        position: 'relative',
     },
     GroupManHinh: {
 
@@ -500,20 +503,36 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.5),
         letterSpacing: '1.3px',
     },
+
     GroupGhe: {
         display: 'flex',
         justifyContent: 'space-between',
         padding: '5%',
         paddingBottom: '0',
+        maxHeight: '410px',
+        overflow: 'auto',
+        '&::-webkit-scrollbar ': {
+            width: '3px',
+        },
+        '&::-webkit-scrollbar-track': {
+            background: 'rgb(214 214 214)',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            background: '#80808080',
+            borderRadius: '5px',
+        },
         '& .MuiGrid-spacing-xs-1 > .MuiGrid-item ': {
             display: 'flex',
             alignItems: 'center',
         }
 
     },
-    listDayGhe: {
-        width: '5%',
+    groupGheDay: {
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
     },
+
     dayGheItem: {
         fontFamily: 'SF Medium',
         fontSize: theme.spacing(1.4),
@@ -522,16 +541,27 @@ const useStyles = makeStyles((theme) => ({
         color: '#3E515D',
         justifyContent: 'center',
         display: 'flex',
-        alignSelf: 'center',
+        alignSelf: 'flex-end',
+        marginRight: '0%',
+        paddingBottom: '9px',
+        width: '0%',
+    },
+    groupGheitem: {
+        width: '80%',
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     listGhe: {
-        width: '70%',
-        margin: 'auto',
+        width: '100%',
+        marginBottom: ' 50px',
     },
     getItem: {
         minWidth: theme.spacing(0.5),
         width: 'auto',
         height: 'auto',
+        width: '100%',
         padding: theme.spacing(0.3, 0.6),
     },
     GheIcon: {
@@ -540,18 +570,27 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(4.5),
     },
     GroupDiscriptionGhe: {
-        padding: '5%',
         display: 'flex',
         justifyContent: 'space-between',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: '#fff',
+        borderTop: ' 1px solid #ececec',
+        padding: '2px 7px',
+        zIndex: ' 5',
     },
     DcirpItem: {
 
         '& $GheIcon': {
             margin: 'auto',
+            width: '18px',
+            height: '27px',
         },
         '& $textDefault': {
             marginTop: theme.spacing(0.5),
-            fontSize: theme.spacing(1.1),
+            fontSize: theme.spacing(1),
         }
     },
     //#endregion
@@ -600,6 +639,17 @@ const useStyles = makeStyles((theme) => ({
     priceTotal: {
         padding: theme.spacing(0.4),
         borderBottom: '1px dotted #8080806b',
+        height: '55px',
+        position: ' absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        background: '#fff',
+        zIndex: '50',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     lineDotted: {
         height: '1px',
@@ -616,7 +666,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         '& $moneyDefault': {
             fontSize: theme.spacing(2),
-        }
+        },
+        [theme.breakpoints.down(`${1220}`)]: {
+            fontSize: theme.spacing(2.5),
+        },
     },
     moneyDefault: {
         color: '#44c020',
@@ -628,12 +681,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        marginTop: ' 65px',
     },
     namePhim: {
         fontSize: theme.spacing(1.5),
         color: '#000',
         fontFamily: 'SF Medium',
         whiteSpace: 'inherit',
+        [theme.breakpoints.down(`${1220}`)]: {
+            fontSize: theme.spacing(1.2),
+        },
     },
     general: {
         marginRight: theme.spacing(0.6),
@@ -660,6 +717,9 @@ const useStyles = makeStyles((theme) => ({
             color: '#44c020',
             fontFamily: '-webkit-pictograph',
             fontSize: theme.spacing(1.6),
+            [theme.breakpoints.down(`${1220}`)]: {
+                fontSize: theme.spacing(1.1),
+            },
         },
         '& $moneyDefault': {
             fontSize: theme.spacing(1.3),
@@ -677,6 +737,9 @@ const useStyles = makeStyles((theme) => ({
     gheType: {
         fontSize: theme.spacing(1.2),
         margin: theme.spacing(0, 0.5),
+        [theme.breakpoints.down(`${1220}`)]: {
+            fontSize: theme.spacing(0.9),
+        },
     },
     btnCancel: {
         position: 'absolute',
@@ -699,12 +762,15 @@ const useStyles = makeStyles((theme) => ({
             textTransform: 'none',
             margin: theme.spacing(0.5, 0),
             fontFamily: 'unset',
+            [theme.breakpoints.down(`${1220}`)]: {
+                fontSize: theme.spacing(1.2),
+            },
         }
     },
     inputContent: {
     },
     hinhThucThanhToan: {
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(11.9),
         '& $textDefault': {
             fontFamily: 'SF Medium',
             fontSize: theme.spacing(1.1),
@@ -715,6 +781,9 @@ const useStyles = makeStyles((theme) => ({
             fontSize: theme.spacing(1.4),
             color: '#2B3A51',
             fontFamily: 'SF Medium',
+            [theme.breakpoints.down(`${1220}`)]: {
+                fontSize: theme.spacing(1.1),
+            },
         },
         '& .MuiSvgIcon-root': {
             fontSize: '1.1rem',
@@ -726,6 +795,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         '& .MuiAvatar-root': {
             marginRight: theme.spacing(0.5),
+            [theme.breakpoints.down(`${1220}`)]: {
+                width: '30px',
+                height: '30px',
+            },
         },
         '& .MuiAvatar-img': {
             'object-fit': 'unset',
@@ -734,7 +807,12 @@ const useStyles = makeStyles((theme) => ({
     //#endregion
 
     divThanhToan_footer: {
-
+        bottom: 0,
+        right: 0,
+        left: 0,
+        position: ' absolute',
+        background: '#fff',
+        borderTop: '1px dotted #c3c3c3',
     },
     footerNote: {
         display: 'flex',
@@ -747,6 +825,7 @@ const useStyles = makeStyles((theme) => ({
         width: '90%',
         margin: 'auto',
         padding: theme.spacing(2, 0),
+        marginBottom: ' 44px',
         '& $hightline': {
             margin: '0 5px',
         },

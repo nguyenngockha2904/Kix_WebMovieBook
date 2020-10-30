@@ -50,7 +50,6 @@ const returnIconTheader = (value) => {
 };
 
 const BookMovieDetail = (props) => {
-    const classes = useStyles();
     const params = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -60,13 +59,15 @@ const BookMovieDetail = (props) => {
     const steps = useMemo(() => {
         return ['Chọn loại vé', 'Chọn ghế & Thanh Toán', 'Kết quả đặt vé']
     }, []);
+
     useEffect(() => {
         //  console.log(params.maLichChieu);
         dispatch(getPhongVeItem_byMaLichChieu(params.maLichChieu, (title) => {
-            setIsLoading(false);
+
             setTitle(title);
             let logo = title.trim().slice(0, title.trim().indexOf(' '));
             setLogoCine(returnIconTheader(logo));
+            setIsLoading(false);
         }));
         dispatch(createAction(SET_TYPE_PAGE, 3));
     }, []);
@@ -99,45 +100,44 @@ const BookMovieDetail = (props) => {
             return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
         }
     }, []);
-
     const getStepContent = useCallback((stepIndex, width) => {
         // 
-        if (width === 'md' || width === 'lg' || width === 'xl') {
-            switch (stepIndex) {
-                case 0: //tab chọn loại vé
-                    return (
-                        <ChonVeComponent handleNext={handleNext} logoCine={logoCine} />
-                    );
-                case 1:
-                    return (
-                        <Box my={8}>
-                            <ChonGheComponent handleNext={handleNext} logoCine={logoCine} />
-                        </Box>
-                    );
-                default:
-                    return (
-                        <Box my={8}>
-                            Thành công !!
-                        </Box>
-                    );
-            }
-        } else {
-            switch (stepIndex) {
-                case 0: //tab chọn loại vé
-                    return (
-                        <ChonGheResp handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
-                    );
-                case 1:
-                    return (
-                        <ThanhToanResComponent />
-                    );
-                default:
-                    return (
-                        <Box my={8}>
-                            Thành công !!
-                        </Box>
-                    );
-            }
+        switch (stepIndex) {
+            case 0: //tab chọn loại vé
+                return (
+                    <ChonVeComponent handleNext={handleNext} logoCine={logoCine} />
+                );
+            case 1:
+                return (
+                    <Box my={8}>
+                        <ChonGheComponent handleNext={handleNext} logoCine={logoCine} />
+                    </Box>
+                );
+            default:
+                return (
+                    <Box my={8}>
+                        Thành công !!
+                    </Box>
+                );
+        }
+    }, [logoCine]);
+    const getStepContentRes = useCallback((stepIndex, width) => {
+        // 
+        switch (stepIndex) {
+            case 0: //tab chọn loại vé
+                return (
+                    <ChonGheResp handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
+                );
+            case 1:
+                return (
+                    <ThanhToanResComponent />
+                );
+            default:
+                return (
+                    <Box my={8}>
+                        Thành công !!
+                    </Box>
+                );
         }
 
     }, [logoCine]);
@@ -145,8 +145,17 @@ const BookMovieDetail = (props) => {
         <Fragment>
 
             {isloading ? <Loader /> : <Fragment>
-                {(width === 'md' || width === 'lg' || width === 'xl') ? <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} /> : <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />}
-                {getStepContent(activeStep, width)}
+                {(width === 'md' || width === 'lg' || width === 'xl') ? <Fragment>
+                    <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} />
+                    {getStepContent(activeStep, width)}
+                </Fragment>
+                    :
+                    <Fragment>
+                        <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
+                        {getStepContentRes(activeStep, width)}
+                    </Fragment>
+
+                }
             </Fragment>}
 
         </Fragment>

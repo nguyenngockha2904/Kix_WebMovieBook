@@ -119,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         left: 0,
         right: 0,
+        bottom: 0,
         background: '#e4e4e4',
         // '& .MuiAlert-standardWarning': {
         //     boxShadow: ' 0 0 3px 1px #fff',
