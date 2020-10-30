@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
         '& .MuiStepIcon-text': {
             fill: '#fff',
+            fontSize: ' 13px',
+            fontFamily: 'SF Medium',
         }
     },
     stepItem: {
@@ -66,6 +68,10 @@ const useStyles = makeStyles((theme) => ({
         },
         '& .MuiStepLabel-active $lineHover': {
             width: '96%',
+        },
+        '& .MuiStepLabel-label': {
+            fontSize: '13px',
+            fontFamily: 'SF Medium',
         },
     },
     lineHover: {

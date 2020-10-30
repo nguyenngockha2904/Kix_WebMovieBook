@@ -311,6 +311,9 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         boxShadow: '0 0 7px 1px #808080ba',
         marginTop: theme.spacing(4.7),
+        [theme.breakpoints.down(`${1200}`)]: {
+            display: 'none ',
+        },
     },
     bgImg: {
         position: 'fixed',
@@ -380,6 +383,9 @@ const useStyles = makeStyles((theme) => ({
     groupChooseVe: {
         width: '75%',
         marginTop: theme.spacing(6.8),
+        [theme.breakpoints.down(`${1200}`)]: {
+            width: '100%',
+        },
     },
     ChooseVe_Content: {
         width: '70%',
@@ -440,7 +446,7 @@ const useStyles = makeStyles((theme) => ({
 
     // #region contentBody jss
     contentBody: {
-        minHeight: theme.spacing(37.4),
+        minHeight: theme.spacing(29),
     },
     ticketItem: {
         display: 'flex',
@@ -533,7 +539,10 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'capitalize',
         '&:hover ': {
             backgroundImage: 'linear-gradient(45deg, #440074,#440074)',
-        }
+        },
+        [theme.breakpoints.down(`${1200}`)]: {
+            fontSize: '13px',
+        },
     },
     //#endregion
 
@@ -559,15 +568,24 @@ const useStyles = makeStyles((theme) => ({
         color: '#808080',
         fontSize: theme.spacing(2),
         textAlign: 'right',
+        [theme.breakpoints.down(`${1200}`)]: {
+            fontSize: theme.spacing(1.2),
+        },
     },
     Contact_in: {
         fontFamily: 'unset',
         fontSize: theme.spacing(1.2),
         letterSpacing: '0.5px',
+        [theme.breakpoints.down(`${1200}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     Contact_Sdt: {
         marginLeft: theme.spacing(1),
         fontSize: theme.spacing(3.6),
+        [theme.breakpoints.down(`${1200}`)]: {
+            fontSize: theme.spacing(2.6),
+        },
     },
     //#endregion
 }));

@@ -28,7 +28,7 @@ const MovieDetailContent = (props) => {
         document.title = title;
         return () => document.title = prevTitle;
     }, []);
-    const { role, item } = useMemo(() => {
+    const { role, item, handleShowTabLichChieu } = useMemo(() => {
         return props
     }, [props]);
     const { hinhAnh, tenPhim, danhGia } = useMemo(() => {
@@ -124,10 +124,6 @@ const MovieDetailContent = (props) => {
                             <Button className={classes.BtnPay}
                                 onClick={handleClickBuy}
                             >Mua vé </Button>
-                        </div>
-                        <div className={`${classes.groupBtnPay} ${classes.groupBtnTrailer}`}>
-                            <Button className={`${classes.BtnPay} ${classes.BtnTrailer}`}
-                            >Xem trailer </Button>
                         </div>
                     </div>
                 </div>
@@ -373,16 +369,6 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down(`${769}`)]: {
             display: 'none'
         },
-    },
-    groupBtnTrailer: {
-        display: 'none',
-        [theme.breakpoints.down(`${960}`)]: {
-            display: 'block',
-        },
-    },
-    BtnTrailer: {
-        margin: 0,
-        backgroundImage: 'linear-gradient(45deg, #d00101,#740000)',
     },
     CircularProgress: {
         width: '60px',

@@ -252,7 +252,10 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down(`${321}`)]: {
             display: 'block',
             textAlign: 'center',
-        }
+        },
+        '& .MuiButton-label': {
+            display: 'block',
+        },
     },
     logoG: {
         display: 'flex',

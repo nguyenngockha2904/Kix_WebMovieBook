@@ -38,8 +38,26 @@ const useStyles = makeStyles((theme) => ({
     },
     w100: {
         width: '100%',
+    },
+    groupVideo: {
+        width: '60%',
+        margin: 'auto',
+        [theme.breakpoints.down(`${1201}`)]: {
+            width: 'auto',
+            margin: '5%',
+        },
+        [theme.breakpoints.down(`${620}`)]: {
+            display: 'block',
+        },
+    },
+    divVideo: {
+        width: '66%',
+        margin: 'auto',
+    },
+    video: {
+        borderRadius: theme.spacing(1.2),
+        width: '100%',
     }
-
 }));
 const MovieDetailInfo = () => {
     const classes = useStyles();
@@ -51,21 +69,14 @@ const MovieDetailInfo = () => {
         let d = `${item.getDate() < 10 ? `0${item.getDate()}` : item.getDate()}.${((item.getMonth() + 1) < 10 ? '0' + (item.getMonth() + 1) : (item.getMonth() + 1))}.${item.getFullYear()}`;
         return d;
     }, []);
-    const { moTa, ngayKhoiChieu } = useMemo(() => {
+    const { trailer, moTa, ngayKhoiChieu } = useMemo(() => {
         return propsItem
     }, []);
     return (
-        <motion.div
-            initial={{
-                opacity: 0,
-                y: 50
-            }}
-            animate={{
-                opacity: 1,
-                y: 0
-            }}
+        <div
             style={{ width: '100%' }}
         >
+
             <div className={classes.root}>
                 <div className={classes.w100}>
                     <div className={classes.groupInfo}>
@@ -100,7 +111,13 @@ const MovieDetailInfo = () => {
                     </div>
                 </div>
             </div>
-        </motion.div>
+            <div className={classes.groupVideo}>
+                <div className={`${classes.w100} ${classes.title}`}>Trailer</div>
+                <div className={classes.divVideo}>
+                    <iframe width="560" height="315" src={trailer} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className={classes.video}></iframe>
+                </div>
+            </div>
+        </div>
     );
 };
 

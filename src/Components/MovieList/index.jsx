@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => {
                 backgroundPosition: 'center',
                 backgroundSize: 'contain',
                 transition: '.2s',
+                display: 'none !important',
                 '&::before': {
                     content: 'none',
                 },

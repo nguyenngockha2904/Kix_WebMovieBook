@@ -141,7 +141,7 @@ const MovieDetail = () => {
                                 y: 0,
                             }}
                         >
-                            <MovieDetailContent role={2} item={{}} refMuaVe={refMuaVe} />
+                            <MovieDetailContent role={2} item={{}} refMuaVe={refMuaVe} handleShowTabLichChieu={setIsTabLichChieu} />
                         </motion.div>
                         <div className={classes.divContent}>
                             <div ref={refMuaVe}></div>

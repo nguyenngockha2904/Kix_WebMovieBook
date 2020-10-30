@@ -500,8 +500,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         backgroundImage: 'linear-gradient(#3e515d73, transparent)',
         color: '#3E515D',
+        fontFamily: 'SF Medium',
         fontSize: theme.spacing(1.5),
-        letterSpacing: '1.3px',
+        letterSpacing: '-0.7px',
     },
 
     GroupGhe: {

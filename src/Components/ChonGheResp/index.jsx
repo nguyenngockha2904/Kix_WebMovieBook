@@ -91,7 +91,7 @@ const ChonGheResp = (props) => {
                                 <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat} onClick={handleChooseGhe(item)} key={index}>
                                     <Avatar variant="square" className={classes.GheIcon}>{
                                         !item.isActived ?
-                                            ChangeGheSVG((!item.daDat ? '#92a0a9' : '#CFD3D7'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
+                                            ChangeGheSVG((!item.daDat ? '#92a0a9' : 'rgb(183,183,183,49%)'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
                                             :
                                             ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1)
                                     }</Avatar>
@@ -163,7 +163,7 @@ const ChonGheResp = (props) => {
             <div className={classes.GroupDiscriptionGhe}>
                 <div className={classes.DcirpItem}>
                     <Avatar variant="square" className={classes.GheIcon} >
-                        {ChangeGheSVG('#B7B7B7', '', true)}
+                        {ChangeGheSVG('rgb(183,183,183,49%)', '', true)}
                     </Avatar>
                     <div className={classes.textDefault}>
                         có người chọn
@@ -289,7 +289,7 @@ const useStyles = makeStyles((theme) => ({
         // right: 0,
         height: 'auto',
         marginTop: '55px',
-        background: '#020202',
+        background: 'rgb(17 20 24)',
         overflow: 'auto',
     },
     GroupManHinh: {
@@ -307,8 +307,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         backgroundImage: 'linear-gradient(#2196f3c7, transparent)',
         color: '#03a9f4',
+        fontFamily: 'SF Medium',
         fontSize: theme.spacing(1.3),
-        letterSpacing: '1.3px',
+        letterSpacing: '-0.7px',
     },
     groupGheDay: {
         display: 'flex',

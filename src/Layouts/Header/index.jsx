@@ -1,5 +1,5 @@
-import React, { Fragment, memo, useCallback, useRef, useState } from 'react';
-import { AppBar, Box, Button, FormControl, makeStyles, Select, Toolbar } from '@material-ui/core';
+import React, { Fragment, memo, useCallback, useMemo, useRef, useState } from 'react';
+import { AppBar, Box, Button, FormControl, makeStyles, Select, Toolbar, withWidth } from '@material-ui/core';
 import avatarIcon from '../../assets/img/avatarIcon.svg';
 import LogoLight from '../../assets/img/LogoLight.svg';
 import collapseButton from '../../assets/img/collapseButton.svg';
@@ -127,7 +127,6 @@ const useStyles = makeStyles((theme) => ({
         width: '0%',
         zIndex: '100',
         backgroundColor: '#77727296',
-        transition: '0.2s all',
     },
     divCollapse: {
         height: '100%',
@@ -135,17 +134,16 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         right: 0,
         backgroundColor: '#fff',
-        width: '50%',
+        width: 'auto',
         padding: theme.spacing(1.5),
         boxShadow: '0 0 7px 2px #9e9e9e94',
-        transition: '0.5s all',
     },
     divCollapseleft: {
         height: '100%',
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '50%',
+        width: '100%',
     },
     modalTT: {
         position: 'absolute',
@@ -231,9 +229,14 @@ const Header = (props) => {
     const isPage = useSelector((state) => {
         return state.parent.isPage
     });
-    const handleShowCollapse = useCallback((value) => () => {
+    const handleShowCollapse = useCallback((value) => (event) => {
+        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
         setIsShowCollapse(value);
     }, []);
+
     const handleShowModalTT = useCallback((value) => () => {
         setIsShowModalTT(value);
     }, []);
@@ -271,10 +274,14 @@ const Header = (props) => {
 
         }
     }, [isPage.role]);
+    const width = useMemo(() => {
+        return props.width;
+    }, [props.width]);
     return (
         <AppBar color="inherit" className={classes.header}>
             {/* side bar */}
-            <div className={classes.sidebar} style={{ width: isShowCollapse ? '100%' : '0%', backgroundColor: !isShowCollapse ? '#77727200' : 'rgb(31 29 29 / 59%)' }}>
+            <div
+                className={classes.sidebar} style={{ width: isShowCollapse ? '100%' : '0%', backgroundColor: !isShowCollapse ? '#77727200' : 'rgb(31 29 29 / 59%)' }}>
                 {isShowCollapse &&
                     <Fragment>
                         <div className={classes.divCollapseleft} onClick={handleShowCollapse(false)}></div>
@@ -462,96 +469,98 @@ const Header = (props) => {
                         className={classes.logo}
                     />
                 </Button>
-                <Box
-                    display="flex" justifyContent="between"
-                    className={classes.tabControl}
-                >
-                    <div
-                        className={classes.navItem}
+                {(width === 'md' || width === 'lg' || width === 'xl') && <Fragment>
+                    <Box
+                        display="flex" justifyContent="between"
+                        className={classes.tabControl}
                     >
-                        <Button
-                            color="inherit"
-                            className={classes.navLink}
-                            onClick={handleScrollTo(1, props.refHomeMovie)}
+                        <div
+                            className={classes.navItem}
+                        >
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                                onClick={handleScrollTo(1, props.refHomeMovie)}
 
-                        >
-                            Lịch Chiếu
+                            >
+                                Lịch Chiếu
                         </Button>
-                    </div>
-                    <div
-                        className={classes.navItem}
-                    >
-                        <Button
-                            color="inherit"
-                            className={classes.navLink}
-                            onClick={handleScrollTo(2, props.refGroupCine)}
+                        </div>
+                        <div
+                            className={classes.navItem}
                         >
-                            Cụm rạp
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                                onClick={handleScrollTo(2, props.refGroupCine)}
+                            >
+                                Cụm rạp
                         </Button>
-                    </div>
-                    <div
-                        className={classes.navItem}
-                    >
-                        <Button
-                            color="inherit"
-                            className={classes.navLink}
+                        </div>
+                        <div
+                            className={classes.navItem}
                         >
-                            Tin tức
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                            >
+                                Tin tức
                         </Button>
-                    </div>
-                    <div
-                        className={classes.navItem}
-                    >
-                        <Button
-                            color="inherit"
-                            className={classes.navLink}
+                        </div>
+                        <div
+                            className={classes.navItem}
                         >
-                            Ứng dụng
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                            >
+                                Ứng dụng
                         </Button>
-                    </div>
-                </Box>
-                <Box
-                    display="flex"
-                    className={classes.divRight}
-                >
+                        </div>
+                    </Box>
                     <Box
                         display="flex"
-                        justifyContent="between"
-                        className={classes.navItem}
+                        className={classes.divRight}
                     >
-                        <img
-                            src={avatarIcon}
-                            alt="avatarIcon" />
-                        <Button
-                            color="inherit"
-                            className={`${classes.navLink} ${classes.login}`}
-                            onClick={handleGoTo('/dangnhap')}
+                        <Box
+                            display="flex"
+                            justifyContent="between"
+                            className={classes.navItem}
                         >
-                            Đăng nhập
+                            <img
+                                src={avatarIcon}
+                                alt="avatarIcon" />
+                            <Button
+                                color="inherit"
+                                className={`${classes.navLink} ${classes.login}`}
+                                onClick={handleGoTo('/dangnhap')}
+                            >
+                                Đăng nhập
                         </Button>
-                    </Box>
-                    {isPage.role === 1 && <div
-                        className={`${classes.navItem} ${classes.GroupSelect}`}
-                        onClick={handleShowTT(true)}
-                    >
-                        <img
-                            src={iconPosition}
-                            alt="iconPosition"
-                        />
-                        <Button
-                            color="inherit"
-                            className={`${classes.navLink} ${classes.login}`}
+                        </Box>
+                        {isPage.role === 1 && <div
+                            className={`${classes.navItem} ${classes.GroupSelect}`}
+                            onClick={handleShowTT(true)}
                         >
-                            {tinhThanh}
-                        </Button>
-                        <img
-                            src={iconDown}
-                            alt="iconDown"
-                            className={classes.iconDown}
+                            <img
+                                src={iconPosition}
+                                alt="iconPosition"
+                            />
+                            <Button
+                                color="inherit"
+                                className={`${classes.navLink} ${classes.login}`}
+                            >
+                                {tinhThanh}
+                            </Button>
+                            <img
+                                src={iconDown}
+                                alt="iconDown"
+                                className={classes.iconDown}
 
-                        />
-                    </div>}
-                </Box>
+                            />
+                        </div>}
+                    </Box>
+                </Fragment>}
                 {isShowTT && <div className={`${classes.modalTT} ${classes.ContentTT}`}>
                     <div className={classes.bgModalTT} onClick={handleShowTT(false)}></div>
                     <div className={classes.ModalContent}>
@@ -612,10 +621,9 @@ const Header = (props) => {
                     </Button>
                 </div>
             </Toolbar>
-
         </AppBar>
     );
 };
-export default memo(Header);
+export default memo(withWidth()(Header));
 
 

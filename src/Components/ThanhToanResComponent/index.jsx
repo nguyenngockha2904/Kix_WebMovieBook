@@ -299,6 +299,8 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'capitalize',
         background: 'linear-gradient(45deg, #6b00b6, #440074)',
         color: '#fff',
+        'border-top-left-radius': 0,
+        'border-bottom-left-radius': 0,
     },
 }));
 export default ThanhToanResComponent;
