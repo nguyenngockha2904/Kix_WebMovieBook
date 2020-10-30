@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         padding: theme.spacing(1),
         alignItems: 'center',
-        marginBottom: theme.spacing(3),
     },
     navItem: {
         margin: theme.spacing(0, 0.5),
@@ -142,9 +141,11 @@ const MovieDetail = () => {
                             }}
                         >
                             <MovieDetailContent role={2} item={{}} refMuaVe={refMuaVe} handleShowTabLichChieu={setIsTabLichChieu} />
+
                         </motion.div>
+
                         <div className={classes.divContent}>
-                            <div ref={refMuaVe}></div>
+                            <div ref={refMuaVe} style={{ padding: '35px' }}></div>
                             <div className={classes.tabTitle}>
                                 <div
                                     className={`${classes.navItem} ${isTabLichChieu ? classes.navItem_active : ''}`}

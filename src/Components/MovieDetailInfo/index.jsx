@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
         color: '#e9e9e9',
         fontSize: theme.spacing(1.4),
         letterSpacing: '0.5px',
+        [theme.breakpoints.down(`${620}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     title: {
         color: "#fff",
@@ -35,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.4),
         textTransform: 'capitalize',
         letterSpacing: '1px',
+        [theme.breakpoints.down(`${620}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     w100: {
         width: '100%',
@@ -53,10 +59,17 @@ const useStyles = makeStyles((theme) => ({
     divVideo: {
         width: '66%',
         margin: 'auto',
+        height: '300px',
+        marginTop: '13px',
+        [theme.breakpoints.down(`${620}`)]: {
+            width: '100%',
+            height: '265px',
+        },
     },
     video: {
         borderRadius: theme.spacing(1.2),
         width: '100%',
+        height: '100%',
     }
 }));
 const MovieDetailInfo = () => {
