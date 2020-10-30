@@ -74,7 +74,7 @@ const SignUp = () => {
 
                                 <div style={{ marginTop: '4px' }}>
                                     Hệ Thống Đặt Vé Xem Phim Nhanh Nhất !
-                        </div>
+                                </div>
                             </Button>
 
                             <form className={classes.formStyle}>
@@ -165,10 +165,8 @@ const useStyles = makeStyles((theme) => ({
         bottom: 0,
     },
     textDefault: {
-        fontFamily: 'Segoe UI',
-        fontStyle: 'italic',
-        fontWeight: 'bold',
-        fontSize: theme.spacing(1.4),
+        fontFamily: 'SF Medium',
+        fontSize: theme.spacing(1.1),
     },
     //#region 
     //#region bg
@@ -235,6 +233,7 @@ const useStyles = makeStyles((theme) => ({
         },
         [theme.breakpoints.down(`${907}`)]: {
             width: '90%',
+            paddingTop: '0',
         },
         [theme.breakpoints.down(`${461}`)]: {
             width: '100%',
@@ -249,9 +248,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.4),
         textTransform: 'capitalize',
         margin: 'auto',
-        [theme.breakpoints.down(`${321}`)]: {
+        [theme.breakpoints.down(`${500}`)]: {
             display: 'block',
             textAlign: 'center',
+            fontSize: theme.spacing(1.1),
         },
         '& .MuiButton-label': {
             display: 'block',
@@ -288,7 +288,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     titleForm: {
-        fontSize: theme.spacing(2.7),
+        fontSize: theme.spacing(2.3),
         textAlign: 'center',
         color: '#000',
     },
@@ -296,6 +296,10 @@ const useStyles = makeStyles((theme) => ({
         width: '80%',
         margin: 'auto',
         padding: '5px 0',
+        [theme.breakpoints.down(`${907}`)]: {
+            width: '90%',
+            padding: '3px 0 ',
+        },
         [theme.breakpoints.down(`${461}`)]: {
             width: '90%',
         }
@@ -336,15 +340,14 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiInputLabel-formControl': {
             transform: 'translate(0, 1.5px) scale(0.75)',
             transformOrigin: ' top left',
-            fontFamily: 'Segoe UI',
-            fontStyle: 'italic',
             fontWeight: 'bold',
             color: '#000',
+            letterSpacing: '1px',
             fontSize: theme.spacing(1.4),
             textTransform: 'capitalize',
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-            borderBottom: '2px solid #440074',
+            borderBottom: '1px solid #440074',
         },
         '& .MuiInputBase-input': {
             paddingLeft: '10%',
@@ -359,7 +362,7 @@ const useStyles = makeStyles((theme) => ({
     btnGoto: {
         color: '#6B00B6',
         textTransform: 'capitalize',
-        fontSize: theme.spacing(1.4),
+        fontSize: theme.spacing(1.1),
         '&:hover': {
             backgroundColor: 'transparent',
         }
@@ -372,7 +375,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundImage: 'linear-gradient(45deg, #6b00b6, #440074)',
         padding: '11px 20px',
         textTransform: 'capitalize',
-        fontSize: '12px',
+        fontSize: '11px',
         lineHeight: '0.75',
         transition: '0.2s all',
         '&:hover': {

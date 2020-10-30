@@ -80,7 +80,7 @@ const SignIn = () => {
 
                                 <div className={classes.formGroup}>
                                     <FormControl className={` ${classes.formControl}`}>
-                                        <InputLabel >Mật Khẩu</InputLabel>
+                                        <InputLabel >Mật Khẩu:</InputLabel>
                                         <Input
                                             type={showPassword ? 'text' : 'password'}
                                             endAdornment={
@@ -128,10 +128,8 @@ const useStyles = makeStyles((theme) => ({
         bottom: 0,
     },
     textDefault: {
-        fontFamily: 'Segoe UI',
-        fontStyle: 'italic',
-        fontWeight: 'bold',
-        fontSize: theme.spacing(1.4),
+        fontFamily: 'SF Medium',
+        fontSize: theme.spacing(1.1),
     },
     //#region 
     //#region bg
@@ -275,7 +273,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     titleForm: {
-        fontSize: theme.spacing(2.7),
+        fontSize: theme.spacing(2.3),
         textAlign: 'center',
         color: '#000',
     },
@@ -302,15 +300,14 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiInputLabel-formControl': {
             transform: 'translate(0, 1.5px) scale(0.75)',
             transformOrigin: ' top left',
-            fontFamily: 'Segoe UI',
-            fontStyle: 'italic',
             fontWeight: 'bold',
             color: '#000',
+            letterSpacing: '1px',
             fontSize: theme.spacing(1.4),
             textTransform: 'capitalize',
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-            borderBottom: '2px solid #440074',
+            borderBottom: '1px solid #440074',
         },
         '& .MuiInputBase-input': {
             paddingLeft: '10%',
@@ -325,7 +322,8 @@ const useStyles = makeStyles((theme) => ({
     btnGoto: {
         color: '#6B00B6',
         textTransform: 'capitalize',
-        fontSize: theme.spacing(1.4),
+        fontSize: theme.spacing(1.1),
+        padding: '6px 8px 10px',
         '&:hover': {
             backgroundColor: 'transparent',
         }
