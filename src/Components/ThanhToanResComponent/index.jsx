@@ -119,7 +119,6 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         left: 0,
         right: 0,
-        height: '100%',
         background: '#e4e4e4',
         // '& .MuiAlert-standardWarning': {
         //     boxShadow: ' 0 0 3px 1px #fff',
@@ -168,6 +167,7 @@ const useStyles = makeStyles((theme) => ({
         right: 0,
         alignItems: 'center',
         boxShadow: '0 0 5px 1px #9E9E9E',
+        borderRadius: '5px',
     },
     infoFilm: {
         width: '70%',
@@ -268,7 +268,7 @@ const useStyles = makeStyles((theme) => ({
             fontFamily: 'SF Medium',
             letterSpacing: '-0.5px',
             [theme.breakpoints.down(`${600}`)]: {
-                fontSize: theme.spacing(1),
+                fontSize: theme.spacing(1.2),
             },
         },
         '& .MuiSvgIcon-root': {
