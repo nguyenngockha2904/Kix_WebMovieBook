@@ -514,6 +514,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '1px',
         width: '100%',
         color: '#fff',
+        textTransform: 'capitalize',
         background: ' linear-gradient(45deg, #6b00b6, #440074)',
         borderRadius: '6px',
     },

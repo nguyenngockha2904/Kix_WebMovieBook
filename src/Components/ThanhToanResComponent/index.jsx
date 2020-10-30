@@ -1,9 +1,12 @@
-import { makeStyles } from '@material-ui/core';
-import React, { useCallback, useMemo } from 'react';
+import { Avatar, Button, FormControl, FormControlLabel, makeStyles, Radio, RadioGroup } from '@material-ui/core';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import AtmIcon from '../../assets/img/AtmIcon.svg';
+import CCIcon from '../../assets/img/CCIcon.svg';
+import ZaloPayIcon from '../../assets/img/logoCine/zalopay_icon.png';
 const ThanhToanResComponent = () => {
     const classes = useStyles();
+    const [thanhToan, setThanhToan] = useState(0);
     const phongVeInfo = useSelector((state) => {
         return state.qlMovie.PhongVeItemByMaLichChieu
     });
@@ -43,6 +46,9 @@ const ThanhToanResComponent = () => {
         });
 
     }, [listGheDaDat]);
+    const handleChange = useCallback((event) => {
+        setThanhToan(parseInt(event.target.value));
+    }, []);
     return (
         <div className={classes.root}>
             <div className={classes.wrapper}>
@@ -69,6 +75,40 @@ const ThanhToanResComponent = () => {
                     <div className={classes.timeSub}>Email</div>
                     <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`}>khanguyen1000@gmail.com</div>
                 </div>
+                <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`} style={{ padding: '0 6%' }}>Phương thức thanh toán</div>
+                <div className={`${classes.divInfoFilm} ${classes.groupInfo}`} style={{ marginBottom: '56px', }}>
+                    <div className={classes.hinhThucThanhToan}>
+                        <FormControl component="fieldset">
+                            <RadioGroup aria-label="Hình Thức Thanh Toán" name="thanhToan" value={thanhToan} onChange={handleChange}>
+                                <FormControlLabel className={classes.textDefault} control={<div className={classes.radioItem}>
+                                    <Radio color="primary" value={0} />
+                                    <Avatar src={ZaloPayIcon} variant="rounded" alt="ZaloPayIcon" />
+                                </div>} label="Thanh Toán qua ZaloPay" />
+                                <div className={classes.line}></div>
+                                <FormControlLabel className={classes.textDefault} control={<div className={classes.radioItem}>
+                                    <Radio color="primary" value={1} />
+                                    <Avatar src={CCIcon} variant="rounded" alt="CCIcon" />
+                                </div>} label="Visa, Master, JCB" />
+                                <div className={classes.line}></div>
+                                <FormControlLabel className={classes.textDefault} control={<div className={classes.radioItem}>
+                                    <Radio color="primary" value={2} />
+                                    <Avatar src={AtmIcon} variant="rounded" alt="AtmIcon" />
+                                </div>} label="Qua thẻ ATM nội địa" />
+                            </RadioGroup>
+                        </FormControl>
+                    </div>
+                </div>
+                <div className={classes.divBottom}>
+                    <div className={classes.ItemBottom}>
+                        <div className={`${classes.textDefault} ${classes.totalMonney}`} >
+                            {(tongTien).toLocaleString()}đ
+                        </div>
+                    </div>
+                    <div className={classes.ItemBottom}>
+                        <Button className={classes.btnNext}>Tiếp tục
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -78,17 +118,17 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         top: 0,
         left: 0,
-        bottom: 0,
         right: 0,
+        height: '100%',
         background: '#e4e4e4',
         // '& .MuiAlert-standardWarning': {
         //     boxShadow: ' 0 0 3px 1px #fff',
         // },
     },
     wrapper: {
-        height: 'auto',
         marginTop: '55px',
         overflow: 'auto',
+        background: '#e4e4e4',
     },
     textDefault: {
         fontSize: theme.spacing(1.4),
@@ -97,10 +137,17 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.5px',
 
     },
+    totalMonney: {
+        color: '#000',
+        fontFamily: 'SF Medium',
+        fontSize: theme.spacing(1.7),
+    },
     namePhim: {
         margin: 0,
         letterSpacing: '0',
         fontFamily: 'SF Medium',
+        fontSize: theme.spacing(1.6),
+
     },
     divInfoFilm: {
         display: 'flex',
@@ -109,6 +156,18 @@ const useStyles = makeStyles((theme) => ({
         background: '#fff',
         borderRadius: ' 10px',
         marginBottom: '1px',
+    },
+    divBottom: {
+        display: 'flex',
+        justifyContent: 'center',
+        background: '#fff',
+        marginBottom: '1px',
+        position: ' fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        boxShadow: '0 0 5px 1px #9E9E9E',
     },
     infoFilm: {
         width: '70%',
@@ -121,9 +180,12 @@ const useStyles = makeStyles((theme) => ({
         color: '#808080',
         letterSpacing: 0,
         whiteSpace: 'nowrap',
-        fontSize: theme.spacing(0.9),
+        fontSize: theme.spacing(1.2),
         textTransform: 'capitalize',
         fontFamily: 'unset',
+        [theme.breakpoints.down(`${600}`)]: {
+            fontSize: theme.spacing(0.9),
+        },
     },
     general: {
         marginRight: theme.spacing(0.6),
@@ -146,7 +208,10 @@ const useStyles = makeStyles((theme) => ({
     textDef: {
         fontFamily: 'SF Medium',
         color: '#000',
-        fontSize: theme.spacing(1),
+        fontSize: theme.spacing(1.4),
+        [theme.breakpoints.down(`${600}`)]: {
+            fontSize: theme.spacing(1),
+        },
     },
     grouGheDD: {
         display: 'flex',
@@ -176,7 +241,10 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.5px',
         margin: '5px 0',
         textTransform: ' lowercase',
-        fontSize: '11px',
+        fontSize: theme.spacing(1.4),
+        [theme.breakpoints.down(`${600}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     line: {
 
@@ -185,6 +253,51 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: ' 0.5px dotted #808080c9',
         margin: '8px auto',
 
+    },
+    hinhThucThanhToan: {
+        '& $textDefault': {
+            fontFamily: 'SF Medium',
+            fontSize: theme.spacing(1.1),
+        },
+        '& .MuiFormControl-root': {
+            width: '100%',
+        },
+        '& .MuiFormControlLabel-label': {
+            fontSize: theme.spacing(1.4),
+            color: '#2B3A51',
+            fontFamily: 'SF Medium',
+            letterSpacing: '-0.5px',
+            [theme.breakpoints.down(`${600}`)]: {
+                fontSize: theme.spacing(1),
+            },
+        },
+        '& .MuiSvgIcon-root': {
+            fontSize: '1.1rem',
+        }
+    },
+    radioItem: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '& .MuiAvatar-root': {
+            marginRight: theme.spacing(0.5),
+            width: ' 25px',
+            height: '25px',
+        },
+        '& .MuiAvatar-img': {
+            'object-fit': 'unset',
+        }
+    },
+    ItemBottom: {
+        width: '100%',
+        textAlign: ' center',
+    },
+    btnNext: {
+        width: '100%',
+        padding: ' 7px',
+        textTransform: 'capitalize',
+        background: 'linear-gradient(45deg, #6b00b6, #440074)',
+        color: '#fff',
     },
 }));
 export default ThanhToanResComponent;

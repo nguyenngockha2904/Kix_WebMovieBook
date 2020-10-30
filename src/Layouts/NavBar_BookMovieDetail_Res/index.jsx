@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
         right: 0,
         zIndex: '5',
         boxShadow: '0 0 4px 0px #fff',
+
     },
     groupBtnBack: {
         color: '#fff',
@@ -126,11 +127,14 @@ const useStyles = makeStyles((theme) => ({
     nameThear: {
         display: 'flex',
         justifyContent: 'flex-start',
-        fontSize: theme.spacing(1.1),
+        fontSize: theme.spacing(1.5),
         textTransform: 'capitalize',
         letterSpacing: '-0.5px',
         margin: '5px 0',
         fontFamily: 'SF Medium',
+        [theme.breakpoints.down(`${600}`)]: {
+            fontSize: theme.spacing(1.1),
+        },
     },
     hightline: {
         color: '#9500ff',
@@ -142,10 +146,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     textSecond: {
-        fontSize: ' 10px',
+        fontSize: ' 12px',
         marginRight: '5px',
         color: '#cccbcb',
         letterSpacing: 0,
+        [theme.breakpoints.down(`${600}`)]: {
+            fontSize: theme.spacing(1),
+        },
     },
 }));
 export default memo(NavBar_BookMovieDetail_Res);
