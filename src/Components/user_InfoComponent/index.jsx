@@ -1,11 +1,18 @@
-import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField } from '@material-ui/core';
+import { Button, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, makeStyles, Switch, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const UserInfoComponent = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
-    const [isChinhSua, setIsChinhSua] = useState(true);
+    const [isChinhSua, setIsChinhSua] = useState(false);
+    const [userInfo, setUserInfo] = useState({
+        taiKhoan: '',
+        hoTen: '',
+        email: '',
+        soDT: '',
+    });
     const handleClickChinhSua = useCallback(() => {
         setIsChinhSua(!isChinhSua);
     }, [isChinhSua]);
@@ -15,58 +22,84 @@ const UserInfoComponent = () => {
     const handleMouseDownPassword = useCallback((e) => {
         e.preventDefault();
     }, []);
+
+    // const credentials = useSelector((state) => {
+    //     return state.qlUser.credentials;
+    // });
+    useEffect(() => {
+        let user = JSON.parse(localStorage.getItem('user'));
+        setUserInfo(user);
+    }, [localStorage.getItem('user')]);
+    const handleChangeSwitch = useCallback((e) => {
+        setIsChinhSua(e.target.checked);
+    }, []);
+    const handleChange = useCallback((e) => {
+        setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+    }, [userInfo]);
+    const handleSubmit = useCallback((value) => (e) => {
+        e.preventDefault();
+        console.log(value);
+    }, []);
+
     return (
         <Fragment>
-            <div className={classes.divTabTT}>
+            <form className={classes.divTabTT} onSubmit={handleSubmit(userInfo)}>
+
                 <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
                     Thông tin cá nhân</div>
 
-                <div className={classes.divflex}>
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`} >
-                        <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                    </div>
-                </div>
-                <div className={classes.divflex}>
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`}>
-                        <TextField label="email :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                    </div>
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`} >
-                        <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                    </div>
-                </div>
-                <div className={classes.divflex}>
-
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`}>
-                        <TextField label="số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                    </div>
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`}>
-                        <FormControl className={` ${classes.formControl}`}>
-                            <InputLabel >Mật Khẩu:</InputLabel>
-                            <Input
-                                type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword(showPassword)}
-                                            onMouseDown={handleMouseDownPassword}
-                                            disabled={isChinhSua}
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                disabled={isChinhSua}
+                <div className={`${classes.divflex}`} style={{ justifyContent: 'flex-end' }}>
+                    <div className={`${classes.textDefault}`} style={{ marginRight: '10px' }}>Chỉnh sửa</div>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isChinhSua}
+                                onChange={handleChangeSwitch}
+                                color="primary"
+                                name="isChinhSua"
                             />
-                        </FormControl>
+                        }
+                        style={{
+                            margin: 0,
+                            padding: 0,
+                        }}
+                    />
+                </div>
+                <div className={`${classes.formGroup} ${classes.itemInfo}`} style={{ marginTop: 0, paddingTop: 0, }}>
+                    <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`} disabled={!isChinhSua}
+                        value={userInfo.hoTen}
+                        onChange={handleChange}
+                        name="hoTen"
+
+                    />
+                </div>
+                <div className={`${classes.formGroup} ${classes.divflex}`}>
+                    <div className={`${classes.formGroup} ${classes.itemInfo}`} >
+                        <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} disabled={!isChinhSua}
+                            value={userInfo.taiKhoan}
+                            onChange={handleChange}
+                            name="taiKhoan" />
+                    </div>
+                    <div className={`${classes.formGroup} ${classes.itemInfo}`}  >
+                        <TextField label="số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`} disabled={!isChinhSua}
+                            value={userInfo.soDT}
+                            onChange={handleChange}
+                            name="soDT" />
                     </div>
                 </div>
-                <div className={classes.divflex}>
+
+                <div className={`${classes.formGroup} ${classes.itemInfo}`}>
+                    <TextField label="email :" className={`${classes.textDefault} ${classes.formControl}`} disabled={!isChinhSua}
+                        value={userInfo.email}
+                        onChange={handleChange}
+                        name="email" />
+                </div>
+                <div className={classes.divflex} style={{ opacity: isChinhSua ? '1' : '0' }}>
                     <div className={`${classes.formGroup} ${classes.itemInfo} ${classes.groupBtnChinhSua}`} >
-                        <Button className={classes.btnChinhSua} onClick={handleClickChinhSua} style={{ background: isChinhSua ? 'rgb(156 156 156)' : ' linear-gradient(45deg, #6b00b6, #440074)' }}>Chỉnh sửa</Button>
+                        <Button type="submit" className={classes.btnChinhSua} disabled={!isChinhSua} onClick={handleClickChinhSua} >Cập nhật</Button>
                     </div>
                 </div>
-            </div>
+            </form>
         </Fragment>
     );
 };
@@ -113,11 +146,12 @@ const useStyles = makeStyles((theme) => ({
             border: 'none',
         },
         '& .MuiInputLabel-formControl': {
+
             color: '#000',
-            textTransform: 'capitalize',
             fontSize: theme.spacing(1.6),
+            textTransform: 'capitalize',
             fontFamily: 'SF Medium',
-            letterSpacing: ' 0.1px',
+            letterSpacing: '0.5px',
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '1px solid #440074',

@@ -46,15 +46,8 @@ const SignUp = () => {
     return (
         <Fragment>
             {isloading ? <Loader /> :
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                        y: 50
-                    }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                    }}
+                <div
+
                     className={classes.root}>
                     <div className={classes.groupBg}>
                         <img src={signUpBanner} alt="signUpBanner" className={classes.bgMain} />
@@ -149,7 +142,7 @@ const SignUp = () => {
                             </form>
                         </div>
                     </div>
-                </motion.div>
+                </div>
             }
         </Fragment>
     );
@@ -338,13 +331,11 @@ const useStyles = makeStyles((theme) => ({
             border: 'none',
         },
         '& .MuiInputLabel-formControl': {
-            transform: 'translate(0, 1.5px) scale(0.75)',
-            transformOrigin: ' top left',
-            fontWeight: 'bold',
             color: '#000',
-            letterSpacing: '1px',
             fontSize: theme.spacing(1.4),
             textTransform: 'capitalize',
+            fontFamily: 'SF Medium',
+            letterSpacing: '0.5px',
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '1px solid #440074',

@@ -11,17 +11,22 @@ import bottomDop from '../../assets/img/bottomDop2.svg';
 import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import swal from 'sweetalert';
+import { Login } from '../../redux/action/userAction';
 const SignIn = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const history = useHistory();
     const [isloading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [credentials, setCredentials] = useState({
+        taiKhoan: "",
+        matKhau: "",
+    });
     useEffect(() => {
         dispatch(createAction(SET_TYPE_PAGE, 4));
         setTitle('Kix - Đăng nhập ');
-    });
+    }, []);
     const handleClickShowPassword = useCallback((value) => () => {
         setShowPassword(!value);
     }, []);
@@ -36,18 +41,32 @@ const SignIn = () => {
         document.title = title;
         return () => document.title = prevTitle;
     }, []);
+    const handleChange = useCallback((e) => {
+        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    }, [credentials]);
+    const handleSubmit = useCallback((value) => (e) => {
+        e.preventDefault();
+        console.log(value);
+        dispatch(Login(value, () => {
+            swal({
+                title: "Thành công !",
+                icon: "success",
+            })
+            history.replace(`/thongtincanhan`);
+        }, () => {
+            swal({
+                title: "Đăng nhập thất bại !",
+                text: "Có thể tài khoản hoặc mật khẩu bạn không chính xác!",
+                icon: "warning",
+                dangerMode: true,
+            })
+        }))
+
+    }, []);
     return (
         <Fragment>
             {isloading ? <Loader /> :
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                        y: 50
-                    }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                    }}
+                <div
                     className={classes.root}>
                     <div className={classes.groupBg}>
                         <img src={signInBanner} alt="signInBanner" className={classes.bgMain} />
@@ -71,11 +90,15 @@ const SignIn = () => {
                                 </div>
                             </Button>
 
-                            <form className={classes.formStyle}>
+                            <form className={classes.formStyle} onSubmit={handleSubmit(credentials)}>
                                 <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
                                     Đăng nhập</div>
                                 <div className={classes.formGroup}>
-                                    <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} />
+                                    <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`}
+                                        value={credentials.taiKhoan}
+                                        onChange={handleChange}
+                                        name="taiKhoan"
+                                    />
                                 </div>
 
                                 <div className={classes.formGroup}>
@@ -94,6 +117,9 @@ const SignIn = () => {
                                                     </IconButton>
                                                 </InputAdornment>
                                             }
+                                            value={credentials.matKhau}
+                                            onChange={handleChange}
+                                            name="matKhau"
                                         />
                                     </FormControl>
                                 </div>
@@ -106,13 +132,13 @@ const SignIn = () => {
                                     </div>
                                 </div>
                                 <div className={`${classes.formGroup} ${classes.groupBtnSubmit}`}>
-                                    <Button className={`${classes.textDefault} ${classes.BtnSubmit}`}>Đăng nhập
+                                    <Button type="submit" className={`${classes.textDefault} ${classes.BtnSubmit}`}>Đăng nhập
                                 </Button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </motion.div>
+                </div>
             }
         </Fragment>
     );
@@ -298,13 +324,11 @@ const useStyles = makeStyles((theme) => ({
             border: 'none',
         },
         '& .MuiInputLabel-formControl': {
-            transform: 'translate(0, 1.5px) scale(0.75)',
-            transformOrigin: ' top left',
-            fontWeight: 'bold',
             color: '#000',
-            letterSpacing: '1px',
             fontSize: theme.spacing(1.4),
             textTransform: 'capitalize',
+            fontFamily: 'SF Medium',
+            letterSpacing: '0.5px',
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '1px solid #440074',

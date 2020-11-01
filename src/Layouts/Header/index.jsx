@@ -3,9 +3,7 @@ import { AppBar, Box, Button, FormControl, makeStyles, Select, Toolbar, withWidt
 import avatarIcon from '../../assets/img/avatarIcon.svg';
 import LogoLight from '../../assets/img/LogoLight.svg';
 import collapseButton from '../../assets/img/collapseButton.svg';
-import iconPosition from '../../assets/img/iconPosition.svg';
 import iconClose from '../../assets/img/iconCloseButton.svg';
-import iconDown from '../../assets/img/iconDown.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createAction } from '../../redux/action';
@@ -277,6 +275,9 @@ const Header = (props) => {
     const width = useMemo(() => {
         return props.width;
     }, [props.width]);
+    const user = useMemo(() => {
+        return JSON.parse(localStorage.getItem('user'));
+    }, [localStorage.getItem('user')]);
     return (
         <AppBar color="inherit" className={classes.header}>
             {/* side bar */}
@@ -302,8 +303,8 @@ const Header = (props) => {
                                             className={`${classes.navLink} ${classes.login}`}
                                             style={{ padding: '0 10px' }}
                                         >
-                                            Đăng nhập
-                            </p>
+                                            {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
+                                        </p>
                                     </Button>
                                 </div>
                                 <Button
@@ -382,72 +383,8 @@ const Header = (props) => {
                                 </div>
                                 <div></div>
                             </Box>
-                            {isPage.role === 1 && <Box
-                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
-                                justifyContent="center"
-                            >
-                                <div
-                                    className={classes.navItem}
-                                >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                        onClick={handleShowModalTT(true)}
-                                    >
-                                        {tinhThanh}
-                                    </Button>
-                                </div>
-                                <div></div>
-                            </Box>}
+
                         </div>
-                        {isShowModalTT &&
-                            <div className={classes.modalTT}>
-                                <div className={classes.bgModalTT} onClick={handleShowModalTT(false)}></div>
-                                <div className={classes.ModalContent}>
-                                    <div className={classes.TtItem}
-                                        onClick={handleClickChooseTT('Hồ Chí Minh')}
-                                    >
-                                        <p className={classes.navLink}
-                                        >Hồ Chí Minh</p>
-                                    </div>
-                                    <div className={classes.TtItem}
-                                        onClick={handleClickChooseTT('Đà Nẵng')}
-                                    >
-                                        <p className={classes.navLink}
-
-                                        >Đà Nẵng</p>
-                                    </div>
-                                    <div className={classes.TtItem}
-                                        onClick={handleClickChooseTT('Hà Nội')}
-                                    >
-                                        <p className={classes.navLink}
-
-                                        >Hà Nội</p>
-                                    </div>
-                                    <div className={classes.TtItem}
-                                        onClick={handleClickChooseTT('Vũng Tàu')}
-                                    >
-                                        <p className={classes.navLink}
-
-                                        >Vũng Tàu</p>
-                                    </div>
-                                    <div className={classes.TtItem}
-                                        onClick={handleClickChooseTT('Cần Thơ')}
-                                    >
-                                        <p className={classes.navLink}
-
-                                        >Cần Thơ</p>
-                                    </div>
-                                    <div className={classes.TtItem} style={{ border: 'none' }}
-                                        onClick={handleClickChooseTT('Quy nhơn')}
-                                    >
-                                        <p className={classes.navLink}
-
-                                        >Quy nhơn</p>
-                                    </div>
-                                </div>
-                            </div>
-                        }
                     </Fragment>
                 }
             </div>
@@ -535,33 +472,13 @@ const Header = (props) => {
                                 className={`${classes.navLink} ${classes.login}`}
                                 onClick={handleGoTo('/dangnhap')}
                             >
-                                Đăng nhập
-                        </Button>
-                        </Box>
-                        {isPage.role === 1 && <div
-                            className={`${classes.navItem} ${classes.GroupSelect}`}
-                            onClick={handleShowTT(true)}
-                        >
-                            <img
-                                src={iconPosition}
-                                alt="iconPosition"
-                            />
-                            <Button
-                                color="inherit"
-                                className={`${classes.navLink} ${classes.login}`}
-                            >
-                                {tinhThanh}
+                                {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
                             </Button>
-                            <img
-                                src={iconDown}
-                                alt="iconDown"
-                                className={classes.iconDown}
+                        </Box>
 
-                            />
-                        </div>}
                     </Box>
                 </Fragment>}
-                {isShowTT && <div className={`${classes.modalTT} ${classes.ContentTT}`}>
+                {/* {isShowTT && <div className={`${classes.modalTT} ${classes.ContentTT}`}>
                     <div className={classes.bgModalTT} onClick={handleShowTT(false)}></div>
                     <div className={classes.ModalContent}>
                         <div className={classes.TtItem}
@@ -606,7 +523,7 @@ const Header = (props) => {
                             >Quy nhơn</p>
                         </div>
                     </div>
-                </div>}
+                </div>} */}
                 <div
                     className={classes.collapse}
                 >

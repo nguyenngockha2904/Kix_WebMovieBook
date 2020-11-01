@@ -142,10 +142,11 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiInputLabel-formControl': {
 
             color: '#000',
+            fontSize: theme.spacing(1.3),
             textTransform: 'capitalize',
-            fontSize: theme.spacing(1.6),
             fontFamily: 'SF Medium',
-            letterSpacing: ' 0.1px',
+            letterSpacing: '0.5px',
+
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '1px solid #440074',

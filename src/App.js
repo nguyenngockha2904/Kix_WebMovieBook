@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import Header from './Layouts/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,9 @@ function App() {
   const isPage = useSelector((state) => {
     return state.parent.isPage.role
   });
+  const user = useMemo(() => {
+    return JSON.parse(localStorage.getItem('user'));
+  }, []);
   return (
     <BrowserRouter>
       <Suspense fallback={<div></div>}>
@@ -20,7 +23,7 @@ function App() {
           <Route path='/chitietphongve/:maLichChieu' exact component={BookMovieDetail} />
           <Route path='/dangnhap' exact component={SignIn} />
           <Route path='/dangky' exact component={SignUp} />
-          <Route path='/thongtincanhan' exact component={UserInfo} />
+          {user.taiKhoan && <Route path='/thongtincanhan' exact component={UserInfo} />}
           <Route path='/' component={Home} />
         </Switch>
       </Suspense>

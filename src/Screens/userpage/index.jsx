@@ -16,7 +16,6 @@ const TabPanel = (props) => {
 
     return (
         <div
-
             role="tabpanel"
             hidden={value !== index}
             id={`full-width-tabpanel-${index}`}
@@ -48,7 +47,7 @@ const a11yProps = (index) => {
 
 const UserInfo = () => {
     const classes = useStyles();
-    const [value, setValue] = useState(2);
+    const [value, setValue] = useState(0);
     const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
     }, []);
@@ -65,15 +64,15 @@ const UserInfo = () => {
                             value={value}
                             onChange={handleChange}
                             indicatorColor="primary"
-                            textColor="primary"
+                            textcolor="primary"
                             variant="fullWidth"
                             aria-label="full width tabs example"
                         >
-                            <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', 'border-top-right-radius': '10px', }} />
-                            <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} />
-                            <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} />
-                            <Button style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} >Thoát</Button>
+                            <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', }} />
+                            <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
+                            <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
                         </Tabs>
+                        <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }} >Thoát</Button>
                     </div>
                     <div className={classes.groupTab}>
                         <Fragment>
@@ -139,6 +138,9 @@ const useStyles = makeStyles((theme) => ({
             fontSize: ' 14px',
             letterSpacing: '0.1px',
             fontFamily: 'SF Medium',
+        },
+        '& .Mui-selected': {
+            color: '#6b00b6'
         },
     },
     groupAvatar: {

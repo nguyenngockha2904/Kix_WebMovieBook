@@ -1,6 +1,10 @@
 export const SET_TYPE_PAGE = 'parent/SET_TYPE_PAGE';
 export const SET_REQUEST_PAGE = 'parent/SET_REQUEST_PAGE';
 
+
+// user Action
+export const SET_CREDENTIALS = 'user/SET_CREDENTIALS';
+
 // movie Action
 export const FETCH_DATA_LIST_MOVIE = 'movie/FETCH_DATA_LIST_MOVIE';
 export const SHOW_MODAL_VIDEO = 'movie/SHOW_MODAL_VIDEO';
