@@ -6,7 +6,11 @@ import PropTypes from 'prop-types';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import bottomDop from '../../assets/img/bottomDop.svg';
 import topRightDop from '../../assets/img/topRightDop.svg';
-import { motion } from 'framer-motion';
+import Footer from '../../Layouts/footer';
+import bgApp from '../../assets/img/bgApp.jpg';
+import UserInfoComponent from '../../Components/user_InfoComponent';
+import RepasswordComponent from '../../Components/user_RespassComponent';
+import HistoryBookComponent from '../../Components/user_HistoryBookComponent';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -44,35 +48,19 @@ const a11yProps = (index) => {
 
 const UserInfo = () => {
     const classes = useStyles();
-    const [value, setValue] = useState(1);
-    const [showPassword, setShowPassword] = useState(false);
-    const [isChinhSua, setIsChinhSua] = useState(true);
+    const [value, setValue] = useState(2);
     const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
     }, []);
-    const handleClickShowPassword = useCallback((value) => () => {
-        setShowPassword(!value);
-    }, []);
-    const handleMouseDownPassword = useCallback((e) => {
-        e.preventDefault();
-    }, []);
-    const handleClickChinhSua = useCallback(() => {
-        setIsChinhSua(!isChinhSua);
-    }, [isChinhSua]);
+
     return (
         <Fragment>
             <Header />
             <div className={classes.root}>
-                <div className={classes.groupAvatar}>
-                    <Avatar alt='avatarImg' src={avatarImg} className={classes.avatarImg} />
-                    <div className={`${classes.text} ${classes.name}`}>Nguyễn Ngọc Kha</div>
-                    <div className={`${classes.text} ${classes.textInfo}`}>khanguyen1000@gmail.com</div>
-                    <div className={`${classes.text} ${classes.textInfo}`}>0329457486</div>
-                </div>
-                <div className={classes.groupTab}>
-                    <AppBar position="static" color="default" style={{
-                        marginBottom: ' 10px',
-                    }}>
+                <div className={classes.wrapper}>
+                    <div className={classes.groupAvatar}>
+                        <Avatar alt='avatarImg' src={avatarImg} className={classes.avatarImg} />
+                        <div className={`${classes.text} ${classes.name}`}>Nguyễn Ngọc Kha</div>
                         <Tabs
                             value={value}
                             onChange={handleChange}
@@ -81,104 +69,76 @@ const UserInfo = () => {
                             variant="fullWidth"
                             aria-label="full width tabs example"
                         >
-                            <Tab label="Lịch sử đặt vé" {...a11yProps(0)} style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} />
-                            <Tab label="Thông tin cá nhân" {...a11yProps(1)} style={{ textTransform: 'capitalize', 'border-top-right-radius': '10px', }} />
+                            <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', 'border-top-right-radius': '10px', }} />
+                            <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} />
+                            <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} />
+                            <Button style={{ textTransform: 'capitalize', 'border-top-left-radius': '10px', }} >Thoát</Button>
                         </Tabs>
-                    </AppBar>
-                    <Fragment>
-                        <TabPanel value={value} index={0} className={classes.tabContent}>
-                            <div className={classes.divTabTT}>
-                                div 1
-                            </div>
-                        </TabPanel>
-                        <TabPanel
-                            value={value} index={1} className={`${classes.divflex} ${classes.tabContent}`}>
-                            <div className={classes.bgTab}>
-                                <img src={topRightDop} alt="topRightDop" className={classes.TopRightDop} />
-                                <img src={bottomDop} alt="bottomDop" className={classes.bottomLeftDop} />
-                            </div>
-                            <div
+                    </div>
+                    <div className={classes.groupTab}>
+                        <Fragment>
+                            <TabPanel
+                                value={value} index={0} className={` ${classes.tabContent}`}>
+                                <UserInfoComponent />
 
-                                className={classes.divTabTT}>
-                                <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
-                                    Thông tin cá nhân</div>
-
-                                <div className={classes.divflex}>
-                                    <div className={`${classes.formGroup} ${classes.itemInfo}`} >
-                                        <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                                    </div>
-                                </div>
-                                <div className={classes.divflex}>
-                                    <div className={`${classes.formGroup} ${classes.itemInfo}`}>
-                                        <TextField label="email :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                                    </div>
-                                    <div className={`${classes.formGroup} ${classes.itemInfo}`} >
-                                        <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                                    </div>
-                                </div>
-                                <div className={classes.divflex}>
-
-                                    <div className={`${classes.formGroup} ${classes.itemInfo}`}>
-                                        <TextField label="số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`} disabled={isChinhSua} />
-                                    </div>
-                                    <div className={`${classes.formGroup} ${classes.itemInfo}`}>
-                                        <FormControl className={` ${classes.formControl}`}>
-                                            <InputLabel >Mật Khẩu:</InputLabel>
-                                            <Input
-                                                type={showPassword ? 'text' : 'password'}
-                                                endAdornment={
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            aria-label="toggle password visibility"
-                                                            onClick={handleClickShowPassword(showPassword)}
-                                                            onMouseDown={handleMouseDownPassword}
-                                                            disabled={isChinhSua}
-                                                        >
-                                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                }
-                                                disabled={isChinhSua}
-                                            />
-                                        </FormControl>
-                                    </div>
-                                </div>
-                                <div className={classes.divflex}>
-                                    <div className={`${classes.formGroup} ${classes.itemInfo} ${classes.groupBtnChinhSua}`} >
-                                        <Button className={classes.btnChinhSua} onClick={handleClickChinhSua} style={{ width: isChinhSua ? 'auto' : '100%', background: isChinhSua ? 'rgb(156 156 156)' : ' linear-gradient(45deg, #6b00b6, #440074)' }}>Chỉnh sửa</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </TabPanel>
-                    </Fragment>
+                            </TabPanel>
+                            <TabPanel value={value} index={1} className={classes.tabContent}>
+                                <RepasswordComponent />
+                            </TabPanel>
+                            <TabPanel value={value} index={2} className={classes.tabContent}>
+                                <HistoryBookComponent />
+                            </TabPanel>
+                        </Fragment>
+                    </div>
                 </div>
+
             </div>
+            <Footer />
         </Fragment>
     );
 };
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(6.4),
-        background: '#e4e4e4',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        top: 0,
+        background: 'rgb(10, 32, 41)',
+        padding: '2% 4%',
+        paddingBottom: ' 20%',
+    },
+    wrapper: {
+
+        minHeight: '510px',
         display: 'flex',
         '& .MuiAppBar-colorDefault': {
             backgroundColor: 'transparent',
         },
         '& .MuiTab-fullWidth': {
-            maxWidth: 'max-content',
+            width: '100%',
             background: '#fff',
         },
         '& .MuiPaper-elevation4': {
             boxShadow: 'none',
         },
         '& .MuiTabs-flexContainer': {
-            justifyContent: 'flex-start',
-            alignItems: 'center',
+            display: 'block !important',
+        },
+        '& .MuiTabs-scroller': {
+            whiteSpace: 'pre-wrap',
+        },
+        '& .PrivateTabIndicator-colorPrimary': {
+            display: 'none !important',
+        },
+        '& .MuiTabs-indicator': {
+            backgroundColor: 'transparent',
+        },
+        '& .MuiTab-wrapper': {
+            fontSize: ' 14px',
+            letterSpacing: '0.1px',
+            fontFamily: 'SF Medium',
+        },
+        '& .MuiButton-label': {
+            fontSize: ' 14px',
+            letterSpacing: '0.1px',
+            fontFamily: 'SF Medium',
         },
     },
     groupAvatar: {
@@ -186,12 +146,12 @@ const useStyles = makeStyles((theme) => ({
         width: '25%',
         margin: '0.5%',
         borderRadius: '10px',
-        height: ' 380px',
+        height: ' 427px',
         '& .MuiAvatar-root': {
-            width: ' 200px',
-            height: '200px',
+            width: ' 160px',
+            height: '160px',
             margin: '21px auto',
-        }
+        },
     },
     avatarImg: {
 
@@ -220,16 +180,9 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
     },
     tabContent: {
-        position: 'absolute',
+        height: '100%',
         background: '#fff',
-        bottom: 0,
-        right: 0,
-        left: 0,
-        top: 0,
-        marginTop: ' 48px',
-        'border-top-right-radius': '10px',
-        'border-bottom-right-radius': '10px',
-        'border-bottom-left-radius': '10px',
+        borderRadius: '10px',
     },
     textDefault: {
         fontFamily: 'SF Medium',
@@ -251,47 +204,12 @@ const useStyles = makeStyles((theme) => ({
             width: '90%',
         }
     },
-    bgTab: {
-        position: 'absolute',
-        background: '#fff',
-        bottom: 0,
-        right: 0,
-        left: 0,
-        top: 0,
-    },
-    bottomLeftDop: {
-        position: 'absolute',
-        bottom: '1%',
-        left: "1%",
-        zIndex: '2',
-        width: '10%',
-
-    },
-    bottomRightDop: {
-        position: 'absolute',
-        bottom: '1%',
-        right: '1%',
-        zIndex: '2',
-        width: '7%',
-    },
-    TopRightDop: {
-        position: 'absolute',
-        top: '1%',
-        right: '1%',
-        zIndex: '2',
-        width: '7%',
-        [theme.breakpoints.down(`${461}`)]: {
-            display: 'none',
-        }
-    },
     divTabTT: {
-        width: '65%',
-        position: 'absolute',
-        background: '#fff',
+        position: ' absolute',
         left: '50%',
         top: '50%',
-        transform: ' translate(-50%, -50%)',
-        zIndex: '5',
+        width: '70%',
+        transform: 'translate(-50%, -50%)',
     },
     formControl: {
         width: '100%',
