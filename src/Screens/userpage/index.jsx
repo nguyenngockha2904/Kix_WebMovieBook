@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, Tab, Tabs, TextField } from '@material-ui/core';
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import Header from '../../Layouts/Header';
 import avatarImg from '../../assets/img/kha.jpg';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import { getInfoUser } from '../../redux/action/userAction';
 import { useDispatch } from 'react-redux';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
+import { useHistory } from 'react-router-dom';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -48,19 +49,27 @@ const a11yProps = (index) => {
 const UserInfo = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
     const [value, setValue] = useState(0);
+    const refUser = useRef(null);
     const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
+        refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
     }, []);
     useEffect(() => {
         let user = JSON.parse(localStorage.getItem('user'));
         dispatch(getInfoUser(user.taiKhoan, () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         }));
         dispatch(createAction(SET_TYPE_PAGE, 4));
     }, []);
+    const handleLogout = useCallback(() => {
+        localStorage.setItem('user', JSON.stringify({ taiKhoan: '' }));
+        history.replace('/');
+    }, []);
     return (
         <Fragment>
+            <div ref={refUser} className={classes.divRef}></div>
             <Header />
             <div className={classes.root}>
                 <div className={classes.wrapper}>
@@ -79,7 +88,9 @@ const UserInfo = () => {
                             <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
                             <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
                         </Tabs>
-                        <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }} >Thoát</Button>
+                        <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }}
+                            onClick={handleLogout}
+                        >Đăng xuất</Button>
                     </div>
                     <div className={classes.groupTab}>
                         <Fragment>
@@ -104,6 +115,13 @@ const UserInfo = () => {
     );
 };
 const useStyles = makeStyles((theme) => ({
+    divRef: {
+
+        position: ' absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+    },
     root: {
         marginTop: theme.spacing(6.4),
         background: 'rgb(10, 32, 41)',

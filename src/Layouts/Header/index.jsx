@@ -32,7 +32,6 @@ const Header = (props) => {
             ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         } else {
             dispatch(createAction(SET_REQUEST_PAGE, type));
-
             history.replace('/');
 
         }

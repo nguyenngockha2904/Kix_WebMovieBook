@@ -15,10 +15,13 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { Box, Collapse, TableHead, Typography } from '@material-ui/core';
+import { Box, Button, Collapse, TableHead, Typography } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { createAction } from '../../redux/action';
+import { SET_REQUEST_PAGE } from '../../redux/action/type';
+import { useHistory } from 'react-router-dom';
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
@@ -423,6 +426,8 @@ TablePaginationActions.propTypes = {
 
 const HistoryBookComponent = () => {
     const classes = useStylesHistoryBookComponent();
+    const dispatch = useDispatch();
+    const history = useHistory();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const rows = useSelector((state) => {
@@ -440,10 +445,13 @@ const HistoryBookComponent = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     }, []);
-
+    const handleGoToDatVe = useCallback(() => {
+        dispatch(createAction(SET_REQUEST_PAGE, 2));
+        history.replace('/');
+    }, []);
     return (
         <div className={classes.root}>
-            <TableContainer component={Paper}>
+            {rows.length !== 0 ? <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="  table">
                     <TableHead>
                         <TableRow>
@@ -487,13 +495,21 @@ const HistoryBookComponent = () => {
                         </TableRow>
                     </TableFooter>
                 </Table>
-            </TableContainer>
+            </TableContainer> :
+                <div className={classes.wraper}>
+                    <div className={classes.textInfomation}>
+                        Không có vé nào cả !
+                    </div>
+                    <div className={classes.groupBtnDatVe}>
+                        <Button className={classes.btnDatVe} onClick={handleGoToDatVe}>Đặt vé ngay</Button>
+                    </div>
+                </div>}
         </div>
 
 
     );
 }
-const useStylesHistoryBookComponent = makeStyles({
+const useStylesHistoryBookComponent = makeStyles((theme) => ({
     root: {
         height: '100%',
         '& .MuiTableContainer-root': {
@@ -534,5 +550,30 @@ const useStylesHistoryBookComponent = makeStyles({
     thead: {
 
     },
-});
+    wraper: {
+        position: ' absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+    },
+    textInfomation: {
+        color: '#000',
+        fontSize: theme.spacing(1.8),
+        textTransform: 'capitalize',
+        fontFamily: 'SF Medium',
+        letterSpacing: '0.5px',
+    },
+    groupBtnDatVe: {
+
+    },
+    btnDatVe: {
+        minWidth: '1px',
+        width: '100%',
+        color: '#fff',
+        textTransform: 'capitalize',
+        background: ' linear-gradient(45deg, #6b00b6, #440074)',
+        borderRadius: '6px',
+        transition: 'all 0.5s',
+    },
+}));
 export default memo(HistoryBookComponent);
