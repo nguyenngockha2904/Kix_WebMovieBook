@@ -1,7 +1,8 @@
-import React, { Suspense, useMemo } from 'react';
+import React, { Fragment, Suspense, useMemo } from 'react';
 import Header from './Layouts/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Loading from './Layouts/Loading';
 const MovieDetail = React.lazy(() => import('./Screens/MovieDetail'));
 const Home = React.lazy(() => import('./Screens/Home'));
 const BookMovieDetail = React.lazy(() => import('./Screens/BookMovieDetail'));
@@ -15,7 +16,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<div></div>}>
+      <Suspense fallback={<Fragment><Loading /></Fragment>}>
         <Switch>
           <Route path='/detail/:maPhim' exact component={MovieDetail} />
           <Route path='/chitietphongve/:maLichChieu' exact component={BookMovieDetail} />

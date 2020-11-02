@@ -48,11 +48,8 @@ const SignIn = () => {
         e.preventDefault();
         console.log(value);
         dispatch(Login(value, () => {
-            swal({
-                title: "Thành công !",
-                icon: "success",
-            })
             history.replace(`/`);
+
         }, () => {
             swal({
                 title: "Đăng nhập thất bại !",

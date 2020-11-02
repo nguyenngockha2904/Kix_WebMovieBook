@@ -15,5 +15,12 @@ class UserServices {
             data: { taiKhoan: taiKhoan }
         });
     }
+    updateUser = (data) => {
+        return createConnector({
+            method: 'PUT',
+            url: 'https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung',
+            data
+        });
+    }
 }
 export default UserServices;

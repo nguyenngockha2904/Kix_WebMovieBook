@@ -1,5 +1,5 @@
 import React, { Fragment, memo, useCallback, useMemo, useRef, useState } from 'react';
-import { AppBar, Box, Button, FormControl, makeStyles, Select, Toolbar, withWidth } from '@material-ui/core';
+import { AppBar, Avatar, Box, Button, FormControl, makeStyles, Select, Toolbar, withWidth } from '@material-ui/core';
 import avatarIcon from '../../assets/img/avatarIcon.svg';
 import LogoLight from '../../assets/img/LogoLight.svg';
 import collapseButton from '../../assets/img/collapseButton.svg';
@@ -8,7 +8,315 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createAction } from '../../redux/action';
 import { SET_REQUEST_PAGE } from '../../redux/action/type';
+
+const Header = (props) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const [isShowCollapse, setIsShowCollapse] = useState(false);
+    const [openToolUser, setOpenToolUser] = useState(false);
+    let history = useHistory();
+    const isPage = useSelector((state) => {
+        return state.parent.isPage
+    });
+    const handleShowCollapse = useCallback((value) => (event) => {
+        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setIsShowCollapse(value);
+    }, []);
+
+    const handleScrollTo = useCallback((type, ref) => () => {
+        if (isPage.role === 1) {
+            setIsShowCollapse(false);
+            ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+        } else {
+            dispatch(createAction(SET_REQUEST_PAGE, type));
+
+            history.replace('/');
+
+        }
+    }, [isPage.role]);
+    const handleGoTo = useCallback((value) => () => {
+
+        history.replace(`${value}`);
+    }, []);
+    const handleCLickLogo = useCallback(() => {
+        if (isPage.role === 1) {
+            setIsShowCollapse(false);
+            props.refNav.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+        } else {
+            dispatch(createAction(SET_REQUEST_PAGE, 0));
+
+            history.replace('/');
+
+        }
+    }, [isPage.role]);
+    const width = useMemo(() => {
+        return props.width;
+    }, [props.width]);
+    const user = useMemo(() => {
+        return JSON.parse(localStorage.getItem('user'));
+    }, [localStorage.getItem('user')]);
+    const handleClickUser = useCallback((value) => () => {
+        console.log(user.taiKhoan);
+        if (user.taiKhoan) {
+            setOpenToolUser(value);
+
+        } else {
+            history.replace('/dangnhap');
+        }
+
+    }, [user.taiKhoan]);
+    const handleClickTTCN = useCallback(() => {
+        history.replace('/thongtincanhan');
+        setOpenToolUser(false);
+    }, []);
+    const handleLogout = useCallback(() => {
+        setOpenToolUser(false);
+        localStorage.setItem('user', JSON.stringify({ taiKhoan: '' }));
+        history.replace('/');
+    }, []);
+    return (
+        <AppBar color="inherit" className={classes.header}>
+            {/* side bar */}
+            <div
+                className={classes.sidebar} style={{ width: isShowCollapse ? '100%' : '0%', backgroundColor: !isShowCollapse ? '#77727200' : 'rgb(31 29 29 / 59%)' }}>
+                {isShowCollapse &&
+                    <Fragment>
+                        <div className={classes.divCollapseleft} onClick={handleShowCollapse(false)}></div>
+                        <div className={classes.divCollapse}
+                        >
+                            <div
+                                className={classes.d_Flex_Bet}
+                            >
+                                <div>
+                                    <Button
+                                        onClick={handleGoTo('/dangnhap')}
+                                    >
+                                        <img
+                                            src={avatarIcon}
+                                            alt="avatarIcon"
+                                        />
+                                        <p color="inherit"
+                                            className={`${classes.navLink} ${classes.login}`}
+                                            style={{ padding: '0 10px' }}
+                                        >
+                                            {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
+                                        </p>
+                                    </Button>
+                                </div>
+                                <Button
+                                    onClick={handleShowCollapse(false)}
+                                >
+                                    <img
+                                        src={iconClose}
+                                        alt="iconClose"
+                                        className={classes.iconClose}
+                                    />
+                                </Button>
+                            </div>
+                            <Box
+                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
+                                justifyContent="center"
+                            >
+                                <div
+                                    className={classes.navItem}
+                                >
+                                    <Button
+                                        color="inherit"
+                                        className={classes.navLink}
+                                        onClick={handleScrollTo(1, props.refHomeMovie)}
+                                    >
+                                        Lịch Chiếu
+                            </Button>
+                                </div>
+                                <div></div>
+                            </Box>
+                            <Box
+                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
+                                justifyContent="center"
+                            >
+                                <div
+                                    className={classes.navItem}
+                                >
+                                    <Button
+                                        color="inherit"
+                                        className={classes.navLink}
+                                        onClick={handleScrollTo(2, props.refGroupCine)}
+                                    >
+                                        Cụm rạp
+                            </Button>
+                                </div>
+                                <div></div>
+                            </Box>
+                            <Box
+                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
+                                justifyContent="center"
+                            >
+                                <div
+                                    className={classes.navItem}
+                                >
+                                    <Button
+                                        color="inherit"
+                                        className={classes.navLink}
+                                    >
+                                        Tin tức
+                            </Button>
+                                </div>
+                                <div></div>
+                            </Box>
+                            <Box
+                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
+                                justifyContent="center"
+                            >
+                                <div
+                                    className={classes.navItem}
+                                >
+                                    <Button
+                                        color="inherit"
+                                        className={classes.navLink}
+                                    >
+                                        Ứng dụng
+                                    </Button>
+                                </div>
+                                <div></div>
+                            </Box>
+
+                        </div>
+                    </Fragment>
+                }
+            </div>
+
+
+
+
+            {/* nav bar */}
+            <Toolbar
+                className={classes.toolbar}
+            >
+                <Button
+                    className={classes.menuButton}
+                    onClick={handleCLickLogo}
+                >
+                    <img
+                        src={LogoLight}
+                        alt="LogoLight"
+                        className={classes.logo}
+                    />
+                </Button>
+                {(width === 'md' || width === 'lg' || width === 'xl') && <Fragment>
+                    <Box
+                        display="flex" justifyContent="between"
+                        className={classes.tabControl}
+                    >
+                        <div
+                            className={classes.navItem}
+                        >
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                                onClick={handleScrollTo(1, props.refHomeMovie)}
+
+                            >
+                                Lịch Chiếu
+                        </Button>
+                        </div>
+                        <div
+                            className={classes.navItem}
+                        >
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                                onClick={handleScrollTo(2, props.refGroupCine)}
+                            >
+                                Cụm rạp
+                        </Button>
+                        </div>
+                        <div
+                            className={classes.navItem}
+                        >
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                            >
+                                Tin tức
+                        </Button>
+                        </div>
+                        <div
+                            className={classes.navItem}
+                        >
+                            <Button
+                                color="inherit"
+                                className={classes.navLink}
+                            >
+                                Ứng dụng
+                        </Button>
+                        </div>
+                    </Box>
+                    <Box
+                        display="flex"
+                        className={classes.divRight}
+                    >
+                        <Button
+                            className={`${classes.navItem} ${classes.buttonDN}`}
+                            onClick={handleClickUser(true)}
+                        >
+                            <Avatar
+                                src={avatarIcon}
+                                alt="avatarIcon" className={classes.avatarUser} />
+                            <div
+                                color="inherit"
+                                className={`${classes.navLink} ${classes.login}`}
+
+                            >
+                                {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
+                            </div>
+                        </Button>
+
+                    </Box>
+                </Fragment>}
+                {openToolUser && <div className={classes.boxUser}>
+                    <div className={classes.bgUser} onClick={() => {
+                        setOpenToolUser(false);
+                    }}></div>
+                    <div className={classes.contentBoxUser}>
+                        <div className={classes.navItem}>
+                            <Button className={`${classes.navLink} ${classes.btnUser}`}
+                                onClick={handleClickTTCN}
+                            >
+                                Thông tin cá nhân
+                            </Button>
+                        </div>
+                        <div className={classes.navItem}>
+                            <Button className={`${classes.navLink} ${classes.btnUser}`}
+                                onClick={handleLogout}
+                            >
+                                Đăng xuất
+                        </Button>
+                        </div>
+                    </div>
+                </div>}
+                <div
+                    className={classes.collapse}
+                >
+                    <Button
+                        onClick={handleShowCollapse(true)}
+                    >
+                        <img
+                            src={collapseButton}
+                            alt="collapseButton"
+                            className={classes.collapseButton}
+                        />
+                    </Button>
+                </div>
+            </Toolbar>
+        </AppBar>
+    );
+};
+
 const useStyles = makeStyles((theme) => ({
+    //#region  done
     header: {
         position: 'fixed',
         background: '#ffffffe8',
@@ -210,345 +518,66 @@ const useStyles = makeStyles((theme) => ({
             width: theme.spacing(14.5),
         }
     },
+    //#endregion
     iconDown: {
         marginLeft: theme.spacing(2),
         height: theme.spacing(0.8),
-    }
+    },
+    buttonDN: {
 
+    },
+    avatarUser: {
+        width: '25px',
+        height: '25px',
+        marginRight: '11px',
+        borderRadius: '50%',
+        border: '1px dotted #ececec',
+    },
+    boxUser: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        bottom: 0,
+    },
+    bgUser: {
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        left: 0,
+        bottom: 0,
+        zIndex: '101',
+    },
+    contentBoxUser: {
+        zIndex: '102',
+        background: '#fff',
+        borderRadius: theme.spacing(0.7),
+        maxHeight: '400px',
+        overflow: 'auto',
+        boxShadow: '0 0 7px 2px #9e9e9e94',
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        transform: ' translateY(69px)',
+    },
+    UserItem: {
+        fontSize: theme.spacing(1.4),
+        textTransform: 'capitalize',
+        letterSpacing: theme.spacing(0.07),
+        border: 'none',
+        color: '#9b9b9b',
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(1),
+        '&:hover': {
+            background: '#c7b9b96b',
+
+        }
+    },
+    btnUser: {
+        width: '100%',
+    },
 }));
-const Header = (props) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const [isShowCollapse, setIsShowCollapse] = useState(false);
-    const [isShowModalTT, setIsShowModalTT] = useState(false);
-    const [isShowTT, setIsShowTT] = useState(false);
-    const [tinhThanh, setTinhThanh] = useState('Hồ Chí Minh');
-    let history = useHistory();
-    const isPage = useSelector((state) => {
-        return state.parent.isPage
-    });
-    const handleShowCollapse = useCallback((value) => (event) => {
-        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
 
-        setIsShowCollapse(value);
-    }, []);
-
-    const handleShowModalTT = useCallback((value) => () => {
-        setIsShowModalTT(value);
-    }, []);
-    const handleClickChooseTT = useCallback((value) => () => {
-        setTinhThanh(value);
-        setIsShowModalTT(false);
-        setIsShowTT(false);
-    }, []);
-    const handleShowTT = useCallback((value) => () => {
-        setIsShowTT(value);
-    }, []);
-    const handleScrollTo = useCallback((type, ref) => () => {
-        if (isPage.role === 1) {
-            setIsShowCollapse(false);
-            ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
-        } else {
-            dispatch(createAction(SET_REQUEST_PAGE, type));
-
-            history.replace('/');
-
-        }
-    }, [isPage.role]);
-    const handleGoTo = useCallback((value) => () => {
-
-        history.replace(`${value}`);
-    }, []);
-    const handleCLickLogo = useCallback(() => {
-        if (isPage.role === 1) {
-            setIsShowCollapse(false);
-            props.refNav.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
-        } else {
-            dispatch(createAction(SET_REQUEST_PAGE, 0));
-
-            history.replace('/');
-
-        }
-    }, [isPage.role]);
-    const width = useMemo(() => {
-        return props.width;
-    }, [props.width]);
-    const user = useMemo(() => {
-        return JSON.parse(localStorage.getItem('user'));
-    }, [localStorage.getItem('user')]);
-    const handleDangNhap = useCallback(() => {
-        if (user.taiKhoan) {
-            history.replace('/thongtincanhan');
-
-        } else {
-            history.replace('/dangnhap');
-        }
-    }, []);
-    return (
-        <AppBar color="inherit" className={classes.header}>
-            {/* side bar */}
-            <div
-                className={classes.sidebar} style={{ width: isShowCollapse ? '100%' : '0%', backgroundColor: !isShowCollapse ? '#77727200' : 'rgb(31 29 29 / 59%)' }}>
-                {isShowCollapse &&
-                    <Fragment>
-                        <div className={classes.divCollapseleft} onClick={handleShowCollapse(false)}></div>
-                        <div className={classes.divCollapse}
-                        >
-                            <div
-                                className={classes.d_Flex_Bet}
-                            >
-                                <div>
-                                    <Button
-                                        onClick={handleGoTo('/dangnhap')}
-                                    >
-                                        <img
-                                            src={avatarIcon}
-                                            alt="avatarIcon"
-                                        />
-                                        <p color="inherit"
-                                            className={`${classes.navLink} ${classes.login}`}
-                                            style={{ padding: '0 10px' }}
-                                        >
-                                            {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
-                                        </p>
-                                    </Button>
-                                </div>
-                                <Button
-                                    onClick={handleShowCollapse(false)}
-                                >
-                                    <img
-                                        src={iconClose}
-                                        alt="iconClose"
-                                        className={classes.iconClose}
-                                    />
-                                </Button>
-                            </div>
-                            <Box
-                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
-                                justifyContent="center"
-                            >
-                                <div
-                                    className={classes.navItem}
-                                >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                        onClick={handleScrollTo(1, props.refHomeMovie)}
-                                    >
-                                        Lịch Chiếu
-                            </Button>
-                                </div>
-                                <div></div>
-                            </Box>
-                            <Box
-                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
-                                justifyContent="center"
-                            >
-                                <div
-                                    className={classes.navItem}
-                                >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                        onClick={handleScrollTo(2, props.refGroupCine)}
-                                    >
-                                        Cụm rạp
-                            </Button>
-                                </div>
-                                <div></div>
-                            </Box>
-                            <Box
-                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
-                                justifyContent="center"
-                            >
-                                <div
-                                    className={classes.navItem}
-                                >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                    >
-                                        Tin tức
-                            </Button>
-                                </div>
-                                <div></div>
-                            </Box>
-                            <Box
-                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
-                                justifyContent="center"
-                            >
-                                <div
-                                    className={classes.navItem}
-                                >
-                                    <Button
-                                        color="inherit"
-                                        className={classes.navLink}
-                                    >
-                                        Ứng dụng
-                                    </Button>
-                                </div>
-                                <div></div>
-                            </Box>
-
-                        </div>
-                    </Fragment>
-                }
-            </div>
-
-
-
-
-            {/* nav bar */}
-            <Toolbar
-                className={classes.toolbar}
-            >
-                <Button
-                    className={classes.menuButton}
-                    onClick={handleCLickLogo}
-                >
-                    <img
-                        src={LogoLight}
-                        alt="LogoLight"
-                        className={classes.logo}
-                    />
-                </Button>
-                {(width === 'md' || width === 'lg' || width === 'xl') && <Fragment>
-                    <Box
-                        display="flex" justifyContent="between"
-                        className={classes.tabControl}
-                    >
-                        <div
-                            className={classes.navItem}
-                        >
-                            <Button
-                                color="inherit"
-                                className={classes.navLink}
-                                onClick={handleScrollTo(1, props.refHomeMovie)}
-
-                            >
-                                Lịch Chiếu
-                        </Button>
-                        </div>
-                        <div
-                            className={classes.navItem}
-                        >
-                            <Button
-                                color="inherit"
-                                className={classes.navLink}
-                                onClick={handleScrollTo(2, props.refGroupCine)}
-                            >
-                                Cụm rạp
-                        </Button>
-                        </div>
-                        <div
-                            className={classes.navItem}
-                        >
-                            <Button
-                                color="inherit"
-                                className={classes.navLink}
-                            >
-                                Tin tức
-                        </Button>
-                        </div>
-                        <div
-                            className={classes.navItem}
-                        >
-                            <Button
-                                color="inherit"
-                                className={classes.navLink}
-                            >
-                                Ứng dụng
-                        </Button>
-                        </div>
-                    </Box>
-                    <Box
-                        display="flex"
-                        className={classes.divRight}
-                    >
-                        <Box
-                            display="flex"
-                            justifyContent="between"
-                            className={classes.navItem}
-                        >
-                            <img
-                                src={avatarIcon}
-                                alt="avatarIcon" />
-                            <Button
-                                color="inherit"
-                                className={`${classes.navLink} ${classes.login}`}
-                                onClick={handleDangNhap}
-                            >
-                                {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
-                            </Button>
-                        </Box>
-
-                    </Box>
-                </Fragment>}
-                {/* {isShowTT && <div className={`${classes.modalTT} ${classes.ContentTT}`}>
-                    <div className={classes.bgModalTT} onClick={handleShowTT(false)}></div>
-                    <div className={classes.ModalContent}>
-                        <div className={classes.TtItem}
-                            onClick={handleClickChooseTT('Hồ Chí Minh')}
-                        >
-                            <p className={classes.navLink}
-                            >Hồ Chí Minh</p>
-                        </div>
-                        <div className={classes.TtItem}
-                            onClick={handleClickChooseTT('Đà Nẵng')}
-                        >
-                            <p className={classes.navLink}
-
-                            >Đà Nẵng</p>
-                        </div>
-                        <div className={classes.TtItem}
-                            onClick={handleClickChooseTT('Hà Nội')}
-                        >
-                            <p className={classes.navLink}
-
-                            >Hà Nội</p>
-                        </div>
-                        <div className={classes.TtItem}
-                            onClick={handleClickChooseTT('Vũng Tàu')}
-                        >
-                            <p className={classes.navLink}
-
-                            >Vũng Tàu</p>
-                        </div>
-                        <div className={classes.TtItem}
-                            onClick={handleClickChooseTT('Cần Thơ')}
-                        >
-                            <p className={classes.navLink}
-
-                            >Cần Thơ</p>
-                        </div>
-                        <div className={classes.TtItem} style={{ border: 'none' }}
-                            onClick={handleClickChooseTT('Quy nhơn')}
-                        >
-                            <p className={classes.navLink}
-
-                            >Quy nhơn</p>
-                        </div>
-                    </div>
-                </div>} */}
-                <div
-                    className={classes.collapse}
-                >
-                    <Button
-                        onClick={handleShowCollapse(true)}
-                    >
-                        <img
-                            src={collapseButton}
-                            alt="collapseButton"
-                            className={classes.collapseButton}
-                        />
-                    </Button>
-                </div>
-            </Toolbar>
-        </AppBar>
-    );
-};
 export default memo(withWidth()(Header));
 
 

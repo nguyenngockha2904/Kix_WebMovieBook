@@ -3,16 +3,14 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import Header from '../../Layouts/Header';
 import avatarImg from '../../assets/img/kha.jpg';
 import PropTypes from 'prop-types';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
-import bottomDop from '../../assets/img/bottomDop.svg';
-import topRightDop from '../../assets/img/topRightDop.svg';
 import Footer from '../../Layouts/footer';
-import bgApp from '../../assets/img/bgApp.jpg';
 import UserInfoComponent from '../../Components/user_InfoComponent';
 import RepasswordComponent from '../../Components/user_RespassComponent';
 import HistoryBookComponent from '../../Components/user_HistoryBookComponent';
 import { getInfoUser } from '../../redux/action/userAction';
 import { useDispatch } from 'react-redux';
+import { SET_TYPE_PAGE } from '../../redux/action/type';
+import { createAction } from '../../redux/action';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -57,8 +55,9 @@ const UserInfo = () => {
     useEffect(() => {
         let user = JSON.parse(localStorage.getItem('user'));
         dispatch(getInfoUser(user.taiKhoan, () => {
-            console.log('thanh cong');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }));
+        dispatch(createAction(SET_TYPE_PAGE, 4));
     }, []);
     return (
         <Fragment>

@@ -26,3 +26,12 @@ export const getInfoUser = (taikhoan, Success) => {
         })
     }
 }
+export const updateUser = (data) => {
+    return dispatch => {
+        UserServices.updateUser(data).then(res => {
+            console.log(res.data);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+}

@@ -1,11 +1,12 @@
 import { Button, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, makeStyles, Switch, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../redux/action/userAction';
 
 const UserInfoComponent = () => {
     const classes = useStyles();
-    const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useDispatch();
     const [isChinhSua, setIsChinhSua] = useState(false);
     const [userInfo, setUserInfo] = useState({
         taiKhoan: '',
@@ -13,19 +14,6 @@ const UserInfoComponent = () => {
         email: '',
         soDT: '',
     });
-    const handleClickChinhSua = useCallback(() => {
-        setIsChinhSua(!isChinhSua);
-    }, [isChinhSua]);
-    const handleClickShowPassword = useCallback((value) => () => {
-        setShowPassword(!value);
-    }, []);
-    const handleMouseDownPassword = useCallback((e) => {
-        e.preventDefault();
-    }, []);
-
-    // const credentials = useSelector((state) => {
-    //     return state.qlUser.credentials;
-    // });
     useEffect(() => {
         let user = JSON.parse(localStorage.getItem('user'));
         setUserInfo(user);
@@ -38,7 +26,12 @@ const UserInfoComponent = () => {
     }, [userInfo]);
     const handleSubmit = useCallback((value) => (e) => {
         e.preventDefault();
-        console.log(value);
+        const { taiKhoan, matKhau, email, soDt, maNhom, maLoaiNguoiDung, hoTen } = value;
+        let data = {
+            taiKhoan, matKhau, email, soDt, maNhom, maLoaiNguoiDung, hoTen
+        }
+        // dispatch(updateUser(data));
+        console.log(data);
     }, []);
 
     return (
@@ -73,14 +66,14 @@ const UserInfoComponent = () => {
 
                     />
                 </div>
-                <div className={`${classes.divflex} ${classes.twoForm}`}>
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`} >
+                <div className={`${classes.formGroup} ${classes.divflex} ${classes.itemInfo}`}>
+                    <div className={`${classes.formGroup} ${classes.itemInfo}`} style={{ marginLeft: 0, }} >
                         <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} disabled={true}
                             value={userInfo.taiKhoan}
                             onChange={handleChange}
                             name="taiKhoan" />
                     </div>
-                    <div className={`${classes.formGroup} ${classes.itemInfo}`}  >
+                    <div className={`${classes.formGroup} ${classes.itemInfo}`} style={{ marginRight: 0, }}>
                         <TextField label="số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`} disabled={!isChinhSua}
                             value={userInfo.soDT}
                             onChange={handleChange}
@@ -96,7 +89,7 @@ const UserInfoComponent = () => {
                 </div>
                 <div className={classes.divflex} style={{ opacity: isChinhSua ? '1' : '0' }}>
                     <div className={`${classes.formGroup} ${classes.itemInfo} ${classes.groupBtnChinhSua}`} >
-                        <Button type="submit" className={classes.btnChinhSua} disabled={!isChinhSua} onClick={handleClickChinhSua} >Cập nhật</Button>
+                        <Button type="submit" className={classes.btnChinhSua} disabled={!isChinhSua} >Cập nhật</Button>
                     </div>
                 </div>
             </form>
