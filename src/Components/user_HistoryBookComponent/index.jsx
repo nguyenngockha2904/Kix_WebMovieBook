@@ -18,6 +18,7 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import { Box, Collapse, TableHead, Typography } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { useSelector } from 'react-redux';
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
@@ -170,252 +171,253 @@ TablePaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(tenPhim, maVe, ngayDat, giaVe, thoiLuongPhim, danhSachGhe) {
-    return { tenPhim, maVe, ngayDat, giaVe, thoiLuongPhim, danhSachGhe };
-}
+// function createData(tenPhim, maVe, ngayDat, giaVe, thoiLuongPhim, danhSachGhe) {
+//     return { tenPhim, maVe, ngayDat, giaVe, thoiLuongPhim, danhSachGhe };
+// }
 
-const rows = [
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-    createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66806,
-        tenGhe: "46"
-    },
-    {
-        maHeThongRap: "CGV",
-        tenHeThongRap: "CGV - Hoàng Văn Thụ",
-        maCumRap: "Rạp 2",
-        tenCumRap: "Rạp 2",
-        maRap: 572,
-        tenRap: "Rạp 2",
-        maGhe: 66822,
-        tenGhe: "62"
-    }]),
-];
+// const rows = [
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66806,
+//         tenGhe: "46"
+//     },
+//     {
+//         maHeThongRap: "CGV",
+//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
+//         maCumRap: "Rạp 2",
+//         tenCumRap: "Rạp 2",
+//         maRap: 572,
+//         tenRap: "Rạp 2",
+//         maGhe: 66822,
+//         tenGhe: "62"
+//     }]),
+// ];
+
 
 
 
@@ -423,7 +425,9 @@ const HistoryBookComponent = () => {
     const classes = useStylesHistoryBookComponent();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
+    const rows = useSelector((state) => {
+        return state.qlUser.listHistory
+    });
     const emptyRows = useMemo(() => {
         return rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     }, [rowsPerPage, page]);

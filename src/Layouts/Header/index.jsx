@@ -278,6 +278,14 @@ const Header = (props) => {
     const user = useMemo(() => {
         return JSON.parse(localStorage.getItem('user'));
     }, [localStorage.getItem('user')]);
+    const handleDangNhap = useCallback(() => {
+        if (user.taiKhoan) {
+            history.replace('/thongtincanhan');
+
+        } else {
+            history.replace('/dangnhap');
+        }
+    }, []);
     return (
         <AppBar color="inherit" className={classes.header}>
             {/* side bar */}
@@ -470,7 +478,7 @@ const Header = (props) => {
                             <Button
                                 color="inherit"
                                 className={`${classes.navLink} ${classes.login}`}
-                                onClick={handleGoTo('/dangnhap')}
+                                onClick={handleDangNhap}
                             >
                                 {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
                             </Button>

@@ -73,9 +73,9 @@ const UserInfoComponent = () => {
 
                     />
                 </div>
-                <div className={`${classes.formGroup} ${classes.divflex}`}>
+                <div className={`${classes.divflex} ${classes.twoForm}`}>
                     <div className={`${classes.formGroup} ${classes.itemInfo}`} >
-                        <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} disabled={!isChinhSua}
+                        <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} disabled={true}
                             value={userInfo.taiKhoan}
                             onChange={handleChange}
                             name="taiKhoan" />
@@ -172,6 +172,9 @@ const useStyles = makeStyles((theme) => ({
     },
     groupBtnChinhSua: {
         textAlign: ' center',
+    },
+    twoForm: {
+        padding: 0,
     },
     btnChinhSua: {
         minWidth: '1px',

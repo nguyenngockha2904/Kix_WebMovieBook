@@ -12,9 +12,7 @@ function App() {
   const isPage = useSelector((state) => {
     return state.parent.isPage.role
   });
-  const user = useMemo(() => {
-    return JSON.parse(localStorage.getItem('user'));
-  }, []);
+
   return (
     <BrowserRouter>
       <Suspense fallback={<div></div>}>
@@ -23,7 +21,7 @@ function App() {
           <Route path='/chitietphongve/:maLichChieu' exact component={BookMovieDetail} />
           <Route path='/dangnhap' exact component={SignIn} />
           <Route path='/dangky' exact component={SignUp} />
-          {user.taiKhoan && <Route path='/thongtincanhan' exact component={UserInfo} />}
+          <Route path='/thongtincanhan' exact component={UserInfo} />
           <Route path='/' component={Home} />
         </Switch>
       </Suspense>
