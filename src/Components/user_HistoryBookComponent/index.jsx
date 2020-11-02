@@ -61,6 +61,11 @@ const Row = (props) => {
     }, []);
     const [open, setOpen] = useState(false);
     const classes = useRowStyles();
+    const changeFormatDate = useCallback((value) => {
+        let d = new Date(value);
+        let date = `${(d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1)}.${d.getDate() > 9 ? d.getDate() : ('0' + d.getDate())}.${d.getFullYear()} -  ${d.getHours() > 9 ? d.getHours() : '0' + d.getHours()}:${d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes()}`;
+        return date;
+    }, []);
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
@@ -70,7 +75,7 @@ const Row = (props) => {
                     </IconButton>
                 </TableCell>
                 <TableCell align="center" className={classes.thead}>{row.tenPhim}</TableCell>
-                <TableCell align="center">{row.ngayDat}</TableCell>
+                <TableCell align="center">{changeFormatDate(row.ngayDat)}</TableCell>
                 <TableCell align="center">{row.maVe}</TableCell>
                 <TableCell align="center">{row.giaVe.toLocaleString()}</TableCell>
             </TableRow>
@@ -107,7 +112,7 @@ const Row = (props) => {
     );
 }
 
-
+//#region TablePaginationActions 
 const TablePaginationActions = (props) => {
     const classes = useStylesTablePaginationActions();
     const theme = useTheme();
@@ -173,255 +178,7 @@ TablePaginationActions.propTypes = {
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
 };
-
-// function createData(tenPhim, maVe, ngayDat, giaVe, thoiLuongPhim, danhSachGhe) {
-//     return { tenPhim, maVe, ngayDat, giaVe, thoiLuongPhim, danhSachGhe };
-// }
-
-// const rows = [
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-//     createData('Hai đứa trẻ', 14670, '2020-10-20T21:45:51.03', 90000, 120, [{
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66806,
-//         tenGhe: "46"
-//     },
-//     {
-//         maHeThongRap: "CGV",
-//         tenHeThongRap: "CGV - Hoàng Văn Thụ",
-//         maCumRap: "Rạp 2",
-//         tenCumRap: "Rạp 2",
-//         maRap: 572,
-//         tenRap: "Rạp 2",
-//         maGhe: 66822,
-//         tenGhe: "62"
-//     }]),
-// ];
-
-
+//#endregion
 
 
 const HistoryBookComponent = () => {
@@ -562,6 +319,7 @@ const useStylesHistoryBookComponent = makeStyles((theme) => ({
         textTransform: 'capitalize',
         fontFamily: 'SF Medium',
         letterSpacing: '0.5px',
+        marginBottom: '26px',
     },
     groupBtnDatVe: {
 

@@ -14,6 +14,7 @@ const UserReducer = (state = initialState, { payload, type }) => {
             return { ...state };
         }
         case GET_LISTHISTORY: {
+            state.credentials = payload;
             state.listHistory = payload.thongTinDatVe;
             return { ...state };
         }

@@ -54,26 +54,25 @@ const Header = (props) => {
     const width = useMemo(() => {
         return props.width;
     }, [props.width]);
-    const user = useMemo(() => {
-        return JSON.parse(localStorage.getItem('user'));
-    }, [localStorage.getItem('user')]);
+    const username = useMemo(() => {
+        return localStorage.getItem('username');
+    }, [localStorage.getItem('username')]);
     const handleClickUser = useCallback((value) => () => {
-        console.log(user.taiKhoan);
-        if (user.taiKhoan) {
+        if (username) {
             setOpenToolUser(value);
 
         } else {
             history.replace('/dangnhap');
         }
 
-    }, [user.taiKhoan]);
+    }, [username]);
     const handleClickTTCN = useCallback(() => {
         history.replace('/thongtincanhan');
         setOpenToolUser(false);
     }, []);
     const handleLogout = useCallback(() => {
         setOpenToolUser(false);
-        localStorage.setItem('user', JSON.stringify({ taiKhoan: '' }));
+        localStorage.setItem('username', '');
         history.replace('/');
     }, []);
     return (
@@ -101,7 +100,7 @@ const Header = (props) => {
                                             className={`${classes.navLink} ${classes.login}`}
                                             style={{ padding: '0 10px' }}
                                         >
-                                            {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
+                                            {username ? username : 'Đăng Nhập'}
                                         </p>
                                     </Button>
                                 </div>
@@ -269,7 +268,7 @@ const Header = (props) => {
                                 className={`${classes.navLink} ${classes.login}`}
 
                             >
-                                {user.taiKhoan ? user.taiKhoan : 'Đăng Nhập'}
+                                {username ? username : 'Đăng Nhập'}
                             </div>
                         </Button>
 

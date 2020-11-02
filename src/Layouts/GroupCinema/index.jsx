@@ -205,7 +205,7 @@ const GroupCine = (props) => {
         if (listRap) {
             return listRap.map((item, index) => {
                 return (
-                    <Button variant="contained" color="inherit" key={index} onClick={handleClickTabRap(item)} className={classes.tabRapPhimButton}
+                    <div variant="contained" color="inherit" key={index} onClick={handleClickTabRap(item)} className={classes.tabRapPhimButton}
                         style={{ opacity: item.isActived ? '1' : '0.5' }}
                     >
                         <div className={`${classes.tabRapPhimItem} `}>
@@ -218,14 +218,14 @@ const GroupCine = (props) => {
                                     <div className={classes.hightlineTenRap}>{item.tenCumRap.trim().slice(0, item.tenCumRap.trim().indexOf(' '))}</div>
                                     {item.tenCumRap.trim().slice(item.tenCumRap.trim().indexOf(' '))}
                                 </div>
-                                <div className={classes.address}>{item.diaChi}</div>
+                                <div className={classes.address}>{item.diaChi.substr(0, 24)}{item.diaChi.length > 24 && '...'}</div>
                                 <Box textAlign="left">
-                                    <div className={classes.btnDetail}>[chi tiết]</div>
+                                    <Button disabled={!item.isActived} className={classes.btnDetail}>[Xem bản đồ]</Button>
                                 </Box>
                             </div>
                         </div>
                         {(index !== (listRap.length - 1)) && <div className={classes.line}></div>}
-                    </Button>
+                    </div>
                 )
             });
         }
@@ -291,7 +291,7 @@ const GroupCine = (props) => {
                                 <div>
                                     <div className={classes.namePhim}>
                                         <div className={classes.general}>C18</div>
-                                        {(item.tenPhim).slice(0, 40)}{item.tenPhim.length > 100 && '...'}
+                                        {(item.tenPhim).substr(0, 40)}{item.tenPhim.length > 100 && '...'}
                                     </div>
                                     <div className={classes.totalTime}>91 phút - TIX 7.9 - IMDb 0</div>
                                 </div>
@@ -551,6 +551,7 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'SF Text Regular',
         textAlign: 'left',
         fontSize: theme.spacing(1.1),
+        width: '75%',
     },
     hightlineTenRap: {
         color: '#FB4226',

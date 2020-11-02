@@ -7,7 +7,7 @@ export const Login = (data, Success, fail) => {
         UserServices.login(data).then((res) => {
             // console.log(res.data);
             localStorage.setItem('accessToken', res.data.accessToken);
-            localStorage.setItem('user', JSON.stringify(res.data));
+            localStorage.setItem('username', res.data.taiKhoan);
             dispatch(createAction(SET_CREDENTIALS, res.data));
             Success();
         }).catch((err) => {

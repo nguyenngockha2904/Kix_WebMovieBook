@@ -8,10 +8,11 @@ import UserInfoComponent from '../../Components/user_InfoComponent';
 import RepasswordComponent from '../../Components/user_RespassComponent';
 import HistoryBookComponent from '../../Components/user_HistoryBookComponent';
 import { getInfoUser } from '../../redux/action/userAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
 import { useHistory } from 'react-router-dom';
+import Loader from '../../Layouts/Loading';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -52,66 +53,76 @@ const UserInfo = () => {
     const history = useHistory();
     const [value, setValue] = useState(0);
     const refUser = useRef(null);
+    const [loading, setLoading] = useState(true);
     const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
         refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
     }, []);
+    const us = useSelector((state) => {
+        return state.qlUser.credentials
+    });
     useEffect(() => {
-        let user = JSON.parse(localStorage.getItem('user'));
-        dispatch(getInfoUser(user.taiKhoan, () => {
+        let username = localStorage.getItem('username');
+        dispatch(getInfoUser(username, () => {
+            setLoading(false);
             refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
         }));
         dispatch(createAction(SET_TYPE_PAGE, 4));
     }, []);
     const handleLogout = useCallback(() => {
-        localStorage.setItem('user', JSON.stringify({ taiKhoan: '' }));
+        localStorage.setItem('username', '');
         history.replace('/');
     }, []);
     return (
         <Fragment>
-            <div ref={refUser} className={classes.divRef}></div>
-            <Header />
-            <div className={classes.root}>
-                <div className={classes.wrapper}>
-                    <div className={classes.groupAvatar}>
-                        <Avatar alt='avatarImg' src={avatarImg} className={classes.avatarImg} />
-                        <div className={`${classes.text} ${classes.name}`}>Nguyễn Ngọc Kha</div>
-                        <Tabs
-                            value={value}
-                            onChange={handleChange}
-                            indicatorColor="primary"
-                            textcolor="primary"
-                            variant="fullWidth"
-                            aria-label="full width tabs example"
-                        >
-                            <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', }} />
-                            <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
-                            <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
-                        </Tabs>
-                        <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }}
-                            onClick={handleLogout}
-                        >Đăng xuất</Button>
-                    </div>
-                    <div className={classes.groupTab}>
-                        <Fragment>
-                            <TabPanel
-                                value={value} index={0} className={` ${classes.tabContent}`}>
-                                <UserInfoComponent />
+            {loading ? <Loader /> :
+                <Fragment>
 
-                            </TabPanel>
-                            <TabPanel value={value} index={1} className={classes.tabContent}>
-                                <RepasswordComponent />
-                            </TabPanel>
-                            <TabPanel value={value} index={2} className={classes.tabContent}>
-                                <HistoryBookComponent />
-                            </TabPanel>
-                        </Fragment>
-                    </div>
-                </div>
+                    <div ref={refUser} className={classes.divRef}></div>
+                    <Header />
+                    <div className={classes.root}>
+                        <div className={classes.wrapper}>
+                            <div className={classes.groupAvatar}>
+                                <Avatar alt='avatarImg' src={avatarImg} className={classes.avatarImg} />
+                                <div className={`${classes.text} ${classes.name}`}>{us.hoTen}</div>
+                                <Tabs
+                                    value={value}
+                                    onChange={handleChange}
+                                    indicatorColor="primary"
+                                    textcolor="primary"
+                                    variant="fullWidth"
+                                    aria-label="full width tabs example"
+                                >
+                                    <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', }} />
+                                    <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
+                                    <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
+                                </Tabs>
+                                <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }}
+                                    onClick={handleLogout}
+                                >Đăng xuất</Button>
+                            </div>
+                            <div className={classes.groupTab}>
+                                <Fragment>
+                                    <TabPanel
+                                        value={value} index={0} className={` ${classes.tabContent}`}>
+                                        <UserInfoComponent />
 
-            </div>
-            <Footer />
+                                    </TabPanel>
+                                    <TabPanel value={value} index={1} className={classes.tabContent}>
+                                        <RepasswordComponent />
+                                    </TabPanel>
+                                    <TabPanel value={value} index={2} className={classes.tabContent}>
+                                        <HistoryBookComponent />
+                                    </TabPanel>
+                                </Fragment>
+                            </div>
+                        </div>
+
+                    </div>
+                    <Footer />
+                </Fragment>}
         </Fragment>
+
     );
 };
 const useStyles = makeStyles((theme) => ({
@@ -138,6 +149,7 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiTab-fullWidth': {
             width: '100%',
             background: '#fff',
+            minHeight: ' 35px',
         },
         '& .MuiPaper-elevation4': {
             boxShadow: 'none',
@@ -190,7 +202,7 @@ const useStyles = makeStyles((theme) => ({
     name: {
         textAlign: ' center',
         fontSize: theme.spacing(2),
-        marginTop: '25px',
+        margin: '25px 0',
     },
     textInfo: {
         textAlign: 'left',

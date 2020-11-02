@@ -14,6 +14,7 @@ import ModalVideoMovie from '../../Components/ModalShowVideo';
 import { createAction } from '../../redux/action';
 import Header from '../../Layouts/Header';
 import { SET_DATA_LIST_PHONGVE_MALICHCHIEU, SET_TYPE_PAGE } from '../../redux/action/type';
+import ModalMap from '../../Components/ModalMap';
 const useStyle = makeStyles((theme) => ({
     homeRoot: {},
     space: {
@@ -87,6 +88,7 @@ const Home = () => {
             </Fragment>
             }
             <Footer />
+            {/* <ModalMap location="Đà lạt , Việt Nam" /> */}
         </div>
     );
 };

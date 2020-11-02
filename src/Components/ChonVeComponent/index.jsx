@@ -113,7 +113,7 @@ const ChonVeComponent = (props) => {
     }, []);
     const changeFormatDate = useCallback((value) => {
         let d = new Date(value);
-        let date = `${(d.getMonth() + 1) > 10 ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1)}.${d.getDate() > 10 ? d.getDate() : ('0' + d.getDate())}.${d.getFullYear()}`;
+        let date = `${(d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1)}.${d.getDate() > 9 ? d.getDate() : ('0' + d.getDate())}.${d.getFullYear()}`;
         return date;
     }, []);
     const handleClickCustomBtn = useCallback((name, value) => () => {

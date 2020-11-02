@@ -1,6 +1,6 @@
 import { Button, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, makeStyles, Switch, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../redux/action/userAction';
 
@@ -14,10 +14,12 @@ const UserInfoComponent = () => {
         email: '',
         soDT: '',
     });
+    const us = useSelector((state) => {
+        return state.qlUser.credentials
+    });
     useEffect(() => {
-        let user = JSON.parse(localStorage.getItem('user'));
-        setUserInfo(user);
-    }, [localStorage.getItem('user')]);
+        setUserInfo(us);
+    }, [us]);
     const handleChangeSwitch = useCallback((e) => {
         setIsChinhSua(e.target.checked);
     }, []);
@@ -179,4 +181,4 @@ const useStyles = makeStyles((theme) => ({
         transition: 'all 0.5s',
     },
 }));
-export default UserInfoComponent;
+export default memo(UserInfoComponent);
