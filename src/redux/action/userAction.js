@@ -1,6 +1,6 @@
 import { createAction } from '.';
 import { UserServices } from '../../services';
-import { SET_CREDENTIALS } from './type';
+import { GET_LISTHISTORY, SET_CREDENTIALS } from './type';
 
 export const Login = (data, Success, fail) => {
     return dispatch => {
@@ -13,6 +13,16 @@ export const Login = (data, Success, fail) => {
         }).catch((err) => {
             console.log(err);
             fail();
+        })
+    }
+}
+export const getInfoUser = (taikhoan, Success) => {
+    return dispatch => {
+        UserServices.getInfoUser(taikhoan).then((res) => {
+            dispatch(createAction(GET_LISTHISTORY, res.data));
+            Success();
+        }).catch(err => {
+            console.log(err);
         })
     }
 }

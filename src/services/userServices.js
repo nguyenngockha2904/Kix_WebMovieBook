@@ -8,5 +8,12 @@ class UserServices {
             data,
         });
     }
+    getInfoUser = (taiKhoan) => {
+        return createConnector({
+            method: 'POST',
+            url: 'https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/ThongTinTaiKhoan',
+            data: { taiKhoan: taiKhoan }
+        });
+    }
 }
 export default UserServices;

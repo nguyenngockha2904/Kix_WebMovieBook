@@ -52,7 +52,7 @@ const SignIn = () => {
                 title: "Thành công !",
                 icon: "success",
             })
-            history.replace(`/thongtincanhan`);
+            history.replace(`/`);
         }, () => {
             swal({
                 title: "Đăng nhập thất bại !",

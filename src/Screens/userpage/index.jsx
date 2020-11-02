@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, Tab, Tabs, TextField } from '@material-ui/core';
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import Header from '../../Layouts/Header';
 import avatarImg from '../../assets/img/kha.jpg';
 import PropTypes from 'prop-types';
@@ -11,6 +11,8 @@ import bgApp from '../../assets/img/bgApp.jpg';
 import UserInfoComponent from '../../Components/user_InfoComponent';
 import RepasswordComponent from '../../Components/user_RespassComponent';
 import HistoryBookComponent from '../../Components/user_HistoryBookComponent';
+import { getInfoUser } from '../../redux/action/userAction';
+import { useDispatch } from 'react-redux';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -47,11 +49,17 @@ const a11yProps = (index) => {
 
 const UserInfo = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [value, setValue] = useState(0);
     const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
     }, []);
-
+    useEffect(() => {
+        let user = JSON.parse(localStorage.getItem('user'));
+        dispatch(getInfoUser(user.taiKhoan, () => {
+            console.log('thanh cong');
+        }));
+    }, []);
     return (
         <Fragment>
             <Header />
