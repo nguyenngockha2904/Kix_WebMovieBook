@@ -10,11 +10,13 @@ let initialState = {
 const UserReducer = (state = initialState, { payload, type }) => {
     switch (type) {
         case SET_CREDENTIALS: {
-            state.credentials = payload;
+            let maLoaiNguoiDung = localStorage.getItem('maLoaiNguoiDung');
+            state.credentials = { ...payload, maLoaiNguoiDung };
             return { ...state };
         }
         case GET_LISTHISTORY: {
-            state.credentials = payload;
+            let maLoaiNguoiDung = localStorage.getItem('maLoaiNguoiDung');
+            state.credentials = { ...payload, maLoaiNguoiDung };
             state.listHistory = payload.thongTinDatVe;
             return { ...state };
         }

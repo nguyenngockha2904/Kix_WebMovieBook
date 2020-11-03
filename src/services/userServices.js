@@ -16,6 +16,7 @@ class UserServices {
         });
     }
     updateUser = (data) => {
+        // console.log(data);
         return createConnector({
             method: 'PUT',
             url: 'https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung',

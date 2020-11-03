@@ -5,9 +5,9 @@ import { GET_LISTHISTORY, SET_CREDENTIALS } from './type';
 export const Login = (data, Success, fail) => {
     return dispatch => {
         UserServices.login(data).then((res) => {
-            // console.log(res.data);
             localStorage.setItem('accessToken', res.data.accessToken);
             localStorage.setItem('username', res.data.taiKhoan);
+            localStorage.setItem('maLoaiNguoiDung', res.data.maLoaiNguoiDung);
             dispatch(createAction(SET_CREDENTIALS, res.data));
             Success();
         }).catch((err) => {
@@ -26,12 +26,15 @@ export const getInfoUser = (taikhoan, Success) => {
         })
     }
 }
-export const updateUser = (data) => {
+export const updateUser = (data, callback, fail) => {
     return dispatch => {
         UserServices.updateUser(data).then(res => {
-            console.log(res.data);
+            // console.log(res.data);
+            dispatch(createAction(SET_CREDENTIALS, res.data));
+            callback();
         }).catch(err => {
             console.log(err);
+            fail();
         })
     }
 }

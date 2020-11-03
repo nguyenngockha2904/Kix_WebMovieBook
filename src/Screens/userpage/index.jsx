@@ -1,7 +1,7 @@
 import { AppBar, Avatar, Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, Tab, Tabs, TextField } from '@material-ui/core';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import Header from '../../Layouts/Header';
-import avatarImg from '../../assets/img/kha.jpg';
+import avatarImg from '../../assets/img/Noavatar.svg';
 import PropTypes from 'prop-types';
 import Footer from '../../Layouts/footer';
 import UserInfoComponent from '../../Components/user_InfoComponent';
@@ -58,19 +58,29 @@ const UserInfo = () => {
         setValue(newValue);
         refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
     }, []);
+    const setTitle = useCallback((title) => {
+        const prevTitle = document.title;
+        document.title = title;
+        return () => document.title = prevTitle;
+    }, []);
     const us = useSelector((state) => {
         return state.qlUser.credentials
     });
+    const handleSetValue = useCallback((value) => {
+        setValue(value);
+    }, []);
     useEffect(() => {
         let username = localStorage.getItem('username');
         dispatch(getInfoUser(username, () => {
             setLoading(false);
             refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+            setTitle('Kix - Thông tin cá nhân !! ');
         }));
         dispatch(createAction(SET_TYPE_PAGE, 4));
     }, []);
     const handleLogout = useCallback(() => {
         localStorage.setItem('username', '');
+        localStorage.setItem('maLoaiNguoiDung', '');
         history.replace('/');
     }, []);
     return (
@@ -109,7 +119,7 @@ const UserInfo = () => {
 
                                     </TabPanel>
                                     <TabPanel value={value} index={1} className={classes.tabContent}>
-                                        <RepasswordComponent />
+                                        <RepasswordComponent handleSetValue={handleSetValue} />
                                     </TabPanel>
                                     <TabPanel value={value} index={2} className={classes.tabContent}>
                                         <HistoryBookComponent />

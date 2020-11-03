@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* min-height: 1000px; */
   height: "auto";
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", sans-serif SF Medium;
   color: "#4a4a4a";
   box-sizing: border-box;
   /* fontFamily: 'SF Medium', */
@@ -70,4 +70,25 @@ body::-webkit-scrollbar-thumb:hover {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+body .swal-title {
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 600;
+  text-transform: none;
+  position: relative;
+  display: block;
+  padding: 13px 16px;
+  font-size: 20px;
+  line-height: normal;
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 0;
+  font-family: "SF Medium";
+  letter-spacing: 0.5px;
+}
+
+body .swal-text {
+  font-size: 18px;
+  text-align: center;
 }

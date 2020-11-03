@@ -73,6 +73,7 @@ const Header = (props) => {
     const handleLogout = useCallback(() => {
         setOpenToolUser(false);
         localStorage.setItem('username', '');
+        localStorage.setItem('maLoaiNguoiDung', '');
         history.replace('/');
     }, []);
     return (
