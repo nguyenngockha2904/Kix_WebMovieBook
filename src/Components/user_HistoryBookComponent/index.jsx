@@ -22,10 +22,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_REQUEST_PAGE } from '../../redux/action/type';
 import { useHistory } from 'react-router-dom';
-const useRowStyles = makeStyles({
+const useRowStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
             borderBottom: 'unset',
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+            '& $thead': {
+                fontSize: ' 13px',
+                padding: '1% 1px',
+            },
+            '& .MuiTableCell-root': {
+                fontSize: ' 12px',
+            },
         },
     },
     titleDiv: {
@@ -36,12 +45,15 @@ const useRowStyles = makeStyles({
         fontSize: ' 16px',
         color: '#000',
         textTransform: ' capitalize',
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: ' 12px',
+        },
     },
     thead: {
         color: '#000',
         textTransform: ' capitalize',
     }
-});
+}));
 const StyledTableCell = withStyles((theme) => ({
     body: {
         fontSize: 14,
@@ -170,6 +182,7 @@ const useStylesTablePaginationActions = makeStyles((theme) => ({
     root: {
         flexShrink: 0,
         marginLeft: theme.spacing(2.5),
+
     },
 }));
 TablePaginationActions.propTypes = {
@@ -209,7 +222,10 @@ const HistoryBookComponent = () => {
     return (
         <div className={classes.root}>
             {rows.length !== 0 ? <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="  table">
+                <Table className={classes.table} aria-label="  table" style={{
+                    height: '500px',
+                    maxHeight: '500px'
+                }}>
                     <TableHead>
                         <TableRow>
                             <TableCell />
@@ -237,10 +253,11 @@ const HistoryBookComponent = () => {
                         <TableRow>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                colSpan={3}
+                                colSpan={12}
                                 count={rows.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                labelRowsPerPage="số vé trên trang"
                                 SelectProps={{
                                     inputProps: { 'aria-label': 'rows per page' },
                                     native: true,
@@ -269,10 +286,14 @@ const HistoryBookComponent = () => {
 const useStylesHistoryBookComponent = makeStyles((theme) => ({
     root: {
         height: '100%',
+        background: '#fff',
+        minHeight: '450px',
+        borderRadius: '10px',
         '& .MuiTableContainer-root': {
             height: '100%',
             '&::-webkit-scrollbar ': {
                 width: '0px',
+                height: '0px',
             },
             '&::-webkit-scrollbar-track': {
                 background: 'rgb(214 214 214)',
@@ -298,10 +319,22 @@ const useStylesHistoryBookComponent = makeStyles((theme) => ({
             color: '#000',
             textTransform: ' capitalize',
             padding: '10px',
-        }
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+            '& $thead': {
+                fontSize: ' 13px',
+                padding: '1% 1px',
+            },
+            '& .MuiTableCell-root': {
+                fontSize: ' 12px',
+            },
+        },
     },
     table: {
         minWidth: 500,
+        '& .MuiTablePagination-caption': {
+            fontSize: '13px',
+        }
 
     },
     thead: {
@@ -320,6 +353,9 @@ const useStylesHistoryBookComponent = makeStyles((theme) => ({
         fontFamily: 'SF Medium',
         letterSpacing: '0.5px',
         marginBottom: '26px',
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: theme.spacing(1.3),
+        },
     },
     groupBtnDatVe: {
 
@@ -332,6 +368,9 @@ const useStylesHistoryBookComponent = makeStyles((theme) => ({
         background: ' linear-gradient(45deg, #6b00b6, #440074)',
         borderRadius: '6px',
         transition: 'all 0.5s',
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: theme.spacing(1.2),
+        },
     },
 }));
 export default memo(HistoryBookComponent);

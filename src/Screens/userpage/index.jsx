@@ -23,7 +23,7 @@ const TabPanel = (props) => {
             id={`full-width-tabpanel-${index}`}
             aria-labelledby={`full-width-tab-${index}`}
             {...other}
-            style={{ overflow: 'hidden' }}
+            style={{ ...props.style, overflow: 'hidden' }}
         >
             {value === index && (
                 <Fragment>
@@ -111,17 +111,40 @@ const UserInfo = () => {
                                     onClick={handleLogout}
                                 >Đăng xuất</Button>
                             </div>
+                            <div className={classes.navApp}>
+                                <AppBar position="static" color="default" style={{
+                                    marginBottom: ' 10px',
+                                }}>
+                                    <Tabs
+                                        value={value}
+                                        onChange={handleChange}
+                                        indicatorColor="primary"
+                                        textColor="primary"
+                                        variant="fullWidth"
+                                        aria-label="full width tabs example"
+                                    >
+                                        <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', borderBottomLeftRadius: '10px', }} />
+                                        <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', }} />
+                                        <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', borderBottomRightRadius: '10px' }} />
+                                    </Tabs>
+                                </AppBar>
+                            </div>
+
                             <div className={classes.groupTab}>
                                 <Fragment>
                                     <TabPanel
-                                        value={value} index={0} className={` ${classes.tabContent}`}>
+                                        value={value} index={0} className={` ${classes.tabContent}`}
+                                        style={{ height: 'auto' }}
+                                    >
                                         <UserInfoComponent />
 
                                     </TabPanel>
-                                    <TabPanel value={value} index={1} className={classes.tabContent}>
+                                    <TabPanel value={value} index={1} className={classes.tabContent} style={{ height: 'auto' }}>
                                         <RepasswordComponent handleSetValue={handleSetValue} />
                                     </TabPanel>
-                                    <TabPanel value={value} index={2} className={classes.tabContent}>
+                                    <TabPanel value={value} index={2} className={classes.tabContent}
+                                        style={{ display: 'contents', position: 'relative', }}
+                                    >
                                         <HistoryBookComponent />
                                     </TabPanel>
                                 </Fragment>
@@ -185,9 +208,43 @@ const useStyles = makeStyles((theme) => ({
             fontSize: ' 14px',
             letterSpacing: '0.1px',
             fontFamily: 'SF Medium',
+            [theme.breakpoints.down(`${961}`)]: {
+                fontSize: theme.spacing(1.2),
+            },
         },
         '& .Mui-selected': {
             color: '#6b00b6'
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+            display: 'block',
+            '& .MuiTabs-flexContainer': {
+                display: 'flex !important',
+            },
+            '& .MuiTabs-scroller': {
+                whiteSpace: 'pre-wrap',
+            },
+            '& .MuiTab-wrapper': {
+                fontSize: ' 15px',
+                letterSpacing: '-0.5px',
+            },
+            '& .MuiTab-fullWidth': {
+                width: '100%',
+                background: '#fff',
+                minHeight: ' 35px',
+                padding: '0 2px',
+            },
+        },
+        [theme.breakpoints.down(`${769}`)]: {
+            '& .MuiTab-wrapper': {
+                fontSize: ' 13px',
+            },
+
+        },
+        [theme.breakpoints.down(`${434}`)]: {
+            '& .MuiTab-wrapper': {
+                fontSize: ' 11px',
+            },
+
         },
     },
     groupAvatar: {
@@ -200,6 +257,9 @@ const useStyles = makeStyles((theme) => ({
             width: ' 160px',
             height: '160px',
             margin: '21px auto',
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+            display: 'none',
         },
     },
     avatarImg: {
@@ -227,11 +287,21 @@ const useStyles = makeStyles((theme) => ({
         margin: '0.5%',
         borderRadius: '10px',
         position: 'relative',
+        [theme.breakpoints.down(`${961}`)]: {
+            margin: '0',
+        },
     },
     tabContent: {
         height: '100%',
         background: '#fff',
         borderRadius: '10px',
+        minHeight: '450px',
+    },
+    navApp: {
+        display: 'none',
+        [theme.breakpoints.down(`${961}`)]: {
+            display: 'block',
+        },
     },
     textDefault: {
         fontFamily: 'SF Medium',

@@ -321,8 +321,9 @@ const useStyles = makeStyles((theme) => ({
             border: 'none',
         },
         '& .MuiInputLabel-formControl': {
+
             color: '#000',
-            fontSize: theme.spacing(1.4),
+            fontSize: theme.spacing(1.6),
             textTransform: 'capitalize',
             fontFamily: 'SF Medium',
             letterSpacing: '0.5px',
@@ -335,10 +336,27 @@ const useStyles = makeStyles((theme) => ({
             width: '74%',
             marginRight: 'auto',
             textAlign: 'center',
-            fontSize: '16px',
+            fontSize: '15px',
             letterSpacing: '1px',
             color: '#440074',
-        }
+            fontFamily: 'SF Medium',
+        },
+        '& .MuiSvgIcon-root': {
+            width: '0.7em',
+            height: '0.7em',
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+
+            '& .MuiInputBase-input': {
+                fontSize: theme.spacing(1.2),
+            },
+        },
+        [theme.breakpoints.down(`${768}`)]: {
+            '& .MuiInputLabel-formControl': {
+                fontSize: theme.spacing(1.3),
+
+            },
+        },
     },
     btnGoto: {
         color: '#6B00B6',

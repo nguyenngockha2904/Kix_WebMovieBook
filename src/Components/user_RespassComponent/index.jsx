@@ -239,11 +239,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     divTabTT: {
-        position: ' absolute',
-        left: '50%',
-        top: '50%',
+        // position: ' absolute',
+        // left: '50%',
+        // top: '50%',
+        // width: '70%',
+        // transform: 'translate(-50%, -50%)',
         width: '70%',
-        transform: 'translate(-50%, -50%)',
+        margin: '5% auto',
     },
     textDefault: {
         fontFamily: 'SF Medium',
@@ -253,6 +255,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(2.3),
         textAlign: 'center',
         color: '#000',
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: theme.spacing(1.8),
+        },
     },
     formGroup: {
         width: '80%',
@@ -276,11 +281,10 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiInputLabel-formControl': {
 
             color: '#000',
-            fontSize: theme.spacing(1.3),
+            fontSize: theme.spacing(1.6),
             textTransform: 'capitalize',
             fontFamily: 'SF Medium',
             letterSpacing: '0.5px',
-
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '1px solid #440074',
@@ -290,10 +294,27 @@ const useStyles = makeStyles((theme) => ({
             width: '74%',
             marginRight: 'auto',
             textAlign: 'center',
-            fontSize: '16px',
+            fontSize: '15px',
             letterSpacing: '1px',
             color: '#440074',
-        }
+            fontFamily: 'SF Medium',
+        },
+        '& .MuiSvgIcon-root': {
+            width: '0.7em',
+            height: '0.7em',
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+
+            '& .MuiInputBase-input': {
+                fontSize: theme.spacing(1.2),
+            },
+        },
+        [theme.breakpoints.down(`${768}`)]: {
+            '& .MuiInputLabel-formControl': {
+                fontSize: theme.spacing(1.3),
+
+            },
+        },
     },
     itemInfo: {
         width: '100%',
@@ -309,6 +330,9 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'capitalize',
         background: ' linear-gradient(45deg, #6b00b6, #440074)',
         borderRadius: '6px',
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: theme.spacing(1.2),
+        },
     },
     messageErr: {
         marginTop: '5px',
