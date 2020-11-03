@@ -10,7 +10,6 @@ import { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetAllMovie } from '../../redux/action/movieAction';
 import { GetAllTheaterSystem } from '../../redux/action/TheaterSystemAction';
-import ModalVideoMovie from '../../Components/ModalShowVideo';
 import { createAction } from '../../redux/action';
 import Header from '../../Layouts/Header';
 import { SET_DATA_LIST_PHONGVE_MALICHCHIEU, SET_TYPE_PAGE } from '../../redux/action/type';

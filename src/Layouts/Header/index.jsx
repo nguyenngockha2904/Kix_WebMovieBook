@@ -36,10 +36,6 @@ const Header = (props) => {
 
         }
     }, [isPage.role]);
-    const handleGoTo = useCallback((value) => () => {
-
-        history.replace(`${value}`);
-    }, []);
     const handleCLickLogo = useCallback(() => {
         if (isPage.role === 1) {
             setIsShowCollapse(false);
@@ -75,6 +71,7 @@ const Header = (props) => {
         localStorage.setItem('username', '');
         localStorage.setItem('maLoaiNguoiDung', '');
         history.replace('/');
+        setIsShowCollapse(false);
     }, []);
     return (
         <AppBar color="inherit" className={classes.header}>
@@ -91,7 +88,13 @@ const Header = (props) => {
                             >
                                 <div>
                                     <Button
-                                        onClick={handleGoTo('/dangnhap')}
+                                        onClick={() => {
+                                            if (username) {
+                                                history.replace('/thongtincanhan');
+                                            } else {
+                                                history.replace('/dangnhap');
+                                            }
+                                        }}
                                     >
                                         <img
                                             src={avatarIcon}
@@ -177,6 +180,23 @@ const Header = (props) => {
                                         className={classes.navLink}
                                     >
                                         Ứng dụng
+                                    </Button>
+                                </div>
+                                <div></div>
+                            </Box>
+                            <Box
+                                className={`${classes.d_Flex_Bet} ${classes.itemColapseGroup1}`}
+                                justifyContent="center"
+                            >
+                                <div
+                                    className={classes.navItem}
+                                >
+                                    <Button
+                                        color="inherit"
+                                        className={classes.navLink}
+                                        onClick={handleLogout}
+                                    >
+                                        Đăng xuất
                                     </Button>
                                 </div>
                                 <div></div>
@@ -558,6 +578,9 @@ const useStyles = makeStyles((theme) => ({
         right: 0,
         bottom: 0,
         transform: ' translateY(69px)',
+        [theme.breakpoints.down(`${961}`)]: {
+            left: 0,
+        }
     },
     UserItem: {
         fontSize: theme.spacing(1.4),
