@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, memo } from 'react';
 import { getALLInfoFollowTheaterSystem } from '../../redux/action/TheaterSystemAction';
 import { createAction } from '../../redux/action';
-import { SET_DATA_LIST_MOVIE_WITH_THEATER, SET_DATA_MOVIE_WITH_DATE } from '../../redux/action/type';
+import { SET_DATA_LIST_MOVIE_WITH_THEATER, SET_DATA_MOVIE_WITH_DATE, SET_REQUEST_PAGE_LOGIN } from '../../redux/action/type';
+import swal from 'sweetalert';
 //#region Group icon Cinema
 import BHDIcon from '../../assets/img/logoTheater/bhd.jpg';
 import CGVIcon from '../../assets/img/logoTheater/cgv.jpg';
@@ -52,7 +53,9 @@ const GroupCine = (props) => {
     const listTheaterSystem = useSelector((state) => {
         return state.qlTheaterSystem.listTheaterSystem
     });
-
+    // const username = useMemo(() => {
+    //     return localStorage.getItem('username');
+    // }, [localStorage.getItem('username')]);
     const listRapT = useSelector((state) => {
         return state.qlTheaterSystem.theaterSystemInfo.lstCumRap
     });
@@ -274,9 +277,27 @@ const GroupCine = (props) => {
     }, [listDay]);
 
 
-    const handleClickTimeMovie = useCallback((value) => () => {
-        // console.log(value.maLichChieu);
-        history.push(`/chitietphongve/${value.maLichChieu}`);
+    const handleClickTimeMovie = useCallback((maLichChieu) => () => {
+        let username = localStorage.getItem('username');
+        if (maLichChieu) {
+            if (username) {
+                history.push(`/chitietphongve/${maLichChieu}`);
+            } else {
+                swal({
+                    text: "Vui lòng đăng nhập để tiến hành mua vé !",
+                    icon: "info",
+                    buttons: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            history.push('/dangnhap');
+                            dispatch(createAction(SET_REQUEST_PAGE_LOGIN, { request: 1, maLichChieu }));
+                        }
+                    });
+            }
+
+        }
+
     }, []);
     const renderListPhim = useCallback(() => {
         if (lstMovieWithDate) {
@@ -306,7 +327,7 @@ const GroupCine = (props) => {
                                             let d = new Date(lc.ngayChieuGioChieu);
                                             return (
                                                 <Button className={classes.timeMovie_Item} key={index}
-                                                    onClick={handleClickTimeMovie(lc)}
+                                                    onClick={handleClickTimeMovie(lc.maLichChieu)}
                                                 >
                                                     <div className={classes.timeStart}>
                                                         {d.getHours() > 9 ? d.getHours() : '0' + d.getHours()}:{d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes()}

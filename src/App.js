@@ -9,21 +9,26 @@ const BookMovieDetail = React.lazy(() => import('./Screens/BookMovieDetail'));
 const SignIn = React.lazy(() => import('./Screens/SignIn'));
 const SignUp = React.lazy(() => import('./Screens/signUp'));
 const UserInfo = React.lazy(() => import('./Screens/userpage'));
+const ErrorPage = React.lazy(() => import('./Screens/ErrorPage'));
 function App() {
-  const isPage = useSelector((state) => {
-    return state.parent.isPage.role
-  });
-
+  const username = localStorage.getItem('username');
   return (
     <BrowserRouter>
       <Suspense fallback={<Fragment><Loading /></Fragment>}>
         <Switch>
           <Route path='/detail/:maPhim' exact component={MovieDetail} />
-          <Route path='/chitietphongve/:maLichChieu' exact component={BookMovieDetail} />
           <Route path='/dangnhap' exact component={SignIn} />
           <Route path='/dangky' exact component={SignUp} />
-          <Route path='/thongtincanhan' exact component={UserInfo} />
-          <Route path='/' component={Home} />
+          <Route path='/chitietphongve/:maLichChieu' exact >
+            {username ? <BookMovieDetail /> : <ErrorPage role={1} />}
+          </Route>
+          <Route path='/thongtincanhan' exact >
+            {username ? <UserInfo /> : <ErrorPage role={1} />}
+          </Route>
+          <Route path='/' exact component={Home} />
+          <Route path="*">
+            <ErrorPage role={0} />
+          </Route>
         </Switch>
       </Suspense>
     </BrowserRouter>

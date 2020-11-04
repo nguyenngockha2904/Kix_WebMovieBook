@@ -1,5 +1,5 @@
 import React, { Fragment, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
 import Loader from '../../Layouts/Loading';
@@ -24,6 +24,9 @@ const SignIn = () => {
     const [credentials, setCredentials] = useState({
         taiKhoan: "",
         matKhau: "",
+    });
+    const requestPage = useSelector((state) => {
+        return state.parent.requestPageLogin
     });
     const username = useMemo(() => {
         return localStorage.getItem('username');
@@ -52,10 +55,16 @@ const SignIn = () => {
     const handleChange = useCallback((e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }, [credentials]);
-    const handleSubmit = useCallback((value) => (e) => {
+
+    const handleSubmit = useCallback((value, requestPage) => (e) => {
         e.preventDefault();
         dispatch(Login(value, () => {
-            history.replace(`/`);
+            if (requestPage.request === 1) {
+                history.replace(`/chitietphongve/${requestPage.maLichChieu}`);
+            } else {
+                history.replace(`/`);
+            }
+
 
         }, () => {
             swal({
@@ -102,7 +111,7 @@ const SignIn = () => {
                                 </div>
                         </Button>
 
-                        <form className={classes.formStyle} onSubmit={handleSubmit(credentials)}>
+                        <form className={classes.formStyle} onSubmit={handleSubmit(credentials, requestPage)}>
                             <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
                                 Đăng nhập</div>
                             <div className={classes.formGroup}>

@@ -11,6 +11,9 @@ import { getMovieInfoWithMovieId } from '../../redux/action/movieAction';
 import { useHistory } from 'react-router-dom';
 import MovieDetailContent from '../../Components/MovieDetailContent';
 import ModalVideoMovie from '../../Components/ModalShowVideo';
+import swal from 'sweetalert';
+import { createAction } from '../../redux/action';
+import { SET_REQUEST_PAGE_LOGIN } from '../../redux/action/type';
 const Carousel = (props) => {
     const classes = useStyle();
     const dispatch = useDispatch();
@@ -106,8 +109,8 @@ const Carousel = (props) => {
         autoplay: true,
         pauseOnHover: true,
         fade: true,
-        prevArrow: <button type="button" class="slick-prev"><Avatar src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
-        nextArrow: <button type="button" class="slick-next"><Avatar src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
+        prevArrow: <button type="button" class="slick-prev"><img src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
+        nextArrow: <button type="button" class="slick-next"><img src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
     }), []);
     const renderCarousel = useCallback(() => {
 
@@ -237,6 +240,7 @@ const Carousel = (props) => {
         let d = new Date(value);
         return `${d.getHours()}:${d.getMinutes()}`;
     }, []);
+
     const handleClickChooseSuaChieu = useCallback((value) => () => {
         setSuatChieu(value);
         console.log(value);
@@ -258,9 +262,25 @@ const Carousel = (props) => {
         }
     }, [theater.lichChieuPhim, dateTime]);
 
-    const handleBuyTicket = useCallback((value) => () => {
-        if (value) {
-            history.push(`/chitietphongve/${value}`);
+    const handleBuyTicket = useCallback((maLichChieu) => () => {
+        let username = localStorage.getItem('username');
+        if (maLichChieu) {
+            if (username) {
+                history.push(`/chitietphongve/${maLichChieu}`);
+            } else {
+                swal({
+                    text: "Vui lòng đăng nhập để tiến hành mua vé !",
+                    icon: "info",
+                    buttons: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            history.push('/dangnhap');
+                            dispatch(createAction(SET_REQUEST_PAGE_LOGIN, { request: 1, maLichChieu }));
+                        }
+                    });
+            }
+
         }
     }, []);
     const width = useMemo(() => {
@@ -395,10 +415,13 @@ const useStyle = makeStyles((theme) => ({
         },
         '& .slick-next': {
             right: '2%',
-
+            top: '50%',
+            transform: 'translate(0,-50%)',
         },
         '& .slick-prev': {
             left: '1%',
+            top: '50%',
+            transform: 'translate(0,-50%)',
         },
         '& .slick-dots': {
             bottom: '14%',
@@ -437,6 +460,7 @@ const useStyle = makeStyles((theme) => ({
 
     },
     slickArrow: {
+        height: '40px',
     },
     slide: {
         position: 'relative',

@@ -2,9 +2,7 @@ import React, { Fragment, memo, useEffect, useMemo } from 'react';
 import { Avatar, Grid, makeStyles, withWidth } from '@material-ui/core';
 import Slider from "react-slick";
 import { useCallback } from 'react';
-import ImgPrevL from '../../assets/img/btnPrevLightWithHomeMovie.svg';
 import ImgPrevD from '../../assets/img/btnPrevDark.svg';
-import ImgNextL from '../../assets/img/btnNextLightWithHomeMovie.svg';
 import ImgNextD from '../../assets/img/btnNextDark.svg';
 import MovieItem from '../MovieItem';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,13 +24,13 @@ const useStyles = makeStyles((theme) => {
 
             },
             '& .slick-next': {
-                right: ' -25px',
-                top: '50%',
+                right: ' -4%',
+                top: '43%',
                 transform: 'translate(0, -50%)',
             },
             '& .slick-prev': {
-                left: '-20px',
-                top: '50%',
+                left: '-25px',
+                top: '43%',
                 transform: 'translate(-20px,-50%)',
             },
         },
@@ -40,7 +38,10 @@ const useStyles = makeStyles((theme) => {
             outline: 'none',
             padding: theme.spacing(0, 0.5),
 
-        }
+        },
+        slickArrow: {
+            height: '40px',
+        },
     }
 
 });
@@ -74,8 +75,8 @@ const MovieList = (props) => {
         slidesToScroll: 1,
         autoplay: true,
         pauseOnHover: true,
-        prevArrow: <button type="button" class="slick-prev"><Avatar src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
-        nextArrow: <button type="button" class="slick-next"><Avatar src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
+        prevArrow: <button type="button" class="slick-prev"><img src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
+        nextArrow: <button type="button" class="slick-next"><img src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
 
     }), []);
     const renderListMovie = useCallback(() => {

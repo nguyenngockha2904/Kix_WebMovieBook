@@ -5,9 +5,10 @@ import theaterImage from '../../assets/img/CGV_movie_theater.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
-import { FIND_THEATER_SYSTEM_WITH_DATE, SET_DATA_lIST_LICH_CHIEU } from '../../redux/action/type';
+import { FIND_THEATER_SYSTEM_WITH_DATE, SET_DATA_lIST_LICH_CHIEU, SET_REQUEST_PAGE_LOGIN } from '../../redux/action/type';
 import { motion } from 'framer-motion';
 import { useHistory } from 'react-router-dom';
+import swal from 'sweetalert';
 //#region Group icon Cinema
 import BHDIcon from '../../assets/img/logoTheater/bhd.jpg';
 import CGVIcon from '../../assets/img/logoTheater/cgv.jpg';
@@ -200,10 +201,30 @@ const MovieDetailShowTime = () => {
     }, [listDay]);
 
     const handleChooseTime = useCallback((value) => () => {
-        console.log(value);
+        // console.log(value);
         // const win = window.open(`/chitietphongve/${value.maLichChieu}`, "_blank");
         // win.focus();
-        history.push(`/chitietphongve/${value.maLichChieu}`);
+        let username = localStorage.getItem('username');
+        let maLichChieu = value.maLichChieu;
+        if (maLichChieu) {
+            if (username) {
+                history.push(`/chitietphongve/${maLichChieu}`);
+            } else {
+                swal({
+                    text: "Vui lòng đăng nhập để tiến hành mua vé !",
+                    icon: "info",
+                    buttons: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            history.push('/dangnhap');
+                            dispatch(createAction(SET_REQUEST_PAGE_LOGIN, { request: 1, maLichChieu }));
+                        }
+                    });
+            }
+
+        }
+
     }, []);
     const renderCumRap = useCallback(() => {
         if (listCumRapTheoPhimVaHeThongRap) {

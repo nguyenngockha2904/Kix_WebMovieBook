@@ -106,7 +106,7 @@ const MovieDetailInfo = () => {
                     </div>
                     <div className={classes.groupInfo}>
                         <div className={`${classes.w100} ${classes.title}`}>Đạo diễn</div>
-                        <div className={`${classes.w100} ${classes.defaultText}`}>Kha nguyễn</div>
+                        <div className={`${classes.w100} ${classes.defaultText}`}>...</div>
                     </div>
                     <div className={classes.groupInfo}>
                         <div className={`${classes.w100} ${classes.title}`}>diễn viên</div>

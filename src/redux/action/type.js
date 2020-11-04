@@ -1,7 +1,7 @@
 export const SET_TYPE_PAGE = 'parent/SET_TYPE_PAGE';
 export const SET_REQUEST_PAGE = 'parent/SET_REQUEST_PAGE';
 export const SET_REQUEST_PAGE_USER = 'parent/SET_REQUEST_PAGE_USER';
-
+export const SET_REQUEST_PAGE_LOGIN = 'parent/SET_REQUEST_PAGE_LOGIN';
 
 // user Action
 export const SET_CREDENTIALS = 'user/SET_CREDENTIALS';
