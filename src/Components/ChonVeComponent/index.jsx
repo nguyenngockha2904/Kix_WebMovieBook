@@ -21,7 +21,8 @@ const ChonVeComponent = (props) => {
         let mVeThuong = 50000;
         setTotalVeVip(mVeVip * amount.veVip);
         setTotalVeThuong(mVeThuong * amount.veThuong);
-        dispatch(createAction(SET_DATA_AMOUNT_GHE, amount));
+        let data = { ...amount, total: parseInt(amount.veVip + amount.veThuong) };
+        dispatch(createAction(SET_DATA_AMOUNT_GHE, data));
     }, [amount]);
     useEffect(() => {
         setTotalTien(totalVeVip + totalVeThuong);

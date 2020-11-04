@@ -32,7 +32,20 @@ let initialState = {
     listGheDaDat: [],
     amount: {}
 };
+const PhanTrangGhe = (danhSachGhetam) => {
 
+    let list = danhSachGhetam;
+    let listMovieDiv = [];
+    let todosPerPage = 12;
+    let solan = (list.length % todosPerPage) !== 0 ? ((list.length / todosPerPage) + 1) : (list.length / todosPerPage);
+    for (let i = 1; i <= solan; i++) {
+        const indexOfLastTodo = i * todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+        const listItem = { list: list.slice(indexOfFirstTodo, indexOfLastTodo), tenday: String.fromCharCode(64 + i) };
+        listMovieDiv = [...listMovieDiv, listItem];
+    }
+    return listMovieDiv;
+}
 const MovieReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case FETCH_DATA_LIST_MOVIE: {
@@ -169,55 +182,62 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         case SET_DATA_LIST_PHONGVE_MALICHCHIEU: {
 
             if (payload) {
-                // state.PhongVeItemByMaLichChieu = payload;
-                // state.PhongVeItemByMaLichChieu.danhSachGhe
                 state.PhongVeItemByMaLichChieu.thongTinPhim = payload.thongTinPhim;
+
                 let danhSachGhetam = payload.danhSachGhe.map((item, index) => {
-                    return { ...item, isActived: false }
+                    return { ...item, isActived: false, isKhongTheDat: false }
                 });
                 state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
                 state.listGheThuong = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe === "Thuong");
                 state.listGheVip = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe === "Vip");
-                let list = danhSachGhetam;
-                let listMovieDiv = [];
-                let todosPerPage = 12;
-                let solan = (list.length % todosPerPage) !== 0 ? ((list.length / todosPerPage) + 1) : (list.length / todosPerPage);
-                for (let i = 1; i <= solan; i++) {
-                    const indexOfLastTodo = i * todosPerPage;
-                    const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
-                    const listItem = { list: list.slice(indexOfFirstTodo, indexOfLastTodo), tenday: String.fromCharCode(64 + i) };
-                    listMovieDiv = [...listMovieDiv, listItem];
-                }
-                state.listGhePhanMang = listMovieDiv;
+                state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
             } else {
                 state.PhongVeItemByMaLichChieu = {};
             }
             return { ...state };
         }
         case SET_IS_ACTVED_GHE_ITEM: {
-            // console.log(payload.maGhe);
-            if (payload) {
-                let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
-                let i = state.listGheDaDat.findIndex(item => item.maGhe === payload.maGhe);
-                if (index !== -1) {
-                    let magtam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
-                    magtam[index].isActived = !magtam[index].isActived;
-                    state.PhongVeItemByMaLichChieu = { ...state.PhongVeItemByMaLichChieu, danhSachGhe: magtam };
-                    if (i === -1) {
-                        state.listGheDaDat = [...state.listGheDaDat, magtam[index]]
-                    } else {
-                        let magTam = [...state.listGheDaDat];
-                        magTam.splice(i, 1);
-                        state.listGheDaDat = magTam;
-                    }
 
+            if (payload) {
+                if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
+                    let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
+                        return { ...item, isKhongTheDat: true }
+                    });
+                    for (let ghedadat of state.listGheDaDat) {
+                        for (let ghe of danhSachGhetam) {
+                            if (ghedadat.maGhe === ghe.maGhe) {
+                                ghe.isKhongTheDat = false;
+                            }
+                        }
+                    }
+                    state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+                    state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+                } else {
+                    let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
+
+                    let i = state.listGheDaDat.findIndex(item => item.maGhe === payload.maGhe);
+                    if (index !== -1) {
+                        let magtam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+                        magtam[index].isActived = !magtam[index].isActived;
+                        state.PhongVeItemByMaLichChieu = { ...state.PhongVeItemByMaLichChieu, danhSachGhe: magtam };
+                        if (i === -1) {
+                            state.listGheDaDat = [...state.listGheDaDat, magtam[index]]
+                        } else {
+                            let magTam = [...state.listGheDaDat];
+                            magTam.splice(i, 1);
+                            state.listGheDaDat = magTam;
+                        }
+
+                    }
                 }
             } else {
                 state.listGheDaDat = [];
                 let mag = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
                 for (let item of mag) {
                     item.isActived = false;
+                    item.isKhongTheDat = false;
                 }
+
                 state.PhongVeItemByMaLichChieu.danhSachGhe = mag;
             }
             return { ...state };
