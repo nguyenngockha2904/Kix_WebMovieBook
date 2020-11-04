@@ -38,3 +38,16 @@ export const updateUser = (data, callback, fail) => {
         })
     }
 }
+export const signUp = (data, callback, fail) => {
+    return dispatch => {
+        UserServices.signUp(data).then(res => {
+            console.log(res.data);
+            localStorage.setItem('username', res.data.taiKhoan);
+            dispatch(createAction(SET_CREDENTIALS, res.data));
+            callback();
+        }).catch(err => {
+            console.log(err);
+            fail();
+        })
+    }
+}

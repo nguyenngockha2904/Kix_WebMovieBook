@@ -23,5 +23,12 @@ class UserServices {
             data
         });
     }
+    signUp = (data) => {
+        return createConnector({
+            method: 'POST',
+            url: 'https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/DangKy',
+            data
+        })
+    }
 }
 export default UserServices;

@@ -12,7 +12,8 @@ import logoLight from '../../assets/img/LogoLight.svg';
 import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import swal from 'sweetalert';
+import { signUp } from '../../redux/action/userAction';
 const SignUp = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -20,6 +21,31 @@ const SignUp = () => {
     const [isloading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
+    const [Repas, setRepas] = useState(false);
+    const [userInfo, setUserInfo] = useState({
+        taiKhoan: "",
+        matKhau: "",
+        email: "",
+        soDt: "",
+        maNhom: "GP06",
+        maLoaiNguoiDung: "KhachHang",
+        hoTen: "",
+        comfirmPassword: '',
+    });
+    const [validate, setValidate] = useState({
+        taiKhoan_V: false,
+        taiKhoan_T: '6 ký tự trở lên',
+        hoTen_V: false,
+        hoTen_T: '8 ký tự trở lên',
+        email_V: false,
+        email_T: 'Email không hợp lệ ',
+        soDt_V: false,
+        soDt_T: 'phải có 10 - 11 chữ số',
+        matKhau_V: false,
+        matKhau_T: 'Phải chứa ít nhất một số và một chữ cái viết hoa và viết thường và ít nhất 5 ký tự trở lên',
+        comfirmPassword_V: false,
+        comfirmPassword_T: 'Không trùng khớp',
+    });
     useEffect(() => {
         dispatch(createAction(SET_TYPE_PAGE, 4));
         setTitle('Kix - Đăng ký thật nhanh !! ');
@@ -42,6 +68,61 @@ const SignUp = () => {
         const prevTitle = document.title;
         document.title = title;
         return () => document.title = prevTitle;
+    }, []);
+
+    const validateInput = useCallback((pattern) => (e) => {
+        const { value } = e.target;
+        let name = `${e.target.name}_V`;
+        // const check = pattern.exec(value);
+        const check = value.match(pattern);
+        if (check === null) {
+            setValidate({
+                ...validate, [name]: true,
+            })
+        } else {
+            setValidate({
+                ...validate, [name]: false,
+            })
+        }
+    }, [validate]);
+    const validatecomfirmPassword = useCallback((newPassword) => (e) => {
+        const { value } = e.target;
+        let name = `${e.target.name}_V`;
+        if (newPassword !== value) {
+            setValidate({
+                ...validate, [name]: true,
+            })
+        } else {
+            setValidate({
+                ...validate, [name]: false,
+            })
+        }
+    }, [validate]);
+    const handleChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setUserInfo({ ...userInfo, [name]: value });
+    }, [userInfo]);
+    const handleSubmit = useCallback((userInfo, validate) => (e) => {
+        e.preventDefault();
+        const { taiKhoan_V, hoTen_V, email_V, soDt_V, matKhau_V, comfirmPassword_V } = validate;
+        const { taiKhoan, matKhau, email, soDt, maNhom, maLoaiNguoiDung, hoTen, } = userInfo;
+        const data = { taiKhoan, matKhau, email, soDt, maNhom, maLoaiNguoiDung, hoTen };
+        if (!taiKhoan_V && !hoTen_V && !email_V && !soDt_V && !matKhau_V && !comfirmPassword_V) {
+            dispatch(signUp(data, () => {
+                swal({
+                    title: "Đăng ký thành công !",
+                    icon: "success",
+                });
+                history.replace(`/dangnhap`);
+            }, () => {
+                swal({
+                    title: "Đăng ký thất bại !",
+                    text: "Có thể hệ thống gập 1 số lỗi nào đó!",
+                    icon: "info",
+                })
+            }));
+
+        }
     }, []);
     return (
         <Fragment>
@@ -70,11 +151,17 @@ const SignUp = () => {
                                 </div>
                             </Button>
 
-                            <form className={classes.formStyle}>
+                            <form className={classes.formStyle} onSubmit={handleSubmit(userInfo, validate)}>
                                 <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
                                     Đăng ký</div>
                                 <div className={classes.formGroup}>
-                                    <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`} />
+                                    <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`}
+                                        value={userInfo.taiKhoan}
+                                        onChange={handleChange}
+                                        name="taiKhoan"
+                                        onBlur={validateInput('.{8,}')}
+                                    />
+                                    {validate.taiKhoan_V && <div className={classes.messageErr}>{validate.taiKhoan_T}</div>}
                                 </div>
 
                                 <div className={classes.formGroup}>
@@ -93,8 +180,13 @@ const SignUp = () => {
                                                     </IconButton>
                                                 </InputAdornment>
                                             }
+                                            value={userInfo.matKhau}
+                                            onChange={handleChange}
+                                            name="matKhau"
+                                            onBlur={validateInput("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{5,}")}
                                         />
                                     </FormControl>
+                                    {validate.matKhau_V && <div className={classes.messageErr}>{validate.matKhau_T}</div>}
                                 </div>
                                 <div className={classes.formGroup}>
                                     <FormControl className={` ${classes.formControl}`}>
@@ -111,20 +203,44 @@ const SignUp = () => {
                                                         {showRePassword ? <Visibility /> : <VisibilityOff />}
                                                     </IconButton>
                                                 </InputAdornment>
+
                                             }
+                                            onChange={handleChange}
+                                            onBlur={validatecomfirmPassword(userInfo.matKhau)}
+                                            value={userInfo.comfirmPassword}
+                                            name="comfirmPassword"
                                         />
                                     </FormControl>
+                                    {validate.comfirmPassword_V && <div className={classes.messageErr}>{validate.comfirmPassword_T}</div>}
                                 </div>
 
                                 <div className={classes.formGroup}>
-                                    <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`} />
+                                    <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`}
+                                        value={userInfo.hoTen}
+                                        onChange={handleChange}
+                                        name="hoTen"
+                                        onBlur={validateInput('.{8,}')}
+                                    />
+                                    {validate.hoTen_V && <div className={classes.messageErr}>{validate.hoTen_T}</div>}
                                 </div>
                                 <div className={`${classes.formGroup} ${classes.formGroupTwo}`}>
                                     <div className={`${classes.formGroup} ${classes.formLeft}`}>
-                                        <TextField label="Email :" className={`${classes.textDefault} ${classes.formControl}`} />
+                                        <TextField label="Email :" className={`${classes.textDefault} ${classes.formControl}`}
+                                            value={userInfo.email}
+                                            onChange={handleChange}
+                                            name="email"
+                                            onBlur={validateInput("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$")}
+                                        />
+                                        {validate.email_V && <div className={classes.messageErr}>{validate.email_T}</div>}
                                     </div>
                                     <div className={`${classes.formGroup} ${classes.formRight}`}>
-                                        <TextField label="Số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`} />
+                                        <TextField label="Số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`}
+                                            value={userInfo.soDt}
+                                            onChange={handleChange}
+                                            name="soDt"
+                                            onBlur={validateInput(/^\d{10,11}$/)}
+                                        />
+                                        {validate.soDt_V && <div className={classes.messageErr}>{validate.soDt_T}</div>}
                                     </div>
                                 </div>
 
@@ -135,7 +251,7 @@ const SignUp = () => {
                                     </div>
                                 </div>
                                 <div className={`${classes.formGroup} ${classes.groupBtnSubmit}`}>
-                                    <Button className={`${classes.textDefault} ${classes.BtnSubmit}`}
+                                    <Button type="submit" className={`${classes.textDefault} ${classes.BtnSubmit}`}
                                     >Đăng ký
                                 </Button>
                                 </div>
@@ -386,6 +502,14 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'capitalize',
         background: ' linear-gradient(45deg, #6b00b6, #440074)',
         borderRadius: '6px',
+    },
+    messageErr: {
+        marginTop: '5px',
+        color: '#ff0000',
+        fontSize: theme.spacing(1.1),
+        textTransform: 'capitalize',
+        fontFamily: 'SF Medium',
+        letterSpacing: '0.5px',
     },
     //#endregion
 }));

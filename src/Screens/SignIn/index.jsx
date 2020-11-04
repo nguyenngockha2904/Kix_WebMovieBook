@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
@@ -23,10 +23,16 @@ const SignIn = () => {
         taiKhoan: "",
         matKhau: "",
     });
+    const username = useMemo(() => {
+        return localStorage.getItem('username');
+    }, [localStorage.getItem('username')]);
     useEffect(() => {
         dispatch(createAction(SET_TYPE_PAGE, 4));
         setTitle('Kix - Đăng nhập ');
-    }, []);
+        if (username) {
+            setCredentials({ ...credentials, taiKhoan: username })
+        }
+    }, [username]);
     const handleClickShowPassword = useCallback((value) => () => {
         setShowPassword(!value);
     }, []);
