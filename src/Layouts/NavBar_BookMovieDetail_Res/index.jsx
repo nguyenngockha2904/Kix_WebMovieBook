@@ -3,10 +3,13 @@ import React, { Fragment, memo, useCallback, useMemo } from 'react';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import { useHistory } from 'react-router-dom';
 import Countdown from 'react-countdown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
+import { createAction } from '../../redux/action';
 const NavBar_BookMovieDetail_Res = (props) => {
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
     const { dateTime, renderer, activeStep, handleNext } = useMemo(() => {
         return props
     }, [props]);
@@ -28,6 +31,53 @@ const NavBar_BookMovieDetail_Res = (props) => {
             history.replace('/');
         } else if (activeStep === 1) {
             handleNext(0);
+            dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, ''));
+        } else if (activeStep === 2) {
+            handleNext(1);
+        }
+    }, []);
+    const getStepContent = useCallback((stepIndex) => {
+        // 
+        switch (stepIndex) {
+            case 0: //tab chọn loại vé
+                return (
+                    <Fragment>
+                        <div className={` ${classes.textDefault} ${classes.titleNav}`}>Chọn Vé</div>
+                    </Fragment>
+                );
+            case 1:
+                return (
+                    <Fragment>
+                        <div className={` ${classes.textDefault} ${classes.titleNav}`}>Chọn Chỗ Ngồi</div>
+                    </Fragment>
+                );
+            default:
+                return (
+                    <Fragment>
+                        <div className={classes.wapperDiv}>
+                            <div className={classes.Content}>
+                                <div className={classes.nameThear}>
+                                    <div className={classes.hightline}>
+                                        {tenCumRap.trim().slice(0, tenCumRap.trim().indexOf(' '))}
+                                    </div>
+                                    {tenCumRap.trim().slice(tenCumRap.trim().indexOf(' '))}
+                                </div>
+                                <div className={classes.contentRap}>
+                                    <div className={`${classes.textDefault} ${classes.textSecond}`}>{ngayChieu}</div>
+                                    <div className={`${classes.textDefault} ${classes.textSecond}`}>{gioChieu}</div>
+                                    <div className={`${classes.textDefault} ${classes.textSecond}`}>- {tenRap}</div>
+                                </div>
+                            </div>
+                            <div className={classes.timeCountDown}>
+                                <Countdown
+                                    date={dateTime}
+                                    renderer={renderer}
+                                />
+                            </div>
+                        </div>
+
+                    </Fragment>
+                );
         }
     }, []);
     return (
@@ -35,34 +85,7 @@ const NavBar_BookMovieDetail_Res = (props) => {
             <div className={classes.groupBtnBack}>
                 <Button className={classes.btnBack} onClick={handleClickBack(activeStep)}><ArrowBackIosRoundedIcon style={{ color: '#fff', }} /></Button>
             </div>
-            {activeStep === 0 ? <Fragment>
-                <div className={` ${classes.textDefault} ${classes.titleNav}`}>Chọn Chỗ Ngồi</div>
-            </Fragment>
-                :
-                <Fragment>
-                    <div className={classes.wapperDiv}>
-                        <div className={classes.Content}>
-                            <div className={classes.nameThear}>
-                                <div className={classes.hightline}>
-                                    {tenCumRap.trim().slice(0, tenCumRap.trim().indexOf(' '))}
-                                </div>
-                                {tenCumRap.trim().slice(tenCumRap.trim().indexOf(' '))}
-                            </div>
-                            <div className={classes.contentRap}>
-                                <div className={`${classes.textDefault} ${classes.textSecond}`}>{ngayChieu}</div>
-                                <div className={`${classes.textDefault} ${classes.textSecond}`}>{gioChieu}</div>
-                                <div className={`${classes.textDefault} ${classes.textSecond}`}>- {tenRap}</div>
-                            </div>
-                        </div>
-                        <div className={classes.timeCountDown}>
-                            <Countdown
-                                date={dateTime}
-                                renderer={renderer}
-                            />
-                        </div>
-                    </div>
-
-                </Fragment>}
+            {getStepContent(activeStep)}
 
         </div>
     );

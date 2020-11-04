@@ -132,17 +132,17 @@ const BookMovieDetail = (props) => {
         switch (stepIndex) {
             case 0: //tab chọn loại vé
                 return (
-                    <ChonGheResp handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
+                    <ChonVeComponent handleNext={handleNext} logoCine={logoCine} />
+
                 );
             case 1:
                 return (
-                    <ThanhToanResComponent />
+                    <ChonGheResp handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
+
                 );
             default:
                 return (
-                    <Box my={8}>
-                        Thành công !!
-                    </Box>
+                    <ThanhToanResComponent />
                 );
         }
 

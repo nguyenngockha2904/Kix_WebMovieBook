@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, makeStyles, Snackbar } from '@material-ui/core';
+import { Avatar, Box, Button, makeStyles, Snackbar, withWidth } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { createAction } from '../../redux/action';
@@ -159,13 +159,16 @@ const ChonVeComponent = (props) => {
             setOpen({ isShow: true, message: 'Xin quý khách vui lòng chọn vé !' });
         }
     }, [amount]);
+    const width = useMemo(() => {
+        return props.width;
+    }, [props.width]);
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={classes.root}>
             <div className={classes.GroupLoaiVe}>
-                <div className={classes.groupBannerPhim} >
+                {(width === 'lg' || width === 'xl') && <div className={classes.groupBannerPhim} >
                     <div className={classes.bgImg} style={{ backgroundImage: `url(${hinhAnh})` }}>
                     </div>
                     <div className={classes.bgBlur} >
@@ -182,7 +185,8 @@ const ChonVeComponent = (props) => {
                         </Box>
                         <div className={classes.textDefault}>{time} phút - Kix -IMDb 0-2D/L.Tiếng</div>
                     </div>
-                </div>
+                </div>}
+
                 <div className={classes.groupChooseVe}>
                     <div className={classes.ChooseVe_Content}>
                         <div className={classes.ContentTop}>
@@ -202,40 +206,84 @@ const ChonVeComponent = (props) => {
                             </div>
                         </div>
                         <div className={classes.contentBody}>
-                            <div className={classes.ticketItem}>
-                                <div className={`${classes.textDefault} ${classes.nameTicket}`}>
-                                    Vé Vip
+                            {(width === 'sm' || width === 'md' || width === 'lg' || width === 'xl') ? <Fragment>
+                                <div className={classes.ticketItem}>
+                                    <div className={`${classes.textDefault} ${classes.nameTicket}`}>
+                                        Vé Vip
+                                    </div>
+                                    <div className={`${classes.textDefault} ${classes.priceTicket}`}>
+                                        {(80000).toLocaleString()} <div className={classes.moneyDefault}>đ</div>
+                                    </div>
+                                    <div className={classes.groupCustomTotal}>
+                                        <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                            onClick={handleClickCustomBtn('veVip', parseInt(amount.veVip - 1))}
+                                        >-</Button>
+                                        <input className={`${classes.textDefault} ${classes.totalInput}`} type="number" name="veVip" value={amount.veVip ? amount.veVip : ''} min={0} placeholder="0" onChange={handleChange} />
+                                        <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                            onClick={handleClickCustomBtn('veVip', parseInt(amount.veVip + 1))}
+                                        >+</Button>
+                                    </div>
                                 </div>
-                                <div className={`${classes.textDefault} ${classes.priceTicket}`}>
-                                    {(80000).toLocaleString()} <div className={classes.moneyDefault}>đ</div>
+                                <div className={classes.ticketItem}>
+                                    <div className={`${classes.textDefault} ${classes.nameTicket}`}>
+                                        Vé Thuờng
+                                    </div>
+                                    <div className={`${classes.textDefault} ${classes.priceTicket}`}>
+                                        {(50000).toLocaleString()} <div className={classes.moneyDefault}>đ</div>
+                                    </div>
+                                    <div className={classes.groupCustomTotal}>
+                                        <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                            onClick={handleClickCustomBtn('veThuong', parseInt(amount.veThuong - 1))}
+                                        >-</Button>
+                                        <input className={`${classes.textDefault} ${classes.totalInput}`} type="number" value={amount.veThuong ? amount.veThuong : ''} min={0} name="veThuong" placeholder="0" onChange={handleChange} />
+                                        <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                            onClick={handleClickCustomBtn('veThuong', parseInt(amount.veThuong + 1))}
+                                        >+</Button>
+                                    </div>
                                 </div>
-                                <div className={classes.groupCustomTotal}>
-                                    <Button className={`${classes.textDefault} ${classes.customBtn}`}
-                                        onClick={handleClickCustomBtn('veVip', parseInt(amount.veVip - 1))}
-                                    >-</Button>
-                                    <input className={`${classes.textDefault} ${classes.totalInput}`} type="number" name="veVip" value={amount.veVip ? amount.veVip : ''} min={0} placeholder="0" onChange={handleChange} />
-                                    <Button className={`${classes.textDefault} ${classes.customBtn}`}
-                                        onClick={handleClickCustomBtn('veVip', parseInt(amount.veVip + 1))}
-                                    >+</Button>
-                                </div>
-                            </div>
-                            <div className={classes.ticketItem}>
-                                <div className={`${classes.textDefault} ${classes.nameTicket}`}>
-                                    Vé Thuờng
-                                </div>
-                                <div className={`${classes.textDefault} ${classes.priceTicket}`}>
-                                    {(50000).toLocaleString()} <div className={classes.moneyDefault}>đ</div>
-                                </div>
-                                <div className={classes.groupCustomTotal}>
-                                    <Button className={`${classes.textDefault} ${classes.customBtn}`}
-                                        onClick={handleClickCustomBtn('veThuong', parseInt(amount.veThuong - 1))}
-                                    >-</Button>
-                                    <input className={`${classes.textDefault} ${classes.totalInput}`} type="number" value={amount.veThuong ? amount.veThuong : ''} min={0} name="veThuong" placeholder="0" onChange={handleChange} />
-                                    <Button className={`${classes.textDefault} ${classes.customBtn}`}
-                                        onClick={handleClickCustomBtn('veThuong', parseInt(amount.veThuong + 1))}
-                                    >+</Button>
-                                </div>
-                            </div>
+                            </Fragment>
+                                :
+                                <Fragment>
+                                    <div className={classes.ticketItem}>
+                                        <div className={classes.divTwoTicket}>
+                                            <div className={`${classes.textDefault} ${classes.nameTicket}`}>
+                                                Vé Vip
+                                            </div>
+                                            <div className={`${classes.textDefault} ${classes.priceTicket}`}>
+                                                {(80000).toLocaleString()} <div className={classes.moneyDefault}>đ</div>
+                                            </div>
+                                        </div>
+                                        <div className={classes.groupCustomTotal}>
+                                            <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                                onClick={handleClickCustomBtn('veVip', parseInt(amount.veVip - 1))}
+                                            >-</Button>
+                                            <input className={`${classes.textDefault} ${classes.totalInput}`} type="number" name="veVip" value={amount.veVip ? amount.veVip : ''} min={0} placeholder="0" onChange={handleChange} />
+                                            <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                                onClick={handleClickCustomBtn('veVip', parseInt(amount.veVip + 1))}
+                                            >+</Button>
+                                        </div>
+                                    </div>
+                                    <div className={classes.ticketItem}>
+                                        <div className={classes.divTwoTicket}>
+                                            <div className={`${classes.textDefault} ${classes.nameTicket}`}>
+                                                Vé Thuờng
+                                     </div>
+                                            <div className={`${classes.textDefault} ${classes.priceTicket}`}>
+                                                {(50000).toLocaleString()} <div className={classes.moneyDefault}>đ</div>
+                                            </div>
+                                        </div>
+                                        <div className={classes.groupCustomTotal}>
+                                            <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                                onClick={handleClickCustomBtn('veThuong', parseInt(amount.veThuong - 1))}
+                                            >-</Button>
+                                            <input className={`${classes.textDefault} ${classes.totalInput}`} type="number" value={amount.veThuong ? amount.veThuong : ''} min={0} name="veThuong" placeholder="0" onChange={handleChange} />
+                                            <Button className={`${classes.textDefault} ${classes.customBtn}`}
+                                                onClick={handleClickCustomBtn('veThuong', parseInt(amount.veThuong + 1))}
+                                            >+</Button>
+                                        </div>
+                                    </div>
+                                </Fragment>}
+
                         </div>
                         <div className={classes.contentFooter}>
                             <div>
@@ -383,7 +431,7 @@ const useStyles = makeStyles((theme) => ({
     groupChooseVe: {
         width: '75%',
         marginTop: theme.spacing(6.8),
-        [theme.breakpoints.down(`${1200}`)]: {
+        [theme.breakpoints.down(`${1280}`)]: {
             width: '100%',
         },
     },
@@ -391,6 +439,9 @@ const useStyles = makeStyles((theme) => ({
         width: '70%',
         margin: 'auto',
         height: '100%',
+        [theme.breakpoints.down(`${601}`)]: {
+            width: '100%',
+        },
     },
     //#region ContentTop jss
     ContentTop: {
@@ -402,6 +453,11 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: '1px solid #8080806b',
         maxHeight: '10%',
         height: '100%',
+        [theme.breakpoints.down(`${601}`)]: {
+            padding: theme.spacing(2.5),
+            margin: theme.spacing(0, 0.5),
+            width: 'auto',
+        },
     },
     GroupImgTheater: {
         marginRight: theme.spacing(1),
@@ -455,6 +511,12 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 0),
         borderBottom: '1px solid #8080806b',
         position: 'relative',
+        // [theme.breakpoints.down(`${601}`)]: {
+        //     display: 'block',
+        // },
+    },
+    divTwoTicket: {
+        padding: '10px',
     },
     nameTicket: {
         color: '#000',
@@ -470,6 +532,14 @@ const useStyles = makeStyles((theme) => ({
         position: ' absolute',
         left: '50%',
         transform: 'translateX(-50%)',
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: theme.spacing(1.4),
+        },
+        [theme.breakpoints.down(`${601}`)]: {
+            position: ' unset',
+            justifyContent: 'flex-start',
+            transform: 'translateX(0)',
+        },
     },
     moneyDefault: {
         color: '#000',
@@ -489,7 +559,10 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(0.5),
         '&:hover': {
             color: '#6b00b6',
-        }
+        },
+        [theme.breakpoints.down(`${961}`)]: {
+            fontSize: theme.spacing(1.4),
+        },
     },
     totalInput: {
         color: '#000',
@@ -528,8 +601,12 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         '& $moneyDefault': {
+            fontSize: theme.spacing(1.8),
+        },
+        [theme.breakpoints.down(`${601}`)]: {
             fontSize: theme.spacing(2),
-        }
+        },
+
     },
     btnChonGhe: {
         height: '100%',
@@ -543,6 +620,11 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down(`${1200}`)]: {
             fontSize: '13px',
         },
+        [theme.breakpoints.down(`${601}`)]: {
+
+            marginRight: ' 10px',
+            padding: theme.spacing(0.9, 1.3),
+        },
     },
     //#endregion
 
@@ -551,6 +633,9 @@ const useStyles = makeStyles((theme) => ({
     //#region NoteFooter
     NoteFooter: {
         padding: theme.spacing(1, 0),
+        [theme.breakpoints.down(`${961}`)]: {
+            display: 'none ',
+        },
     },
     noteText: {
         color: '#808080',
@@ -589,4 +674,4 @@ const useStyles = makeStyles((theme) => ({
     },
     //#endregion
 }));
-export default memo(ChonVeComponent);
+export default memo(withWidth()(ChonVeComponent));

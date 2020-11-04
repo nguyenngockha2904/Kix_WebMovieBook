@@ -133,7 +133,7 @@ const ChonGheResp = (props) => {
         if (listGheDaDat.length === 0) {
             setOpen({ isShow: true, message: 'Vui lòng chọn ghế để tiếp tục!' });
         } else {
-            handleNext(1);
+            handleNext(2);
         }
 
     }, [listGheDaDat]);
