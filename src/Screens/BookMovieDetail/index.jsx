@@ -1,4 +1,4 @@
-import { Box, makeStyles, withWidth, } from '@material-ui/core';
+import { Avatar, Box, Fab, makeStyles, useTheme, withWidth, Zoom, } from '@material-ui/core';
 import React, { Fragment, memo, useCallback, useMemo, useState, } from 'react';
 import NavBarBook from '../../Layouts/NavBar_BookMovieDetail';
 import ChonVeComponent from '../../Components/ChonVeComponent';
@@ -22,7 +22,11 @@ import { createAction } from '../../redux/action';
 import ChonGheResp from '../../Components/ChonGheResp';
 import NavBar_BookMovieDetail_Res from '../../Layouts/NavBar_BookMovieDetail_Res';
 import ThanhToanResComponent from '../../Components/ThanhToanResComponent';
-
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
+import clsx from 'clsx';
+import LogoLight from '../../assets/img/LogoDark.svg';
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
         case 'bhd': {
@@ -50,8 +54,10 @@ const returnIconTheader = (value) => {
 };
 
 const BookMovieDetail = (props) => {
+    const classes = useStyles();
     const params = useParams();
     const dispatch = useDispatch();
+    const theme = useTheme();
     const history = useHistory();
     const [isloading, setIsLoading] = useState(true);
     const [activeStep, setActiveStep] = React.useState(0);
@@ -141,6 +147,15 @@ const BookMovieDetail = (props) => {
         }
 
     }, [logoCine]);
+    const transitionDuration = useMemo(() => {
+        return {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: theme.transitions.duration.leavingScreen,
+        }
+    });
+    const handleCLickGotoHome = useCallback(() => {
+        history.replace('/');
+    }, []);
     return (
         <Fragment>
 
@@ -148,6 +163,21 @@ const BookMovieDetail = (props) => {
                 {(width === 'md' || width === 'lg' || width === 'xl') ? <Fragment>
                     <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} />
                     {getStepContent(activeStep, width)}
+                    <div className={classes.divTool} style={{ right: activeStep === 0 && '0' }}>
+
+                        <Zoom
+                            in={true}
+                            timeout={transitionDuration}
+                            style={{
+                                transitionDelay: `${transitionDuration.exit}ms`,
+                            }}
+                            unmountOnExit
+                        >
+                            <Fab aria-label='Home' color='primary' onClick={handleCLickGotoHome}>
+                                <Avatar src={LogoLight} alt='LogoLight' />
+                            </Fab>
+                        </Zoom>
+                    </div>
                 </Fragment>
                     :
                     <Fragment>
@@ -161,8 +191,14 @@ const BookMovieDetail = (props) => {
         </Fragment>
     );
 }
-const useStyles = makeStyles((theme) => ({
 
+const useStyles = makeStyles((theme) => ({
+    divTool: {
+        position: 'fixed',
+        bottom: 0,
+        margin: '10px',
+        zIndex: '10',
+    }
 
 }));
 export default memo(withWidth()(BookMovieDetail));

@@ -1,8 +1,7 @@
 import { Avatar, makeStyles, Step, StepButton, Stepper } from '@material-ui/core';
 import React, { memo, useMemo } from 'react';
 import { useCallback } from 'react';
-import avatar from '../../assets/img/avatar.jpg';
-
+import avatar from '../../assets/img/Noavatar.svg';
 const NavBarBook = (props) => {
     const classes = useStyles();
     const { activeStep, steps, handleNext } = useMemo(() => {
@@ -13,6 +12,9 @@ const NavBarBook = (props) => {
             handleNext(value);
         }
     }, [activeStep]);
+    const username = useMemo(() => {
+        return localStorage.getItem('username');
+    }, [localStorage.getItem('username')]);
     return (
         <div className={classes.navBar}>
             <Stepper activeStep={activeStep} className={classes.groupStep}>
@@ -26,7 +28,7 @@ const NavBarBook = (props) => {
             </Stepper>
             <div className={classes.groupUser} style={{ marginRight: activeStep === 1 && '24%' }}>
                 <Avatar alt="avatarUser" src={avatar} className={classes.avatarUserIcon} />
-                <div className={classes.userName}>Kha Nguyễn </div>
+                <div className={classes.userName}>{username} </div>
             </div>
         </div>
     );

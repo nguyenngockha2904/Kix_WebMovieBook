@@ -8,15 +8,17 @@ import topRightDop from '../../assets/img/topRightDop.svg';
 import logoLight from '../../assets/img/LogoLight.svg';
 import bottomRightDop from '../../assets/img/bottomRightDop.svg';
 import bottomDop from '../../assets/img/bottomDop2.svg';
-import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField } from '@material-ui/core';
+import { Avatar, Button, Fab, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField, useTheme, Zoom } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import { Login } from '../../redux/action/userAction';
+import LogoLight from '../../assets/img/LogoDark.svg';
 const SignIn = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const history = useHistory();
+    const theme = useTheme();
     const [isloading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [credentials, setCredentials] = useState({
@@ -66,83 +68,104 @@ const SignIn = () => {
         }))
 
     }, []);
+    const transitionDuration = useMemo(() => {
+        return {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: theme.transitions.duration.leavingScreen,
+        }
+    });
+    const handleCLickGotoHome = useCallback(() => {
+        history.replace('/');
+    }, []);
     return (
         <Fragment>
-            {isloading ? <Loader /> :
-                <div
-                    className={classes.root}>
-                    <div className={classes.groupBg}>
-                        <img src={signInBanner} alt="signInBanner" className={classes.bgMain} />
-                        <img src={topRightDop} alt="topRightDop" className={classes.TopRightDop} />
-                        <img src={bottomRightDop} alt="bottomRightDop" className={classes.bottomRightDop} />
-                        <img src={bottomDop} alt="bottomDop" className={classes.bottomLeftDop} />
-                    </div>
-                    <div className={classes.wrapper}>
-                        <div className={classes.content}>
-                            <Button className={`${classes.textDefault} ${classes.groupLogo}  `}
-                                onClick={handleClickGoto('/')}
-                            >
+            <div
+                className={classes.root}>
+                <div className={classes.groupBg}>
+                    <img src={signInBanner} alt="signInBanner" className={classes.bgMain} />
+                    <img src={topRightDop} alt="topRightDop" className={classes.TopRightDop} />
 
-                                <div className={classes.logoG}>
-                                    <img src={logoLight} alt="logoLight" className={classes.logoLight} />
-                                    <div className={classes.nameLogo}> Kix </div>
+                    <img src={bottomDop} alt="bottomDop" className={classes.bottomLeftDop} />
+                </div>
+                <div className={classes.wrapper}>
+                    <div className={classes.content}>
+                        <Button className={`${classes.textDefault} ${classes.groupLogo}  `}
+                            onClick={handleClickGoto('/')}
+                        >
+
+                            <div className={classes.logoG}>
+                                <img src={logoLight} alt="logoLight" className={classes.logoLight} />
+                                <div className={classes.nameLogo}> Kix </div>
+                            </div>
+
+                            <div style={{ marginTop: '4px' }}>
+                                Hệ Thống Đặt Vé Xem Phim Nhanh Nhất !
                                 </div>
+                        </Button>
 
-                                <div style={{ marginTop: '4px' }}>
-                                    Hệ Thống Đặt Vé Xem Phim Nhanh Nhất !
-                                </div>
-                            </Button>
+                        <form className={classes.formStyle} onSubmit={handleSubmit(credentials)}>
+                            <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
+                                Đăng nhập</div>
+                            <div className={classes.formGroup}>
+                                <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`}
+                                    value={credentials.taiKhoan}
+                                    onChange={handleChange}
+                                    name="taiKhoan"
+                                />
+                            </div>
 
-                            <form className={classes.formStyle} onSubmit={handleSubmit(credentials)}>
-                                <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
-                                    Đăng nhập</div>
-                                <div className={classes.formGroup}>
-                                    <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`}
-                                        value={credentials.taiKhoan}
+                            <div className={classes.formGroup}>
+                                <FormControl className={` ${classes.formControl}`}>
+                                    <InputLabel >Mật Khẩu:</InputLabel>
+                                    <Input
+                                        type={showPassword ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword(showPassword)}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        value={credentials.matKhau}
                                         onChange={handleChange}
-                                        name="taiKhoan"
+                                        name="matKhau"
                                     />
-                                </div>
-
-                                <div className={classes.formGroup}>
-                                    <FormControl className={` ${classes.formControl}`}>
-                                        <InputLabel >Mật Khẩu:</InputLabel>
-                                        <Input
-                                            type={showPassword ? 'text' : 'password'}
-                                            endAdornment={
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleClickShowPassword(showPassword)}
-                                                        onMouseDown={handleMouseDownPassword}
-                                                    >
-                                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            }
-                                            value={credentials.matKhau}
-                                            onChange={handleChange}
-                                            name="matKhau"
-                                        />
-                                    </FormControl>
-                                </div>
-                                <div className={classes.formGroup}>
-                                    <div className={classes.textDefault} style={{ textAlign: 'center' }}>
-                                        Bạn chưa có tài khoản ?
+                                </FormControl>
+                            </div>
+                            <div className={classes.formGroup}>
+                                <div className={classes.textDefault} style={{ textAlign: 'center' }}>
+                                    Bạn chưa có tài khoản ?
                                             <Button className={`${classes.textDefault} ${classes.btnGoto}`}
-                                            onClick={handleClickGoto('/dangky')}
-                                        >Đăng ký ngay !</Button>
-                                    </div>
+                                        onClick={handleClickGoto('/dangky')}
+                                    >Đăng ký ngay !</Button>
                                 </div>
-                                <div className={`${classes.formGroup} ${classes.groupBtnSubmit}`}>
-                                    <Button type="submit" className={`${classes.textDefault} ${classes.BtnSubmit}`}>Đăng nhập
+                            </div>
+                            <div className={`${classes.formGroup} ${classes.groupBtnSubmit}`}>
+                                <Button type="submit" className={`${classes.textDefault} ${classes.BtnSubmit}`}>Đăng nhập
                                 </Button>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            }
+            </div>
+            <div className={classes.divTool}>
+                <Zoom
+                    in={true}
+                    timeout={transitionDuration}
+                    style={{
+                        transitionDelay: `${transitionDuration.exit}ms`,
+                    }}
+                    unmountOnExit
+                >
+                    <Fab aria-label='Home' color='primary' onClick={handleCLickGotoHome}>
+                        <Avatar src={LogoLight} alt='LogoLight' />
+                    </Fab>
+                </Zoom>
+            </div>
         </Fragment>
     );
 };
@@ -221,6 +244,9 @@ const useStyles = makeStyles((theme) => ({
         bottom: 0,
         zIndex: '5',
         overflow: 'hidden',
+        [theme.breakpoints.down(`${461}`)]: {
+            marginTop: '10%',
+        }
     },
     content: {
         width: '83%',
@@ -253,6 +279,9 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiButton-label': {
             display: 'block',
         },
+        [theme.breakpoints.down(`${461}`)]: {
+            display: 'none',
+        }
     },
     logoG: {
         display: 'flex',
@@ -385,6 +414,18 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '6px',
     },
     //#endregion
+    divTool: {
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        margin: '10px',
+        zIndex: '10',
+        '& .MuiFab-root': {
+            width: '40px',
+            height: ' 40px',
+        },
+
+    }
 }));
 
 export default SignIn;

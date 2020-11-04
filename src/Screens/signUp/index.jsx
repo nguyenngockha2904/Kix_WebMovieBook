@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Loader from '../../Layouts/Loading';
 import { createAction } from '../../redux/action';
@@ -9,16 +9,17 @@ import bottomDop from '../../assets/img/bottomDop.svg';
 import topRightDop from '../../assets/img/topRightDop.svg';
 import logoLight from '../../assets/img/LogoLight.svg';
 //#endregion
-import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField } from '@material-ui/core';
+import { Avatar, Button, Fab, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField, useTheme, Zoom } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import { signUp } from '../../redux/action/userAction';
+import LogoLight from '../../assets/img/LogoDark.svg';
 const SignUp = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const history = useHistory();
-    const [isloading, setIsLoading] = useState(false);
+    const theme = useTheme();
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
     const [Repas, setRepas] = useState(false);
@@ -124,142 +125,163 @@ const SignUp = () => {
 
         }
     }, []);
+    const transitionDuration = useMemo(() => {
+        return {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: theme.transitions.duration.leavingScreen,
+        }
+    });
+    const handleCLickGotoHome = useCallback(() => {
+        history.replace('/');
+    }, []);
     return (
         <Fragment>
-            {isloading ? <Loader /> :
-                <div
+            <div
 
-                    className={classes.root}>
-                    <div className={classes.groupBg}>
-                        <img src={signUpBanner} alt="signUpBanner" className={classes.bgMain} />
-                        <img src={bottomDop} alt="bottomLeftDop" className={classes.bottomLeftDop} />
-                        <img src={topRightDop} alt="topRightDop" className={classes.TopRightDop} />
-                    </div>
-                    <div className={classes.wrapper}>
-                        <div className={classes.content}>
-                            <Button className={`${classes.textDefault} ${classes.groupLogo}  `}
-                                onClick={handleClickGoto('/')}
-                            >
+                className={classes.root}>
+                <div className={classes.groupBg}>
+                    <img src={signUpBanner} alt="signUpBanner" className={classes.bgMain} />
+                    <img src={bottomDop} alt="bottomLeftDop" className={classes.bottomLeftDop} />
+                    <img src={topRightDop} alt="topRightDop" className={classes.TopRightDop} />
+                </div>
+                <div className={classes.wrapper}>
+                    <div className={classes.content}>
+                        <Button className={`${classes.textDefault} ${classes.groupLogo}  `}
+                            onClick={handleClickGoto('/')}
+                        >
 
-                                <div className={classes.logoG}>
-                                    <img src={logoLight} alt="logoLight" className={classes.logoLight} />
-                                    <div className={classes.nameLogo}> Kix </div>
+                            <div className={classes.logoG}>
+                                <img src={logoLight} alt="logoLight" className={classes.logoLight} />
+                                <div className={classes.nameLogo}> Kix </div>
+                            </div>
+
+                            <div style={{ marginTop: '4px' }}>
+                                Hệ Thống Đặt Vé Xem Phim Nhanh Nhất !
                                 </div>
+                        </Button>
 
-                                <div style={{ marginTop: '4px' }}>
-                                    Hệ Thống Đặt Vé Xem Phim Nhanh Nhất !
-                                </div>
-                            </Button>
+                        <form className={classes.formStyle} onSubmit={handleSubmit(userInfo, validate)}>
+                            <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
+                                Đăng ký</div>
+                            <div className={classes.formGroup}>
+                                <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`}
+                                    value={userInfo.taiKhoan}
+                                    onChange={handleChange}
+                                    name="taiKhoan"
+                                    onBlur={validateInput('.{8,}')}
+                                />
+                                {validate.taiKhoan_V && <div className={classes.messageErr}>{validate.taiKhoan_T}</div>}
+                            </div>
 
-                            <form className={classes.formStyle} onSubmit={handleSubmit(userInfo, validate)}>
-                                <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
-                                    Đăng ký</div>
-                                <div className={classes.formGroup}>
-                                    <TextField label="tài khoản :" className={`${classes.textDefault} ${classes.formControl}`}
-                                        value={userInfo.taiKhoan}
+                            <div className={classes.formGroup}>
+                                <FormControl className={` ${classes.formControl}`}>
+                                    <InputLabel >Mật Khẩu</InputLabel>
+                                    <Input
+                                        type={showPassword ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword(1, showPassword)}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        value={userInfo.matKhau}
                                         onChange={handleChange}
-                                        name="taiKhoan"
-                                        onBlur={validateInput('.{8,}')}
+                                        name="matKhau"
+                                        onBlur={validateInput("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{5,}")}
                                     />
-                                    {validate.taiKhoan_V && <div className={classes.messageErr}>{validate.taiKhoan_T}</div>}
-                                </div>
+                                </FormControl>
+                                {validate.matKhau_V && <div className={classes.messageErr}>{validate.matKhau_T}</div>}
+                            </div>
+                            <div className={classes.formGroup}>
+                                <FormControl className={` ${classes.formControl}`}>
+                                    <InputLabel >nhập lại mật khẩu</InputLabel>
+                                    <Input
+                                        type={showRePassword ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword(2, showRePassword)}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showRePassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
 
-                                <div className={classes.formGroup}>
-                                    <FormControl className={` ${classes.formControl}`}>
-                                        <InputLabel >Mật Khẩu</InputLabel>
-                                        <Input
-                                            type={showPassword ? 'text' : 'password'}
-                                            endAdornment={
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleClickShowPassword(1, showPassword)}
-                                                        onMouseDown={handleMouseDownPassword}
-                                                    >
-                                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            }
-                                            value={userInfo.matKhau}
-                                            onChange={handleChange}
-                                            name="matKhau"
-                                            onBlur={validateInput("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{5,}")}
-                                        />
-                                    </FormControl>
-                                    {validate.matKhau_V && <div className={classes.messageErr}>{validate.matKhau_T}</div>}
-                                </div>
-                                <div className={classes.formGroup}>
-                                    <FormControl className={` ${classes.formControl}`}>
-                                        <InputLabel >nhập lại mật khẩu</InputLabel>
-                                        <Input
-                                            type={showRePassword ? 'text' : 'password'}
-                                            endAdornment={
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleClickShowPassword(2, showRePassword)}
-                                                        onMouseDown={handleMouseDownPassword}
-                                                    >
-                                                        {showRePassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-
-                                            }
-                                            onChange={handleChange}
-                                            onBlur={validatecomfirmPassword(userInfo.matKhau)}
-                                            value={userInfo.comfirmPassword}
-                                            name="comfirmPassword"
-                                        />
-                                    </FormControl>
-                                    {validate.comfirmPassword_V && <div className={classes.messageErr}>{validate.comfirmPassword_T}</div>}
-                                </div>
-
-                                <div className={classes.formGroup}>
-                                    <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`}
-                                        value={userInfo.hoTen}
+                                        }
                                         onChange={handleChange}
-                                        name="hoTen"
-                                        onBlur={validateInput('.{8,}')}
+                                        onBlur={validatecomfirmPassword(userInfo.matKhau)}
+                                        value={userInfo.comfirmPassword}
+                                        name="comfirmPassword"
                                     />
-                                    {validate.hoTen_V && <div className={classes.messageErr}>{validate.hoTen_T}</div>}
-                                </div>
-                                <div className={`${classes.formGroup} ${classes.formGroupTwo}`}>
-                                    <div className={`${classes.formGroup} ${classes.formLeft}`}>
-                                        <TextField label="Email :" className={`${classes.textDefault} ${classes.formControl}`}
-                                            value={userInfo.email}
-                                            onChange={handleChange}
-                                            name="email"
-                                            onBlur={validateInput("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$")}
-                                        />
-                                        {validate.email_V && <div className={classes.messageErr}>{validate.email_T}</div>}
-                                    </div>
-                                    <div className={`${classes.formGroup} ${classes.formRight}`}>
-                                        <TextField label="Số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`}
-                                            value={userInfo.soDt}
-                                            onChange={handleChange}
-                                            name="soDt"
-                                            onBlur={validateInput(/^\d{10,11}$/)}
-                                        />
-                                        {validate.soDt_V && <div className={classes.messageErr}>{validate.soDt_T}</div>}
-                                    </div>
-                                </div>
+                                </FormControl>
+                                {validate.comfirmPassword_V && <div className={classes.messageErr}>{validate.comfirmPassword_T}</div>}
+                            </div>
 
-                                <div className={classes.formGroup}>
-                                    <div className={classes.textDefault} style={{ textAlign: 'center' }}>
-                                        Bạn đã có tài khoản ?
+                            <div className={classes.formGroup}>
+                                <TextField label="Họ tên :" className={`${classes.textDefault} ${classes.formControl}`}
+                                    value={userInfo.hoTen}
+                                    onChange={handleChange}
+                                    name="hoTen"
+                                    onBlur={validateInput('.{8,}')}
+                                />
+                                {validate.hoTen_V && <div className={classes.messageErr}>{validate.hoTen_T}</div>}
+                            </div>
+                            <div className={`${classes.formGroup} ${classes.formGroupTwo}`}>
+                                <div className={`${classes.formGroup} ${classes.formLeft}`}>
+                                    <TextField label="Email :" className={`${classes.textDefault} ${classes.formControl}`}
+                                        value={userInfo.email}
+                                        onChange={handleChange}
+                                        name="email"
+                                        onBlur={validateInput("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$")}
+                                    />
+                                    {validate.email_V && <div className={classes.messageErr}>{validate.email_T}</div>}
+                                </div>
+                                <div className={`${classes.formGroup} ${classes.formRight}`}>
+                                    <TextField label="Số điện thoại :" className={`${classes.textDefault} ${classes.formControl}`}
+                                        value={userInfo.soDt}
+                                        onChange={handleChange}
+                                        name="soDt"
+                                        onBlur={validateInput(/^\d{10,11}$/)}
+                                    />
+                                    {validate.soDt_V && <div className={classes.messageErr}>{validate.soDt_T}</div>}
+                                </div>
+                            </div>
+
+                            <div className={classes.formGroup}>
+                                <div className={classes.textDefault} style={{ textAlign: 'center' }}>
+                                    Bạn đã có tài khoản ?
                                             <Button className={`${classes.textDefault} ${classes.btnGoto}`} onClick={handleClickGoto('/dangnhap')} >Đăng nhập !</Button>
-                                    </div>
                                 </div>
-                                <div className={`${classes.formGroup} ${classes.groupBtnSubmit}`}>
-                                    <Button type="submit" className={`${classes.textDefault} ${classes.BtnSubmit}`}
-                                    >Đăng ký
+                            </div>
+                            <div className={`${classes.formGroup} ${classes.groupBtnSubmit}`}>
+                                <Button type="submit" className={`${classes.textDefault} ${classes.BtnSubmit}`}
+                                >Đăng ký
                                 </Button>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            }
+            </div>
+            <div className={classes.divTool}>
+                <Zoom
+                    in={true}
+                    timeout={transitionDuration}
+                    style={{
+                        transitionDelay: `${transitionDuration.exit}ms`,
+                    }}
+                    unmountOnExit
+                >
+                    <Fab aria-label='Home' color='inherit' onClick={handleCLickGotoHome}>
+                        <Avatar src={LogoLight} alt='LogoLight' />
+                    </Fab>
+                </Zoom>
+            </div>
         </Fragment>
     );
 };
@@ -330,6 +352,9 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         [theme.breakpoints.down(`${769}`)]: {
             overflow: 'auto',
+        },
+        [theme.breakpoints.down(`${461}`)]: {
+            marginTop: '10%',
         }
     },
     content: {
@@ -365,6 +390,9 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiButton-label': {
             display: 'block',
         },
+        [theme.breakpoints.down(`${461}`)]: {
+            display: 'none',
+        }
     },
     logoG: {
         display: 'flex',
@@ -511,6 +539,19 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'SF Medium',
         letterSpacing: '0.5px',
     },
+    divTool: {
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        margin: '10px',
+        zIndex: '10',
+        [theme.breakpoints.down(`${1250}`)]: {
+            '& .MuiFab-root': {
+                width: '40px',
+                height: ' 40px',
+            },
+        },
+    }
     //#endregion
 }));
 export default SignUp;

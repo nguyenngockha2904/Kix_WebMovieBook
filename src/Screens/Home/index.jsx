@@ -1,7 +1,7 @@
-import React, { Fragment, useCallback, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useRef, useState, useMemo } from 'react';
 import Carousel from '../../Layouts/Carousel';
 import HomeMovie from '../../Layouts/MovieHome';
-import { makeStyles } from '@material-ui/core';
+import { Avatar, Fab, makeStyles, useTheme, Zoom } from '@material-ui/core';
 import GroupCine from '../../Layouts/GroupCinema';
 import backnews from '../../assets/img/back-news.png';
 import Footer from '../../Layouts/footer';
@@ -14,6 +14,8 @@ import { createAction } from '../../redux/action';
 import Header from '../../Layouts/Header';
 import { SET_DATA_LIST_PHONGVE_MALICHCHIEU, SET_TYPE_PAGE } from '../../redux/action/type';
 import ModalMap from '../../Components/ModalMap';
+import LogoLight from '../../assets/img/LogoDark.svg';
+import NavigationIcon from '@material-ui/icons/Navigation';
 const useStyle = makeStyles((theme) => ({
     homeRoot: {},
     space: {
@@ -30,6 +32,17 @@ const useStyle = makeStyles((theme) => ({
         backgroundSize: '100%',
         backgroundRepeat: 'no-repeat',
         paddingTop: theme.spacing(12),
+    },
+    divTool: {
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        margin: '10px',
+        zIndex: '10',
+        '& .MuiFab-root': {
+            width: '40px',
+            height: ' 40px',
+        }
     }
 }));
 const Home = () => {
@@ -39,6 +52,7 @@ const Home = () => {
     const refHomeMovie = useRef(null);
     const refGroupCine = useRef(null);
     const refNav = useRef(null);
+    const theme = useTheme();
     // console.log('home render');  
     const request = useSelector((state) => {
         return state.parent.request
@@ -69,6 +83,15 @@ const Home = () => {
         dispatch(createAction(SET_TYPE_PAGE, 1));
         dispatch(createAction(SET_DATA_LIST_PHONGVE_MALICHCHIEU, ""));
     }, [request]);
+    const transitionDuration = useMemo(() => {
+        return {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: theme.transitions.duration.leavingScreen,
+        }
+    });
+    const handleCLickGotoHome = useCallback(() => {
+        refNav.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+    }, []);
     return (
         <div
             className={classes.homeRoot}
@@ -84,9 +107,24 @@ const Home = () => {
                 <div className={classes.spaceGroupCine}></div>
                 <GroupCine />
                 <div className={classes.space}></div>
+                <div className={classes.divTool}>
+                    <Zoom
+                        in={true}
+                        timeout={transitionDuration}
+                        style={{
+                            transitionDelay: `${transitionDuration.exit}ms`,
+                        }}
+                        unmountOnExit
+                    >
+                        <Fab aria-label='Home' color='primary' onClick={handleCLickGotoHome}>
+                            <NavigationIcon />
+                        </Fab>
+                    </Zoom>
+                </div>
             </Fragment>
             }
             <Footer />
+
             {/* <ModalMap location="Đà lạt , Việt Nam" /> */}
         </div>
     );
