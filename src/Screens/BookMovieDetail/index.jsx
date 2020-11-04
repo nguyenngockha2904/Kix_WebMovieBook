@@ -61,7 +61,7 @@ const BookMovieDetail = (props) => {
     const theme = useTheme();
     const history = useHistory();
     const [isloading, setIsLoading] = useState(true);
-    const [activeStep, setActiveStep] = React.useState(4);
+    const [activeStep, setActiveStep] = React.useState(0);
     const [logoCine, setLogoCine] = useState(returnIconTheader(''));
     const steps = useMemo(() => {
         return ['Chọn loại vé', 'Chọn ghế & Thanh Toán', 'Kết quả đặt vé']

@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles, withWidth, } from '@material-ui/core';
+import { Avatar, Box, Button, makeStyles, withWidth, } from '@material-ui/core';
 import React, { useCallback, useMemo, useState, memo } from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -106,6 +106,8 @@ const Carousel = (props) => {
         autoplay: true,
         pauseOnHover: true,
         fade: true,
+        prevArrow: <button type="button" class="slick-prev"><Avatar src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
+        nextArrow: <button type="button" class="slick-next"><Avatar src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
     }), []);
     const renderCarousel = useCallback(() => {
 
@@ -377,38 +379,26 @@ const useStyle = makeStyles((theme) => ({
     },
     Carousel: {
         // overflow: 'hidden',
+        '& .slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus': {
+
+        },
         '& .slick-arrow': {
             zIndex: '95',
-            height: theme.spacing(3),
-            width: theme.spacing(6),
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: 'contain',
-            // transition: '.5s',
+
             '&::before': {
-                content: 'none',
-            },
-            [theme.breakpoints.up(`${768}`)]: {
-                height: theme.spacing(4),
-                width: theme.spacing(8),
-            },
-            [theme.breakpoints.up(`${978}`)]: {
-                height: theme.spacing(5),
-                width: theme.spacing(10),
+                // fontSize: '46px',
+                display: 'none !important',
             },
             [theme.breakpoints.down(`${960}`)]: {
                 display: 'none !important',
             }
         },
         '& .slick-next': {
-            right: 0,
-            backgroundImage: `url(${ImgNextD}) !important`,
+            right: '2%',
 
         },
         '& .slick-prev': {
-            left: 0,
-            backgroundImage: `url(${ImgPrevD})  !important`,
-
+            left: '1%',
         },
         '& .slick-dots': {
             bottom: '14%',
@@ -445,6 +435,8 @@ const useStyle = makeStyles((theme) => ({
             }
         }
 
+    },
+    slickArrow: {
     },
     slide: {
         position: 'relative',

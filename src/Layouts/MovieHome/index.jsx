@@ -22,7 +22,6 @@ const TabPanel = (props) => {
             id={`full-width-tabpanel-${index}`}
             aria-labelledby={`full-width-tab-${index}`}
             {...other}
-            style={{ overflow: 'hidden' }}
         >
             {value === index && (
                 <Fragment>

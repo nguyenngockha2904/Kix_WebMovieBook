@@ -1,5 +1,5 @@
 import React, { Fragment, memo, useEffect, useMemo } from 'react';
-import { Grid, makeStyles, withWidth } from '@material-ui/core';
+import { Avatar, Grid, makeStyles, withWidth } from '@material-ui/core';
 import Slider from "react-slick";
 import { useCallback } from 'react';
 import ImgPrevL from '../../assets/img/btnPrevLightWithHomeMovie.svg';
@@ -15,15 +15,10 @@ const useStyles = makeStyles((theme) => {
         silder: {
             '& .slick-arrow': {
                 zIndex: '10',
-                height: theme.spacing(5),
-                width: theme.spacing(5),
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                backgroundSize: 'contain',
                 transition: '.2s',
-                display: 'none !important',
+                // display: 'none !important',
                 '&::before': {
-                    content: 'none',
+                    display: 'none !important',
                 },
                 [theme.breakpoints.down(`${1100}`)]: {
                     display: 'none !important',
@@ -31,16 +26,14 @@ const useStyles = makeStyles((theme) => {
 
             },
             '& .slick-next': {
-                backgroundImage: `url(${ImgNextD}) !important`,
-                '&:hover': {
-                    backgroundImage: `url(${ImgNextL}) !important`,
-                }
+                right: ' -25px',
+                top: '50%',
+                transform: 'translate(0, -50%)',
             },
             '& .slick-prev': {
-                backgroundImage: `url(${ImgPrevD}) !important`,
-                '&:hover': {
-                    backgroundImage: `url(${ImgPrevL}) !important`,
-                }
+                left: '-20px',
+                top: '50%',
+                transform: 'translate(-20px,-50%)',
             },
         },
         divGrid: {
@@ -81,6 +74,8 @@ const MovieList = (props) => {
         slidesToScroll: 1,
         autoplay: true,
         pauseOnHover: true,
+        prevArrow: <button type="button" class="slick-prev"><Avatar src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
+        nextArrow: <button type="button" class="slick-next"><Avatar src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
 
     }), []);
     const renderListMovie = useCallback(() => {
