@@ -1,15 +1,20 @@
 import { Avatar, makeStyles, Step, StepButton, Stepper } from '@material-ui/core';
 import React, { memo, useMemo } from 'react';
 import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import avatar from '../../assets/img/Noavatar.svg';
+import { createAction } from '../../redux/action';
+import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
 const NavBarBook = (props) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const { activeStep, steps, handleNext } = useMemo(() => {
         return props
     }, [props]);
     const handleChooseStep = useCallback((value) => () => {
         if (activeStep !== 3 && activeStep !== value) {
             handleNext(value);
+            dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, ''));
         }
     }, [activeStep]);
     const username = useMemo(() => {

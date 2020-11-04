@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Loader from '../../Layouts/Loading';
 import { createAction } from '../../redux/action';
@@ -554,4 +554,4 @@ const useStyles = makeStyles((theme) => ({
     }
     //#endregion
 }));
-export default SignUp;
+export default memo(SignUp);

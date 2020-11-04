@@ -1,10 +1,12 @@
 import { Avatar, Button, FormControl, FormControlLabel, makeStyles, Radio, RadioGroup } from '@material-ui/core';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import AtmIcon from '../../assets/img/AtmIcon.svg';
 import CCIcon from '../../assets/img/CCIcon.svg';
 import ZaloPayIcon from '../../assets/img/logoCine/zalopay_icon.png';
-const ThanhToanResComponent = () => {
+import { MovieService } from '../../services';
+import swal from 'sweetalert';
+const ThanhToanResComponent = (props) => {
     const classes = useStyles();
     const [thanhToan, setThanhToan] = useState(0);
     const phongVeInfo = useSelector((state) => {
@@ -13,9 +15,12 @@ const ThanhToanResComponent = () => {
     const listGheDaDat = useSelector((state) => {
         return state.qlMovie.listGheDaDat
     });
-    const { tenPhim, hinhAnh } = useMemo(() => {
+    const { tenPhim, hinhAnh, maLichChieu } = useMemo(() => {
         return phongVeInfo.thongTinPhim
     }, [phongVeInfo.thongTinPhim]);
+    const { handleNext } = useMemo(() => {
+        return props
+    }, [props]);
     let tongTien = useMemo(() => {
         let tt = 0;
         if (listGheDaDat.length !== 0) {
@@ -48,6 +53,36 @@ const ThanhToanResComponent = () => {
     }, [listGheDaDat]);
     const handleChange = useCallback((event) => {
         setThanhToan(parseInt(event.target.value));
+    }, []);
+    const handleBuyTicket = useCallback((listGheDaDat, maLichChieu) => () => {
+        let taiKhoanNguoiDung = localStorage.getItem('username');
+
+        let danhSachVe = listGheDaDat.map((item) => {
+            return {
+                maGhe: item.maGhe,
+                giaVe: item.giaVe
+            }
+        });
+        const data = {
+            maLichChieu,
+            danhSachVe,
+            taiKhoanNguoiDung,
+        };
+        if (listGheDaDat.length !== 0) {
+            MovieService.datLich(data).then(res => {
+                console.log(res.data);
+                handleNext(3);
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            swal({
+                title: 'Vui lòng chọn ghế !!',
+                text: "Vui lòng chọn ghế để tiếp tục!",
+                icon: "info",
+            });
+        }
+
     }, []);
     return (
         <div className={classes.root}>
@@ -105,7 +140,7 @@ const ThanhToanResComponent = () => {
                         </div>
                     </div>
                     <div className={classes.ItemBottom}>
-                        <Button className={classes.btnNext}>Tiếp tục
+                        <Button className={classes.btnNext} onClick={handleBuyTicket(listGheDaDat, maLichChieu)}>Đặt vé
                         </Button>
                     </div>
                 </div>
@@ -303,4 +338,4 @@ const useStyles = makeStyles((theme) => ({
         'border-bottom-left-radius': 0,
     },
 }));
-export default ThanhToanResComponent;
+export default memo(ThanhToanResComponent);

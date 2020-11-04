@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
@@ -54,7 +54,6 @@ const SignIn = () => {
     }, [credentials]);
     const handleSubmit = useCallback((value) => (e) => {
         e.preventDefault();
-        console.log(value);
         dispatch(Login(value, () => {
             history.replace(`/`);
 
@@ -428,4 +427,4 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default SignIn;
+export default memo(SignIn);

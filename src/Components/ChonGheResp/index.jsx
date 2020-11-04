@@ -1,5 +1,5 @@
 import { Avatar, Button, Grid, makeStyles, Snackbar } from '@material-ui/core';
-import React, { Fragment, useCallback, useMemo, useState } from 'react';
+import React, { Fragment, memo, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
@@ -529,4 +529,4 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '6px',
     },
 }));
-export default ChonGheResp;
+export default memo(ChonGheResp);

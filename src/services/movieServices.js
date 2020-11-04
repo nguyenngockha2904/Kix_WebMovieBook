@@ -25,6 +25,13 @@ class MovieService {
             method: 'GET',
             url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${maLichChieu}`,
         })
+    };
+    datLich = (data) => {
+        return createConnector({
+            method: 'POST',
+            url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/DatVe`,
+            data
+        })
     }
 }
 export default MovieService;

@@ -587,6 +587,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        [theme.breakpoints.down(`${961}`)]: {
+            paddingLeft: '10px',
+        },
     },
     titleTongTien: {
         color: '#000',

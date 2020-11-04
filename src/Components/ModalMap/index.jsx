@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, memo } from 'react';
 import GoogleMapReact from 'google-map-react';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
@@ -50,4 +50,4 @@ class ModalMap extends Component {
 //     );
 // }; 
 
-export default ModalMap;
+export default memo(ModalMap);

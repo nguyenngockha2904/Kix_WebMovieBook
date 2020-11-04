@@ -27,6 +27,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import clsx from 'clsx';
 import LogoLight from '../../assets/img/LogoDark.svg';
+import ComponentAlertThanhCong from '../../Components/ComponentThongBaoThanhCong';
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
         case 'bhd': {
@@ -60,7 +61,7 @@ const BookMovieDetail = (props) => {
     const theme = useTheme();
     const history = useHistory();
     const [isloading, setIsLoading] = useState(true);
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = React.useState(4);
     const [logoCine, setLogoCine] = useState(returnIconTheader(''));
     const steps = useMemo(() => {
         return ['Chọn loại vé', 'Chọn ghế & Thanh Toán', 'Kết quả đặt vé']
@@ -102,6 +103,7 @@ const BookMovieDetail = (props) => {
         if (completed) {
             history.replace('/');
             return <span>hết giờ</span>;
+
         } else {
             return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
         }
@@ -119,12 +121,17 @@ const BookMovieDetail = (props) => {
                         <ChonGheComponent handleNext={handleNext} logoCine={logoCine} />
                     </Box>
                 );
-            default:
+            case 2:
                 return (
                     <Box my={8}>
-                        Thành công !!
+                        thanhcong
                     </Box>
                 );
+            default: {
+                return (
+                    <ComponentAlertThanhCong />
+                );
+            }
         }
     }, [logoCine]);
     const getStepContentRes = useCallback((stepIndex, width) => {
@@ -140,9 +147,13 @@ const BookMovieDetail = (props) => {
                     <ChonGheResp handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
 
                 );
+            case 2:
+                return (
+                    <ThanhToanResComponent handleNext={handleNext} />
+                );
             default:
                 return (
-                    <ThanhToanResComponent />
+                    <ComponentAlertThanhCong />
                 );
         }
 
@@ -181,7 +192,7 @@ const BookMovieDetail = (props) => {
                 </Fragment>
                     :
                     <Fragment>
-                        <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />
+                        {(activeStep == 0 || activeStep == 1 || activeStep == 2) && <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />}
                         {getStepContentRes(activeStep, width)}
                     </Fragment>
 

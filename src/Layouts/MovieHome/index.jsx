@@ -64,7 +64,6 @@ const MovieHome = (props) => {
     let width = useMemo(() => {
         return props.width;
     }, [props.width]);
-    console.log(width);
     return (
         <div className={classes.root}>
             <AppBar position="static" color="default">

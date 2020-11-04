@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Button, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, Tab, Tabs, TextField } from '@material-ui/core';
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Header from '../../Layouts/Header';
 import avatarImg from '../../assets/img/Noavatar.svg';
 import PropTypes from 'prop-types';
@@ -66,6 +66,14 @@ const UserInfo = () => {
     const us = useSelector((state) => {
         return state.qlUser.credentials
     });
+    const request = useSelector((state) => {
+        return state.parent.requestPageUser
+    });
+    useEffect(() => {
+        if (request === 1) {
+            setValue(2);
+        }
+    }, [request]);
     const handleSetValue = useCallback((value) => {
         setValue(value);
     }, []);
@@ -382,4 +390,4 @@ const useStyles = makeStyles((theme) => ({
         transition: 'all 0.5s',
     },
 }));
-export default UserInfo;
+export default memo(UserInfo);

@@ -214,6 +214,11 @@ const MovieReducer = (state = initialState, { type, payload }) => {
                 }
             } else {
                 state.listGheDaDat = [];
+                let mag = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+                for (let item of mag) {
+                    item.isActived = false;
+                }
+                state.PhongVeItemByMaLichChieu.danhSachGhe = mag;
             }
             return { ...state };
         }

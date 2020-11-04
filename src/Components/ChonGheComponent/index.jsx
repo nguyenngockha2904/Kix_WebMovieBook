@@ -9,7 +9,8 @@ import Countdown from 'react-countdown';
 import { motion } from 'framer-motion';
 import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
-
+import { MovieService } from '../../services';
+import swal from 'sweetalert';
 //#region Ghe SVG
 const ChangeGheSVG = (color, number, disable, type = 0) => {
     return (
@@ -75,7 +76,7 @@ const ChonGheComponent = (props) => {
     const listGheDaDat = useSelector((state) => {
         return state.qlMovie.listGheDaDat
     });
-    const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu } = useMemo(() => {
+    const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu, maLichChieu } = useMemo(() => {
         return phongVeInfo.thongTinPhim
     });
     const dateTime = useMemo(() => {
@@ -131,8 +132,36 @@ const ChonGheComponent = (props) => {
             )
         });
     }, [listGhePhanMang]);
-    const handleBuyTicket = useCallback(() => {
-        handleNext(3)
+
+    const handleBuyTicket = useCallback((listGheDaDat, maLichChieu) => () => {
+        let taiKhoanNguoiDung = localStorage.getItem('username');
+
+        let danhSachVe = listGheDaDat.map((item) => {
+            return {
+                maGhe: item.maGhe,
+                giaVe: item.giaVe
+            }
+        });
+        const data = {
+            maLichChieu,
+            danhSachVe,
+            taiKhoanNguoiDung,
+        };
+        if (listGheDaDat.length !== 0) {
+            MovieService.datLich(data).then(res => {
+                console.log(res.data);
+                handleNext(4);
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            swal({
+                title: 'Vui lòng chọn ghế !!',
+                text: "Vui lòng chọn ghế để tiếp tục!",
+                icon: "info",
+            });
+        }
+
     }, []);
 
     const renderListGheDaDat = useCallback(() => {
@@ -210,7 +239,6 @@ const ChonGheComponent = (props) => {
                                 />
                             </div>
                         </div>
-
                     </div>
 
                     <div className={classes.contentBody}>
@@ -365,7 +393,7 @@ const ChonGheComponent = (props) => {
                             </div>
                         </div>
                         <div className={classes.FooterButton}>
-                            <Button className={classes.btnDatVe} onClick={handleBuyTicket}><div className={classes.textDefault}>Đặt vé</div></Button>
+                            <Button className={classes.btnDatVe} onClick={handleBuyTicket(listGheDaDat, maLichChieu)}><div className={classes.textDefault}>Đặt vé</div></Button>
                         </div>
                     </div>
                 </div>
@@ -502,7 +530,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#3E515D',
         fontFamily: 'SF Medium',
         fontSize: theme.spacing(1.5),
-        letterSpacing: '-0.7px',
+        letterSpacing: '-0.7px  ',
     },
 
     GroupGhe: {
