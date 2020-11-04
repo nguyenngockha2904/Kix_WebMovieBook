@@ -28,6 +28,7 @@ import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import clsx from 'clsx';
 import LogoLight from '../../assets/img/LogoDark.svg';
 import ComponentAlertThanhCong from '../../Components/ComponentThongBaoThanhCong';
+import ErrorPage from '../ErrorPage';
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
         case 'bhd': {
@@ -66,7 +67,7 @@ const BookMovieDetail = (props) => {
     const steps = useMemo(() => {
         return ['Chọn loại vé', 'Chọn ghế & Thanh Toán', 'Kết quả đặt vé']
     }, []);
-
+    const username = localStorage.getItem('username');
     useEffect(() => {
         //  console.log(params.maLichChieu);
         dispatch(getPhongVeItem_byMaLichChieu(params.maLichChieu, (title) => {
@@ -98,10 +99,10 @@ const BookMovieDetail = (props) => {
     }, []);
     const dateTime = useMemo(() => {
         return Date.now() + 285000;
+        // return Date.now() + 5000;
     }, []);
     const renderer = useCallback(({ hours, minutes, seconds, completed }) => {
         if (completed) {
-            history.replace('/');
             return <span>hết giờ</span>;
 
         } else {
@@ -169,36 +170,36 @@ const BookMovieDetail = (props) => {
     }, []);
     return (
         <Fragment>
+            {username ? <Fragment>
+                {isloading ? <Loader /> : <Fragment>
+                    {(width === 'md' || width === 'lg' || width === 'xl') ? <Fragment>
+                        <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} />
+                        {getStepContent(activeStep, width)}
+                        <div className={classes.divTool} style={{ right: activeStep === 0 && '0' }}>
 
-            {isloading ? <Loader /> : <Fragment>
-                {(width === 'md' || width === 'lg' || width === 'xl') ? <Fragment>
-                    <NavBarBook activeStep={activeStep} steps={steps} handleNext={handleNext} />
-                    {getStepContent(activeStep, width)}
-                    <div className={classes.divTool} style={{ right: activeStep === 0 && '0' }}>
-
-                        <Zoom
-                            in={true}
-                            timeout={transitionDuration}
-                            style={{
-                                transitionDelay: `${transitionDuration.exit}ms`,
-                            }}
-                            unmountOnExit
-                        >
-                            <Fab aria-label='Home' color='primary' onClick={handleCLickGotoHome}>
-                                <Avatar src={LogoLight} alt='LogoLight' />
-                            </Fab>
-                        </Zoom>
-                    </div>
-                </Fragment>
-                    :
-                    <Fragment>
-                        {(activeStep == 0 || activeStep == 1 || activeStep == 2) && <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />}
-                        {getStepContentRes(activeStep, width)}
+                            <Zoom
+                                in={true}
+                                timeout={transitionDuration}
+                                style={{
+                                    transitionDelay: `${transitionDuration.exit}ms`,
+                                }}
+                                unmountOnExit
+                            >
+                                <Fab aria-label='Home' color='primary' onClick={handleCLickGotoHome}>
+                                    <Avatar src={LogoLight} alt='LogoLight' />
+                                </Fab>
+                            </Zoom>
+                        </div>
                     </Fragment>
+                        :
+                        <Fragment>
+                            {(activeStep == 0 || activeStep == 1 || activeStep == 2) && <NavBar_BookMovieDetail_Res activeStep={activeStep} steps={steps} handleNext={handleNext} dateTime={dateTime} renderer={renderer} />}
+                            {getStepContentRes(activeStep, width)}
+                        </Fragment>
 
-                }
-            </Fragment>}
-
+                    }
+                </Fragment>}
+            </Fragment> : <ErrorPage role={1} />}
         </Fragment>
     );
 }

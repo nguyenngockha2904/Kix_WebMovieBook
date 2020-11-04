@@ -1,4 +1,4 @@
-import { Box, Button, Grid, makeStyles, } from '@material-ui/core';
+import { Box, Button, Grid, makeStyles, Paper, } from '@material-ui/core';
 import React, { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { createAction } from '../../redux/action';
@@ -93,6 +93,18 @@ const useStyle = makeStyles((theme) => ({
         fontFamily: 'none',
         transition: 'all 0.3s',
         outline: 'none',
+    },
+    Paper: {
+        height: theme.spacing(31.8),
+        borderRadius: theme.spacing(0.5),
+        [theme.breakpoints.down(`${460}`)]: {
+            height: theme.spacing(24.5),
+            borderRadius: '10px',
+            boxShadow: '0 0 6px 2px #9e9e9e85',
+        },
+        [theme.breakpoints.down(`${321}`)]: {
+            height: theme.spacing(20),
+        },
     }
 }))
 
@@ -112,11 +124,13 @@ const MovieItem = (props) => {
     return (
         <Grid item xs={6} sm={4} md={3} className={classes.root}>
 
-            <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} danhGia={danhGia} hinhAnh={hinhAnh} ngayKhoiChieu={ngayKhoiChieu} handleClickChooseMovie={handleClickChooseMovie(maPhim)} />
+            <Paper elevation={3} className={classes.Paper}>
+                <ImageMovie handleShowModalVideo={handleShowModalVideo(props.movieItem)} danhGia={danhGia} hinhAnh={hinhAnh} ngayKhoiChieu={ngayKhoiChieu} handleClickChooseMovie={handleClickChooseMovie(maPhim)} />
+            </Paper>
             <div className={classes.divContent}>
                 <div className={classes.nameMovie}>
                     <div className={classes.general}>C18</div>
-                    {(tenPhim).slice(0, 30)}{tenPhim.length > 100 && '...'}
+                    {(tenPhim).substr(0, 13)}{tenPhim.length > 13 && '...'}
                 </div>
                 <div className={classes.time}>100 phút</div>
                 <div className={classes.bgContent}>

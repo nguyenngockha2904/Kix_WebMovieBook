@@ -19,13 +19,6 @@ const NavBar_BookMovieDetail_Res = (props) => {
     const { tenCumRap, tenRap, diaChi, tenPhim, ngayChieu, gioChieu } = useMemo(() => {
         return phongVeInfo.thongTinPhim
     }, [phongVeInfo.thongTinPhim]);
-    const texttitle = useMemo(() => {
-        switch (activeStep) {
-            case 0: {
-                return 'Chọn Chỗ Ngồi'
-            }
-        }
-    }, [activeStep]);
     const handleClickBack = useCallback((activeStep) => () => {
         if (activeStep === 0) {
             history.replace('/');
@@ -72,6 +65,9 @@ const NavBar_BookMovieDetail_Res = (props) => {
                                 <Countdown
                                     date={dateTime}
                                     renderer={renderer}
+                                    onComplete={() => {
+                                        history.replace('/')
+                                    }}
                                 />
                             </div>
                         </div>

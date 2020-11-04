@@ -97,18 +97,57 @@ const MovieDetailShowTime = () => {
     }, [propsMovieSystem.heThongRapChieu]);
 
     const listDay = useMemo(() => {
+        //#region  comment
+        // let listD = [];
+        // let dayCheck = '';
+        // let listTest = [];
+        // listLichChieu.map((item) => {
+        //     let date = new Date(item.ngayChieuGioChieu);
+        //     let dayString = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}/${date.getFullYear()}`;
+        //     if (dayCheck !== dayString) {
+        //         listTest.push(item);
+        //     }
+        //     dayCheck = dayString;
+        // });
+        // listTest.map((item) => {
+        //     let date = new Date(item.ngayChieuGioChieu);
+        //     let dayString = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}/${date.getFullYear()}`;
+        //     let day = '';
+        //     if (date.getDay() === 0) {
+        //         day = 'Chủ Nhật';
+        //     }
+        //     if (date.getDay() === 1) {
+        //         day = 'Thứ 2';
+        //     }
+        //     if (date.getDay() === 2) {
+        //         day = 'Thứ 3';
+        //     }
+        //     if (date.getDay() === 3) {
+        //         day = 'Thứ 4';
+        //     }
+        //     if (date.getDay() === 4) {
+        //         day = 'Thứ 5';
+        //     }
+        //     if (date.getDay() === 5) {
+        //         day = 'Thứ 6';
+        //     }
+        //     if (date.getDay() === 6) {
+        //         day = 'Thứ Bảy';
+        //     }
+        //     let d = {
+        //         day,
+        //         da: `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+        //         dateFormat: dayString,
+        //         isActived: false,
+        //     }
+        //     listD.push(d);
+        // });
+        // return listD;
+        //#endregion
         let listD = [];
         let dayCheck = '';
         let listTest = [];
         listLichChieu.map((item) => {
-            let date = new Date(item.ngayChieuGioChieu);
-            let dayString = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}/${date.getFullYear()}`;
-            if (dayCheck !== dayString) {
-                listTest.push(item);
-            }
-            dayCheck = dayString;
-        });
-        listTest.map((item) => {
             let date = new Date(item.ngayChieuGioChieu);
             let dayString = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}/${date.getFullYear()}`;
             let day = '';
@@ -141,7 +180,17 @@ const MovieDetailShowTime = () => {
             }
             listD.push(d);
         });
-        return listD;
+        let mangSPTheoGia = listD.sort((sp_tieptheo, sp) => {
+            return parseInt(sp_tieptheo.da) - parseInt(sp.da);
+        });
+        mangSPTheoGia.map((item) => {
+            if (dayCheck !== item.da) {
+                listTest.push(item);
+            }
+            dayCheck = item.da;
+        });
+
+        return listTest;
     }, [listLichChieu]);
 
 

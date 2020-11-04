@@ -100,7 +100,34 @@ const Carousel = (props) => {
             setIsShowXuatChieu(false);
         }
     }, [isShowTabPhim, isShowTabRap, isShowTabNgayXem, isShowTabXuatChieu]);
-
+    const SlickArrowLeft = useCallback(({ currentSlide, slideCount, ...props }) => (
+        <button
+            {...props}
+            className={
+                "slick-prev slick-arrow" +
+                (currentSlide === 0 ? " slick-disabled" : "")
+            }
+            aria-hidden="true"
+            aria-disabled={currentSlide === 0 ? true : false}
+            type="button"
+        >
+            <img src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} />
+        </button>
+    ), []);
+    const SlickArrowRight = useCallback(({ currentSlide, slideCount, ...props }) => (
+        <button
+            {...props}
+            className={
+                "slick-next slick-arrow" +
+                (currentSlide === slideCount - 1 ? " slick-disabled" : "")
+            }
+            aria-hidden="true"
+            aria-disabled={currentSlide === slideCount - 1 ? true : false}
+            type="button"
+        >
+            <img src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} />
+        </button>
+    ), []);
     const settings = useMemo(() => ({
         dots: true,
         speed: 500,
@@ -109,8 +136,8 @@ const Carousel = (props) => {
         autoplay: true,
         pauseOnHover: true,
         fade: true,
-        prevArrow: <button type="button" class="slick-prev"><img src={ImgPrevD} alt='ImgPrevD' className={classes.slickArrow} /></button>,
-        nextArrow: <button type="button" class="slick-next"><img src={ImgNextD} alt='ImgNextD' className={classes.slickArrow} /></button>
+        prevArrow: <SlickArrowLeft />,
+        nextArrow: <SlickArrowRight />,
     }), []);
     const renderCarousel = useCallback(() => {
 

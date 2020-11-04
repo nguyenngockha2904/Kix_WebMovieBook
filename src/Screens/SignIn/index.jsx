@@ -8,7 +8,7 @@ import topRightDop from '../../assets/img/topRightDop.svg';
 import logoLight from '../../assets/img/LogoLight.svg';
 import bottomRightDop from '../../assets/img/bottomRightDop.svg';
 import bottomDop from '../../assets/img/bottomDop2.svg';
-import { Avatar, Button, Fab, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField, useTheme, Zoom } from '@material-ui/core';
+import { Avatar, Button, Fab, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, Paper, TextField, useTheme, Zoom } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
@@ -110,7 +110,6 @@ const SignIn = () => {
                                 Hệ Thống Đặt Vé Xem Phim Nhanh Nhất !
                                 </div>
                         </Button>
-
                         <form className={classes.formStyle} onSubmit={handleSubmit(credentials, requestPage)}>
                             <div className={`${classes.textDefault} ${classes.formGroup} ${classes.titleForm}`}>
                                 Đăng nhập</div>

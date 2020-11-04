@@ -56,12 +56,12 @@ const ChonGheComponent = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [thanhToan, setThanhToan] = useState(0);
+    const [completedd, setCompletedd] = useState(false);
     const { handleNext, logoCine } = useMemo(() => {
         return props
     }, [props]);
     const renderer = useCallback(({ hours, minutes, seconds, completed }) => {
         if (completed) {
-            history.replace('/');
             return <span>hết giờ</span>;
         } else {
             return <span>{(minutes < 10 ? '0' + minutes : minutes) + ':'}{seconds < 10 ? '0' + seconds : seconds}</span>;
@@ -80,7 +80,7 @@ const ChonGheComponent = (props) => {
         return phongVeInfo.thongTinPhim
     });
     const dateTime = useMemo(() => {
-        return Date.now() + 285000;
+        return Date.now() + 285000
     }, []);
     const amount = useSelector((state) => {
         return state.qlMovie.amount;
@@ -236,6 +236,9 @@ const ChonGheComponent = (props) => {
                                 <Countdown
                                     date={dateTime}
                                     renderer={renderer}
+                                    onComplete={() => {
+                                        history.replace('/');
+                                    }}
                                 />
                             </div>
                         </div>

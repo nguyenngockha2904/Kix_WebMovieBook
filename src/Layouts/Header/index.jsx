@@ -50,9 +50,7 @@ const Header = (props) => {
     const width = useMemo(() => {
         return props.width;
     }, [props.width]);
-    const username = useMemo(() => {
-        return localStorage.getItem('username');
-    }, [localStorage.getItem('username')]);
+    const username = localStorage.getItem('username');
     const handleClickUser = useCallback((value) => () => {
         if (username) {
             setOpenToolUser(value);

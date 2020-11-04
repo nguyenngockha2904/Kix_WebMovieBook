@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, useMemo } from 'react';
+import React, { Fragment, Suspense, useEffect, useMemo, useState } from 'react';
 import Header from './Layouts/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ const SignUp = React.lazy(() => import('./Screens/signUp'));
 const UserInfo = React.lazy(() => import('./Screens/userpage'));
 const ErrorPage = React.lazy(() => import('./Screens/ErrorPage'));
 function App() {
-  const username = localStorage.getItem('username');
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Fragment><Loading /></Fragment>}>
@@ -19,12 +19,8 @@ function App() {
           <Route path='/detail/:maPhim' exact component={MovieDetail} />
           <Route path='/dangnhap' exact component={SignIn} />
           <Route path='/dangky' exact component={SignUp} />
-          <Route path='/chitietphongve/:maLichChieu' exact >
-            {username ? <BookMovieDetail /> : <ErrorPage role={1} />}
-          </Route>
-          <Route path='/thongtincanhan' exact >
-            {username ? <UserInfo /> : <ErrorPage role={1} />}
-          </Route>
+          <Route path='/chitietphongve/:maLichChieu' component={BookMovieDetail} />
+          <Route path='/thongtincanhan' exact component={UserInfo} />
           <Route path='/' exact component={Home} />
           <Route path="*">
             <ErrorPage role={0} />

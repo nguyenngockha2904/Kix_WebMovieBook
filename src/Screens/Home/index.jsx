@@ -83,6 +83,7 @@ const Home = () => {
         dispatch(createAction(SET_TYPE_PAGE, 1));
         dispatch(createAction(SET_DATA_LIST_PHONGVE_MALICHCHIEU, ""));
     }, [request]);
+
     const transitionDuration = useMemo(() => {
         return {
             enter: theme.transitions.duration.enteringScreen,

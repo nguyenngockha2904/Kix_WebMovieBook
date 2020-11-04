@@ -13,6 +13,7 @@ import { SET_TYPE_PAGE } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
 import { useHistory } from 'react-router-dom';
 import Loader from '../../Layouts/Loading';
+import ErrorPage from '../ErrorPage';
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -54,6 +55,7 @@ const UserInfo = () => {
     const [value, setValue] = useState(0);
     const refUser = useRef(null);
     const [loading, setLoading] = useState(true);
+    const username = localStorage.getItem('username');
     const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
         refUser.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
@@ -93,75 +95,77 @@ const UserInfo = () => {
     }, []);
     return (
         <Fragment>
-            {loading ? <Loader /> :
-                <Fragment>
+            {username ? <Fragment>
+                {loading ? <Loader /> :
+                    <Fragment>
 
-                    <div ref={refUser} className={classes.divRef}></div>
-                    <Header />
-                    <div className={classes.root}>
-                        <div className={classes.wrapper}>
-                            <div className={classes.groupAvatar}>
-                                <Avatar alt='avatarImg' src={avatarImg} className={classes.avatarImg} />
-                                <div className={`${classes.text} ${classes.name}`}>{us.hoTen}</div>
-                                <Tabs
-                                    value={value}
-                                    onChange={handleChange}
-                                    indicatorColor="primary"
-                                    textcolor="primary"
-                                    variant="fullWidth"
-                                    aria-label="full width tabs example"
-                                >
-                                    <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', }} />
-                                    <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
-                                    <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
-                                </Tabs>
-                                <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }}
-                                    onClick={handleLogout}
-                                >Đăng xuất</Button>
-                            </div>
-                            <div className={classes.navApp}>
-                                <AppBar position="static" color="default" style={{
-                                    marginBottom: ' 10px',
-                                }}>
+                        <div ref={refUser} className={classes.divRef}></div>
+                        <Header />
+                        <div className={classes.root}>
+                            <div className={classes.wrapper}>
+                                <div className={classes.groupAvatar}>
+                                    <Avatar alt='avatarImg' src={avatarImg} className={classes.avatarImg} />
+                                    <div className={`${classes.text} ${classes.name}`}>{us.hoTen}</div>
                                     <Tabs
                                         value={value}
                                         onChange={handleChange}
                                         indicatorColor="primary"
-                                        textColor="primary"
+                                        textcolor="primary"
                                         variant="fullWidth"
                                         aria-label="full width tabs example"
                                     >
-                                        <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', borderBottomLeftRadius: '10px', }} />
-                                        <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', }} />
-                                        <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', borderBottomRightRadius: '10px' }} />
+                                        <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', }} />
+                                        <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
+                                        <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', }} />
                                     </Tabs>
-                                </AppBar>
+                                    <Button style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', width: '100%' }}
+                                        onClick={handleLogout}
+                                    >Đăng xuất</Button>
+                                </div>
+                                <div className={classes.navApp}>
+                                    <AppBar position="static" color="default" style={{
+                                        marginBottom: ' 10px',
+                                    }}>
+                                        <Tabs
+                                            value={value}
+                                            onChange={handleChange}
+                                            indicatorColor="primary"
+                                            textColor="primary"
+                                            variant="fullWidth"
+                                            aria-label="full width tabs example"
+                                        >
+                                            <Tab label="Thông tin cá nhân" {...a11yProps(0)} style={{ textTransform: 'capitalize', borderTopLeftRadius: '10px', borderBottomLeftRadius: '10px', }} />
+                                            <Tab label="Thay đổi mật khẩu" {...a11yProps(1)} style={{ textTransform: 'capitalize', }} />
+                                            <Tab label="Lịch sử đặt vé" {...a11yProps(2)} style={{ textTransform: 'capitalize', borderTopRightRadius: '10px', borderBottomRightRadius: '10px' }} />
+                                        </Tabs>
+                                    </AppBar>
+                                </div>
+
+                                <div className={classes.groupTab}>
+                                    <Fragment>
+                                        <TabPanel
+                                            value={value} index={0} className={` ${classes.tabContent}`}
+                                            style={{ height: 'auto' }}
+                                        >
+                                            <UserInfoComponent />
+
+                                        </TabPanel>
+                                        <TabPanel value={value} index={1} className={classes.tabContent} style={{ height: 'auto' }}>
+                                            <RepasswordComponent handleSetValue={handleSetValue} />
+                                        </TabPanel>
+                                        <TabPanel value={value} index={2} className={classes.tabContent}
+                                            style={{ display: 'contents', position: 'relative', }}
+                                        >
+                                            <HistoryBookComponent />
+                                        </TabPanel>
+                                    </Fragment>
+                                </div>
                             </div>
 
-                            <div className={classes.groupTab}>
-                                <Fragment>
-                                    <TabPanel
-                                        value={value} index={0} className={` ${classes.tabContent}`}
-                                        style={{ height: 'auto' }}
-                                    >
-                                        <UserInfoComponent />
-
-                                    </TabPanel>
-                                    <TabPanel value={value} index={1} className={classes.tabContent} style={{ height: 'auto' }}>
-                                        <RepasswordComponent handleSetValue={handleSetValue} />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={2} className={classes.tabContent}
-                                        style={{ display: 'contents', position: 'relative', }}
-                                    >
-                                        <HistoryBookComponent />
-                                    </TabPanel>
-                                </Fragment>
-                            </div>
                         </div>
-
-                    </div>
-                    <Footer />
-                </Fragment>}
+                        <Footer />
+                    </Fragment>}
+            </Fragment> : <ErrorPage role={1} />}
         </Fragment>
 
     );

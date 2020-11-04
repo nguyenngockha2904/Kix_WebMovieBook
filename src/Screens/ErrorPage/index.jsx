@@ -1,5 +1,5 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { Fragment, useCallback, useMemo } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import bgApp from '../../assets/img/bgApp.jpg';
 const ErrorPage = (props) => {
@@ -8,6 +8,14 @@ const ErrorPage = (props) => {
     const { role } = useMemo(() => {
         return props;
     }, [props]);
+    useEffect(() => {
+        if (role === 0) {
+            setTitle('404 -Không tìm thấy trang !');
+        } else {
+            setTitle('404 -Không thể truy cập !');
+        }
+
+    }, []);
     const handleDangNhap = useCallback(() => {
         if (role === 0) {
             history.replace('/');
@@ -15,6 +23,11 @@ const ErrorPage = (props) => {
             history.replace('/dangnhap');
         }
 
+    }, []);
+    const setTitle = useCallback((title) => {
+        const prevTitle = document.title;
+        document.title = title;
+        return () => document.title = prevTitle;
     }, []);
     return (
         <div className={classes.root}>

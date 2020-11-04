@@ -219,6 +219,9 @@ const ChonGheResp = (props) => {
                             <Countdown
                                 date={dateTime}
                                 renderer={renderer}
+                                onComplete={() => {
+                                    history.replace('/');
+                                }}
                             />
                         </div>
                     </div>
