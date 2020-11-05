@@ -210,9 +210,8 @@ const ChonGheComponent = (props) => {
         <motion.div
             initial={{
                 opacity: 0,
-                y: 50,
             }}
-            animate={{ opacity: 1, y: 0, }}
+            animate={{ opacity: 1 }}
             className={classes.root}>
             <div className={classes.divChonGhe}>
                 <div className={classes.WrapperContent}>

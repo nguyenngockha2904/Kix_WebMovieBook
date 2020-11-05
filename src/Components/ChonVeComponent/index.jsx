@@ -21,8 +21,6 @@ const ChonVeComponent = (props) => {
         let mVeThuong = 50000;
         setTotalVeVip(mVeVip * amount.veVip);
         setTotalVeThuong(mVeThuong * amount.veThuong);
-        let data = { ...amount, total: parseInt(amount.veVip + amount.veThuong) };
-        dispatch(createAction(SET_DATA_AMOUNT_GHE, data));
     }, [amount]);
     useEffect(() => {
         setTotalTien(totalVeVip + totalVeThuong);
@@ -153,13 +151,26 @@ const ChonVeComponent = (props) => {
         }
     }, [amount]);
 
-    const handleChonGhe = useCallback(() => {
+    const handleChonGhe = useCallback((amount) => () => {
         if (amount.veVip > 0 || amount.veThuong > 0) {
+            let type = 0;
+            if (!!amount.veVip && !!amount.veThuong) {
+                type = 'all';
+            } else if (!!amount.veVip && (!!!amount.veThuong)) {
+                type = 'vip';
+            } else if (!!amount.veThuong && (!!!amount.veVip)) {
+                type = 'thuong';
+            } else {
+                type = 0;
+            }
+
+            let data = { ...amount, total: parseInt(amount.veVip + amount.veThuong), type };
+            dispatch(createAction(SET_DATA_AMOUNT_GHE, data));
             handleNext(1);
         } else {
             setOpen({ isShow: true, message: 'Xin quý khách vui lòng chọn vé !' });
         }
-    }, [amount]);
+    }, []);
     const width = useMemo(() => {
         return props.width;
     }, [props.width]);
@@ -296,7 +307,7 @@ const ChonVeComponent = (props) => {
                                 </div>
                             </div>
                             <div>
-                                <Button className={classes.btnChonGhe} onClick={handleChonGhe}>
+                                <Button className={classes.btnChonGhe} onClick={handleChonGhe(amount)}>
                                     Chọn ghế
                                 </Button>
                             </div>

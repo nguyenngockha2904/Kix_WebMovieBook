@@ -30,7 +30,7 @@ let initialState = {
     listGheVip: [],
     listGheThuong: [],
     listGheDaDat: [],
-    amount: {}
+    amount: {},
 };
 const PhanTrangGhe = (danhSachGhetam) => {
 
@@ -180,7 +180,6 @@ const MovieReducer = (state = initialState, { type, payload }) => {
             return { ...state };
         }
         case SET_DATA_LIST_PHONGVE_MALICHCHIEU: {
-            let type = 'vip';
             if (payload) {
                 state.PhongVeItemByMaLichChieu.thongTinPhim = payload.thongTinPhim;
 
@@ -191,6 +190,7 @@ const MovieReducer = (state = initialState, { type, payload }) => {
                 state.listGheThuong = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe.toLowerCase() === "thuong");
                 state.listGheVip = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe.toLowerCase() === "vip");
                 state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+
             } else {
                 state.PhongVeItemByMaLichChieu = {};
             }
@@ -242,29 +242,158 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         }
         case SET_DATA_AMOUNT_GHE: {
             state.amount = payload;
+            let danhSachGhetam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+            if (payload.type !== 'all') {
+                for (let item of state.PhongVeItemByMaLichChieu.danhSachGhe) {
+                    if (item.loaiGhe.toLowerCase() === payload.type) {
+                        item.isKhongTheDat = false;
+                    } else {
+                        item.isKhongTheDat = true;
+                    }
+                }
+            }
+            state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+            state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
             return { ...state };
         }
         case CHECK_AMOUNT: {
-            if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
-                let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
-                    return { ...item, isKhongTheDat: true }
-                });
-                for (let ghedadat of state.listGheDaDat) {
-                    for (let ghe of danhSachGhetam) {
-                        if (ghedadat.maGhe === ghe.maGhe) {
-                            ghe.isKhongTheDat = false;
+            //#region  test
+            // if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
+            //     let danhSachGhetam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+            //     if (state.amount.type !== 'all') {
+            //         for (let item of danhSachGhetam) {
+            //             if (item.loaiGhe.toLowerCase() === state.amount.type) {
+            //                 item.isKhongTheDat = false;
+            //             } else {
+            //                 item.isKhongTheDat = true;
+            //             }
+            //         }
+            //         for (let item of danhSachGhetam) {
+            //             item.isKhongTheDat = true;
+            //         }
+
+            //         for (let ghedadat of state.listGheDaDat) {
+            //             for (let ghe of danhSachGhetam) {
+            //                 if (ghedadat.maGhe === ghe.maGhe) {
+            //                     ghe.isKhongTheDat = false;
+            //                 }
+            //             }
+            //         }
+            //     } else {
+            //         for (let item of danhSachGhetam) {
+            //             item.isKhongTheDat = true;
+            //         }
+
+            //         for (let ghedadat of state.listGheDaDat) {
+            //             for (let ghe of danhSachGhetam) {
+            //                 if (ghedadat.maGhe === ghe.maGhe) {
+            //                     ghe.isKhongTheDat = false;
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+            //     state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+            // } else {
+            //     let danhSachGhetam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+            //     if (state.amount.type !== 'all') {
+            //         for (let item of danhSachGhetam) {
+            //             if (item.loaiGhe.toLowerCase() === state.amount.type) {
+            //                 item.isKhongTheDat = false;
+            //             } else {
+            //                 item.isKhongTheDat = true;
+            //             }
+            //         }
+            //     } else {
+            //         for (let item of danhSachGhetam) {
+            //             item.isKhongTheDat = false;
+            //         }
+            //     }
+            //     state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+            //     state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+            // }
+            //#endregion
+
+            let danhSachGhetam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+            for (let item of danhSachGhetam) {
+                if (item.loaiGhe.toLowerCase() === state.amount.type) {
+                    item.isKhongTheDat = false;
+                } else {
+                    item.isKhongTheDat = true;
+                }
+            }
+
+            if (state.amount.type !== 'all') { /// ko phải all
+
+                if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) { /// >= total
+
+                    for (let item of danhSachGhetam) {
+                        item.isKhongTheDat = true;
+                    }
+                    for (let ghedadat of state.listGheDaDat) {
+                        for (let ghe of danhSachGhetam) {
+                            if (ghedadat.maGhe === ghe.maGhe) {
+                                ghe.isKhongTheDat = false;
+                            }
                         }
                     }
                 }
-                state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
-                state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
-            } else {
-                let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
-                    return { ...item, isKhongTheDat: false }
-                });
-                state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
-                state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+            } else { /// type === all
+                let vip = state.listGheDaDat.filter(item => item.loaiGhe.toLowerCase() === 'vip').length;
+                let thuong = state.listGheDaDat.filter(item => item.loaiGhe.toLowerCase() === 'thuong').length;
+                if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) { //=== total
+                    for (let item of danhSachGhetam) {
+                        item.isKhongTheDat = true;
+                    }
+
+                    for (let ghedadat of state.listGheDaDat) {
+                        for (let ghe of danhSachGhetam) {
+                            if (ghedadat.maGhe === ghe.maGhe) {
+                                ghe.isKhongTheDat = false;
+                            }
+                        }
+                    }
+                } else if (vip === state.amount.veVip || vip > state.amount.veVip) {
+                    for (let item of danhSachGhetam) {
+                        if (item.loaiGhe.toLowerCase() === 'vip') {
+                            item.isKhongTheDat = true;
+                        } else {
+                            item.isKhongTheDat = false;
+                        }
+                    }
+                    for (let ghedadat of state.listGheDaDat) {
+                        for (let ghe of danhSachGhetam) {
+                            if (ghedadat.maGhe === ghe.maGhe) {
+                                ghe.isKhongTheDat = false;
+                            }
+                        }
+                    }
+
+                } else if (thuong === state.amount.veThuong || thuong > state.amount.veThuong) {
+                    for (let item of danhSachGhetam) {
+                        if (item.loaiGhe.toLowerCase() === 'thuong') {
+                            item.isKhongTheDat = true;
+                        } else {
+                            item.isKhongTheDat = false;
+                        }
+                    }
+                    for (let ghedadat of state.listGheDaDat) {
+                        for (let ghe of danhSachGhetam) {
+                            if (ghedadat.maGhe === ghe.maGhe) {
+                                ghe.isKhongTheDat = false;
+                            }
+                        }
+                    }
+
+                } else { // không total
+                    for (let item of danhSachGhetam) {
+                        item.isKhongTheDat = false;
+                    }
+                }
             }
+            state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+            state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
             return { ...state };
         }
         default: {
@@ -273,3 +402,59 @@ const MovieReducer = (state = initialState, { type, payload }) => {
     }
 }
 export default MovieReducer;
+
+
+// const test = () => {
+//     let danhSachGhetam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+//     if (state.amount.type !== 'all') { /// ko phải all
+
+//         if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) { /// >= total
+
+//             for (let item of danhSachGhetam) {
+//                 if (item.loaiGhe.toLowerCase() === state.amount.type) {
+//                     item.isKhongTheDat = false;
+//                 } else {
+//                     item.isKhongTheDat = true;
+//                 }
+//             }
+//             for (let item of danhSachGhetam) {
+//                 item.isKhongTheDat = true;
+//             }
+//             for (let ghedadat of state.listGheDaDat) {
+//                 for (let ghe of danhSachGhetam) {
+//                     if (ghedadat.maGhe === ghe.maGhe) {
+//                         ghe.isKhongTheDat = false;
+//                     }
+//                 }
+//             }
+//         } else { //// không === total
+//             for (let item of danhSachGhetam) {
+//                 if (item.loaiGhe.toLowerCase() === state.amount.type) {
+//                     item.isKhongTheDat = false;
+//                 } else {
+//                     item.isKhongTheDat = true;
+//                 }
+//             }
+//         }
+//     } else { /// type === all
+//         if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) { //=== total
+//             for (let item of danhSachGhetam) {
+//                 item.isKhongTheDat = true;
+//             }
+
+//             for (let ghedadat of state.listGheDaDat) {
+//                 for (let ghe of danhSachGhetam) {
+//                     if (ghedadat.maGhe === ghe.maGhe) {
+//                         ghe.isKhongTheDat = false;
+//                     }
+//                 }
+//             }
+//         } else { // không total
+//             for (let item of danhSachGhetam) {
+//                 item.isKhongTheDat = false;
+//             }
+//         }
+//     }
+//     state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+//     state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+// }
