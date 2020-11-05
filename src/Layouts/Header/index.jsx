@@ -1,5 +1,5 @@
 import React, { Fragment, memo, useCallback, useMemo, useRef, useState } from 'react';
-import { AppBar, Avatar, Box, Button, FormControl, makeStyles, Select, Toolbar, withWidth } from '@material-ui/core';
+import { AppBar, Avatar, Box, Button, FormControl, makeStyles, Paper, Select, Toolbar, withWidth } from '@material-ui/core';
 import avatarIcon from '../../assets/img/avatarIcon.svg';
 import LogoLight from '../../assets/img/LogoLight.svg';
 import collapseButton from '../../assets/img/collapseButton.svg';
@@ -7,7 +7,7 @@ import iconClose from '../../assets/img/iconCloseButton.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createAction } from '../../redux/action';
-import { SET_REQUEST_PAGE } from '../../redux/action/type';
+import { SET_REQUEST_PAGE, SET_REQUEST_PAGE_USER } from '../../redux/action/type';
 
 const Header = (props) => {
     const classes = useStyles();
@@ -63,6 +63,10 @@ const Header = (props) => {
     const handleClickTTCN = useCallback(() => {
         history.replace('/thongtincanhan');
         setOpenToolUser(false);
+    }, []);
+    const handleClickGotoLSDV = useCallback(() => {
+        history.replace('/thongtincanhan');
+        dispatch(createAction(SET_REQUEST_PAGE_USER, 1));
     }, []);
     const handleLogout = useCallback(() => {
         setOpenToolUser(false);
@@ -297,7 +301,7 @@ const Header = (props) => {
                     <div className={classes.bgUser} onClick={() => {
                         setOpenToolUser(false);
                     }}></div>
-                    <div className={classes.contentBoxUser}>
+                    <Paper elevation={3} className={classes.contentBoxUser}>
                         <div className={classes.navItem}>
                             <Button className={`${classes.navLink} ${classes.btnUser}`}
                                 onClick={handleClickTTCN}
@@ -307,12 +311,19 @@ const Header = (props) => {
                         </div>
                         <div className={classes.navItem}>
                             <Button className={`${classes.navLink} ${classes.btnUser}`}
+                                onClick={handleClickGotoLSDV}
+                            >
+                                Lịch sử đặt vé
+                        </Button>
+                        </div>
+                        <div className={classes.navItem}>
+                            <Button className={`${classes.navLink} ${classes.btnUser}`}
                                 onClick={handleLogout}
                             >
                                 Đăng xuất
                         </Button>
                         </div>
-                    </div>
+                    </Paper>
                 </div>}
                 <div
                     className={classes.collapse}
@@ -575,7 +586,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         right: 0,
         bottom: 0,
-        transform: ' translateY(69px)',
+        transform: 'translate(-8px,104px)',
         [theme.breakpoints.down(`${961}`)]: {
             left: 0,
         }

@@ -54,6 +54,12 @@ const ThanhToanResComponent = (props) => {
     const handleChange = useCallback((event) => {
         setThanhToan(parseInt(event.target.value));
     }, []);
+    const us = useSelector((state) => {
+        return state.qlUser.credentials
+    });
+    const { email, soDT } = useMemo(() => {
+        return us
+    }, [us]);
     const handleBuyTicket = useCallback((listGheDaDat, maLichChieu) => () => {
         let taiKhoanNguoiDung = localStorage.getItem('username');
 
@@ -105,10 +111,10 @@ const ThanhToanResComponent = (props) => {
                 </div>
                 <div className={`${classes.divInfoFilm} ${classes.groupInfo}`}>
                     <div className={classes.timeSub}>Phone</div>
-                    <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`}>0329457486</div>
+                    <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`}>{soDT}</div>
                     <div className={classes.line}></div>
                     <div className={classes.timeSub}>Email</div>
-                    <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`}>khanguyen1000@gmail.com</div>
+                    <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`}>{email}</div>
                 </div>
                 <div className={`${classes.textDefault} ${classes.namePhim} ${classes.infoText}`} style={{ padding: '0 6%' }}>Phương thức thanh toán</div>
                 <div className={`${classes.divInfoFilm} ${classes.groupInfo}`} style={{ marginBottom: '56px', }}>

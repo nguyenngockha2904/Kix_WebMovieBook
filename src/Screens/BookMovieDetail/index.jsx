@@ -29,6 +29,7 @@ import clsx from 'clsx';
 import LogoLight from '../../assets/img/LogoDark.svg';
 import ComponentAlertThanhCong from '../../Components/ComponentThongBaoThanhCong';
 import ErrorPage from '../ErrorPage';
+import { getInfoUser } from '../../redux/action/userAction';
 const returnIconTheader = (value) => {
     switch (value.toLowerCase()) {
         case 'bhd': {
@@ -71,11 +72,14 @@ const BookMovieDetail = (props) => {
     useEffect(() => {
         //  console.log(params.maLichChieu);
         dispatch(getPhongVeItem_byMaLichChieu(params.maLichChieu, (title) => {
+            let username = localStorage.getItem('username');
+            dispatch(getInfoUser(username, () => {
+                setTitle(title);
+                let logo = title.trim().slice(0, title.trim().indexOf(' '));
+                setLogoCine(returnIconTheader(logo));
+                setIsLoading(false);
+            }));
 
-            setTitle(title);
-            let logo = title.trim().slice(0, title.trim().indexOf(' '));
-            setLogoCine(returnIconTheader(logo));
-            setIsLoading(false);
         }));
         dispatch(createAction(SET_TYPE_PAGE, 3));
     }, []);

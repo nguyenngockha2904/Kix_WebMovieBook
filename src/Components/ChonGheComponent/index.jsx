@@ -85,6 +85,12 @@ const ChonGheComponent = (props) => {
     const amount = useSelector((state) => {
         return state.qlMovie.amount;
     });
+    const us = useSelector((state) => {
+        return state.qlUser.credentials
+    });
+    const { email, soDT } = useMemo(() => {
+        return us
+    }, [us]);
     const handleChange = useCallback((event) => {
         setThanhToan(parseInt(event.target.value));
     }, []);
@@ -352,7 +358,7 @@ const ChonGheComponent = (props) => {
                                         E-Mail
                                     </div>
                                     <div className={`${classes.textDefault} ${classes.inputContent}`}>
-                                        khanguyen1000@gmail.com
+                                        {email}
                                     </div>
                                     <div className={classes.lineDotted}></div>
                                 </div>
@@ -361,7 +367,7 @@ const ChonGheComponent = (props) => {
                                         Phone
                                      </div>
                                     <div className={`${classes.textDefault} ${classes.inputContent}`}>
-                                        0329457486
+                                        {soDT}
                                     </div>
                                     <div className={classes.lineDotted}></div>
                                 </div>

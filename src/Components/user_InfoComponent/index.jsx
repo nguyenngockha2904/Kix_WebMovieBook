@@ -27,6 +27,7 @@ const UserInfoComponent = () => {
     const us = useSelector((state) => {
         return state.qlUser.credentials
     });
+
     useEffect(() => {
         setUserInfo(us);
     }, [us]);
