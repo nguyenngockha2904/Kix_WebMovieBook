@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core';
-import React, { memo } from 'react';
+import { Fab, makeStyles, useTheme, Zoom } from '@material-ui/core';
+import React, { memo, useMemo } from 'react';
 import logoLight from '../../assets/img/LogoLight.svg';
 const useStyles = makeStyles(() => ({
     root: {
@@ -20,11 +20,30 @@ const useStyles = makeStyles(() => ({
 }));
 const Loading = () => {
     const classes = useStyles();
+    const theme = useTheme();
+    const transitionDuration = useMemo(() => {
+        return {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: theme.transitions.duration.leavingScreen,
+        }
+    });
     return (
         <div className={classes.root}
         >
+            <Zoom
+                in={true}
+                timeout={transitionDuration}
+                style={{
+                    transitionDelay: `${transitionDuration.exit}ms`,
+                }}
+                unmountOnExit
+            >
+                <Fab aria-label='Home' color='primary'>
+                    <img src={logoLight} alt="logoLight" className={classes.logoLight} />
+                </Fab>
+            </Zoom>
             <div>
-                <img src={logoLight} alt="logoLight" className={classes.logoLight} />
+
             </div>
         </div>
     );

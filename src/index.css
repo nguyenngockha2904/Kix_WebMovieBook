@@ -12,6 +12,7 @@ body {
   box-sizing: border-box;
   /* fontFamily: 'SF Medium', */
 }
+
 body::-webkit-scrollbar {
   width: 10px;
 }

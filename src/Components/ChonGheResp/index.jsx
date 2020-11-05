@@ -88,12 +88,12 @@ const ChonGheResp = (props) => {
                     <div className={classes.groupGheitem}>
                         {item.list.map((item, index) => {
                             return (
-                                <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat} onClick={handleChooseGhe(item)} key={index}>
+                                <Button className={classes.getItem} disableElevation={item.daDat} disabled={item.daDat || item.isKhongTheDat} onClick={handleChooseGhe(item)} key={index}>
                                     <Avatar variant="square" className={classes.GheIcon}>{
-                                        !item.isActived ?
+                                        item.isKhongTheDat ? ChangeGheSVG('rgb(183,183,183,39%)', (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1) : (!item.isActived ?
                                             ChangeGheSVG((!item.daDat ? '#92a0a9' : 'rgb(183,183,183,49%)'), (item.stt), item.daDat, item.loaiGhe !== "Thuong" && 1)
                                             :
-                                            ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1)
+                                            ChangeGheSVG('#6b00b6', (item.stt), false, item.loaiGhe !== "Thuong" && 1))
                                     }</Avatar>
                                 </Button>
 
