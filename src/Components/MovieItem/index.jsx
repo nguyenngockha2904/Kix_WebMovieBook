@@ -2,7 +2,7 @@ import { Box, Button, Grid, makeStyles, Paper, } from '@material-ui/core';
 import React, { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { createAction } from '../../redux/action';
-import { SHOW_MODAL_VIDEO } from '../../redux/action/type';
+import { SET_REQUEST_PAGE, SHOW_MODAL_VIDEO } from '../../redux/action/type';
 import { useHistory } from 'react-router-dom';
 import ImageMovie from '../ComponentImgMovie';
 
@@ -119,7 +119,7 @@ const MovieItem = (props) => {
 
     const handleClickChooseMovie = useCallback((maPhim) => () => {
         history.push(`/detail/${maPhim}`);
-        // history.replace(`/detail/${maPhim}`);
+        dispatch(createAction(SET_REQUEST_PAGE, 3));
     }, []);
     return (
         <Grid item xs={6} sm={4} md={3} className={classes.root}>
@@ -134,9 +134,12 @@ const MovieItem = (props) => {
                 </div>
                 <div className={classes.time}>100 phút</div>
                 <div className={classes.bgContent}>
-                    <Button variant="contained" color="inherit" className={classes.btnBuy}
-                        onClick={handleClickChooseMovie(maPhim)}
-                    >Mua vé</Button>
+                    <Paper elevation={3} style={{ width: '100%' }}>
+                        <Button variant="contained" color="inherit" className={classes.btnBuy}
+                            onClick={handleClickChooseMovie(maPhim)}
+                        >Mua vé</Button>
+                    </Paper>
+
                 </div>
             </div>
         </Grid>

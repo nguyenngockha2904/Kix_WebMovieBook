@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, makeStyles, withWidth, } from '@material-ui/core';
+import { Avatar, Box, Button, makeStyles, Paper, withWidth, } from '@material-ui/core';
 import React, { useCallback, useMemo, useState, memo } from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -320,7 +320,7 @@ const Carousel = (props) => {
                 {renderCarousel()}
             </Slider>
             {(width === 'md' || width === 'lg' || width === 'xl') &&
-                <div className={classes.homeTools}>
+                <Paper elevation={3} className={classes.homeTools}>
                     <Box display="flex" width="30%" justifyContent="between" height="40px" >
                         <div className={classes.navItem} style={{ position: 'inherit', width: '266px' }}>
                             <div className={classes.buttonGroup} onClick={handleShowTabPhim(!isShowTabPhim)}>
@@ -392,14 +392,16 @@ const Carousel = (props) => {
                             }
                         </div>
                         <div className={`${classes.navItem} ${classes.PayNav}`}>
-                            <Button className={classes.buttonPay} onClick={handleBuyTicket(suatChieu.maLichChieu)}>
-                                Mua vé ngay
-                        </Button>
+                            <Paper elevation={3}>
+                                <Button className={classes.buttonPay} onClick={handleBuyTicket(suatChieu.maLichChieu)}>
+                                    Mua vé ngay
+                                </Button>
+                            </Paper>
                         </div>
 
                     </Box>
 
-                </div>
+                </Paper>
 
 
             }
@@ -542,7 +544,6 @@ const useStyle = makeStyles((theme) => ({
         transform: ' translate(-50%, 0%)',
         background: '#fff',
         borderRadius: '5px',
-        boxShadow: '0px 6px 8px -1px #80808094',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -591,13 +592,14 @@ const useStyle = makeStyles((theme) => ({
         textTransform: 'uppercase',
         cursor: 'pointer',
         textAlign: 'center',
-        padding: theme.spacing(1, 1.8),
         backgroundImage: 'linear-gradient(45deg, #440074,#440074)',
         borderRadius: theme.spacing(0.5),
         fontSize: theme.spacing(1.3),
         color: '#fff',
         letterSpacing: '0.3px',
         transition: 'all 0.4s',
+        padding: '10px 15px',
+        width: '100%',
         '&:hover': {
             backgroundImage: 'linear-gradient(45deg, #6b00b6, #440074)',
         }

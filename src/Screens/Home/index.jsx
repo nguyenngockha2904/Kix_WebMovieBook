@@ -28,10 +28,7 @@ const useStyle = makeStyles((theme) => ({
         }
     },
     spaceGroupCine: {
-        backgroundImage: `url(${backnews})`,
-        backgroundSize: '100%',
-        backgroundRepeat: 'no-repeat',
-        paddingTop: theme.spacing(12),
+        height: '87px',
     },
     divTool: {
         position: 'fixed',
@@ -104,8 +101,7 @@ const Home = () => {
                 <div ref={refHomeMovie}></div>
                 <div className={classes.space}></div>
                 <HomeMovie />
-                <div ref={refGroupCine}></div>
-                <div className={classes.spaceGroupCine}></div>
+                <div ref={refGroupCine} className={classes.spaceGroupCine}></div>
                 <GroupCine />
                 <div className={classes.space}></div>
                 <div className={classes.divTool}>

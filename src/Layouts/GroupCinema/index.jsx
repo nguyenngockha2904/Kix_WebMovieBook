@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles, withWidth } from '@material-ui/core';
+import { Box, Button, makeStyles, Paper, withWidth } from '@material-ui/core';
 import React, { Fragment, useCallback, useMemo, useRef, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, memo } from 'react';
@@ -208,7 +208,7 @@ const GroupCine = (props) => {
         if (listRap) {
             return listRap.map((item, index) => {
                 return (
-                    <div variant="contained" color="inherit" key={index} onClick={handleClickTabRap(item)} className={classes.tabRapPhimButton}
+                    <div key={index} onClick={handleClickTabRap(item)} className={classes.tabRapPhimButton}
                         style={{ opacity: item.isActived ? '1' : '0.5' }}
                     >
                         <div className={`${classes.tabRapPhimItem} `}>
@@ -223,7 +223,7 @@ const GroupCine = (props) => {
                                 </div>
                                 <div className={classes.address}>{item.diaChi.substr(0, 24)}{item.diaChi.length > 24 && '...'}</div>
                                 <Box textAlign="left">
-                                    <Button disabled={!item.isActived} className={classes.btnDetail}>[Xem bản đồ]</Button>
+                                    <Button disabled={!item.isActived} className={classes.btnDetail}>[Chi tiết]</Button>
                                 </Box>
                             </div>
                         </div>
@@ -306,9 +306,9 @@ const GroupCine = (props) => {
                     <div key={index}>
                         <div className={classes.phimItem}>
                             <div className={classes.phimInfo}>
-                                <div className={classes.divRapImg}>
+                                <Paper elevation={3} className={classes.divRapImg}>
                                     <img src={item.hinhAnh} alt="CGVMovieTheater" className={classes.movieTheaterImg} />
-                                </div>
+                                </Paper>
                                 <div>
                                     <div className={classes.namePhim}>
                                         <div className={classes.general}>C18</div>
@@ -350,10 +350,10 @@ const GroupCine = (props) => {
     }, [lstMovieWithDate]);
     return (
         <Fragment>
-            <div className={classes.root}>
-                <div className={classes.tabRap}>
+            <Paper elevation={3} className={classes.root}>
+                <Paper elevation={1} className={classes.tabRap}>
                     {renderHethongRap()}
-                </div>
+                </Paper>
                 <div className={classes.contentRap}>
                     <div className={classes.titleTab}>Rạp</div>
                     <div className={classes.tabRapPhim}>
@@ -374,7 +374,7 @@ const GroupCine = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Paper>
         </Fragment>
     );
 };
@@ -385,7 +385,6 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: theme.spacing(94),
         width: '100%',
         height: 'auto',
-        border: '1px solid #80808080',
         margin: 'auto',
         display: 'flex',
         borderRadius: theme.spacing(.5),
@@ -406,7 +405,6 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(8.5),
         maxHeight: theme.spacing(57),
         overflow: 'auto',
-        borderRight: '1px solid rgb(214 214 214)',
         '&::-webkit-scrollbar ': {
             width: '3px',
         },
@@ -708,8 +706,12 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid #e4e4e4',
         cursor: 'pointer',
         letterSpacing: '1px',
-        '&:hover $timeStart': {
-            color: '#6b00b6',
+        '&:hover ': {
+            boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+            '& $timeStart': {
+                color: '#6b00b6',
+
+            },
         },
         [theme.breakpoints.down(`${960}`)]: {
             fontSize: theme.spacing(1.1),

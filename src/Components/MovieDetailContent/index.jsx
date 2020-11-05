@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles } from '@material-ui/core';
+import { Box, Button, makeStyles, Paper } from '@material-ui/core';
 import React, { Fragment, memo, useCallback, useEffect, useState } from 'react';
 import phim1 from '../../assets/img/phim5.png';
 import play_videoIcon from '../../assets/img/play_videoIcon.svg';
@@ -124,6 +124,7 @@ const MovieDetailContent = (props) => {
                             <Button className={classes.BtnPay}
                                 onClick={handleClickBuy}
                             >Mua vé </Button>
+
                         </div>
                     </div>
                 </div>
@@ -344,6 +345,7 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.2px',
         fontFamily: 'SF Medium',
         color: '#fff',
+        boxShadow: ' 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
         '&:hover': {
             backgroundImage: 'linear-gradient(45deg, #6b00b6, #440074)',
         },
