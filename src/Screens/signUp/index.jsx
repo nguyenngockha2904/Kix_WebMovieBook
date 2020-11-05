@@ -37,7 +37,7 @@ const SignUp = () => {
         taiKhoan_V: false,
         taiKhoan_T: '6 ký tự trở lên',
         hoTen_V: false,
-        hoTen_T: '8 ký tự trở lên',
+        hoTen_T: '5 ký tự trở lên',
         email_V: false,
         email_T: 'Email không hợp lệ ',
         soDt_V: false,
@@ -228,7 +228,7 @@ const SignUp = () => {
                                     value={userInfo.hoTen}
                                     onChange={handleChange}
                                     name="hoTen"
-                                    onBlur={validateInput('.{8,}')}
+                                    onBlur={validateInput('.{5,}')}
                                 />
                                 {validate.hoTen_V && <div className={classes.messageErr}>{validate.hoTen_T}</div>}
                             </div>

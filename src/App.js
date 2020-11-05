@@ -19,7 +19,7 @@ function App() {
           <Route path='/detail/:maPhim' exact component={MovieDetail} />
           <Route path='/dangnhap' exact component={SignIn} />
           <Route path='/dangky' exact component={SignUp} />
-          <Route path='/chitietphongve/:maLichChieu' component={BookMovieDetail} />
+          <Route path='/chitietphongve/:maLichChieu' exact component={BookMovieDetail} />
           <Route path='/thongtincanhan' exact component={UserInfo} />
           <Route path='/' exact component={Home} />
           <Route path="*">

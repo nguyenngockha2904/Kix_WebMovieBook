@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Countdown from 'react-countdown';
 import { motion } from 'framer-motion';
-import { SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
+import { CHECK_AMOUNT, SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
 import { MovieService } from '../../services';
 import swal from 'sweetalert';
@@ -104,6 +104,7 @@ const ChonGheComponent = (props) => {
     }, []);
     const handleChooseGhe = useCallback((item) => () => {
         dispatch(createAction(SET_IS_ACTVED_GHE_ITEM, item));
+        dispatch(createAction(CHECK_AMOUNT, ''));
     }, [amount]);
 
     const renderListGhe = useCallback(() => {

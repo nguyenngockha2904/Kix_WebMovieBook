@@ -1,4 +1,4 @@
-import { FETCH_DATA_LIST_MOVIE, FETCH_DATA_MOVIEINFO_WITH_MOVIEID, FETCH_DATA_THEATERSYSEM_INFO_WITH_ID_THEARTERSYSTEM, FIND_THEATER_SYSTEM_WITH_DATE, HIRE_MODAL_VIDEO, SET_DATA_AMOUNT_GHE, SET_DATA_LIST_DAT_GHE, SET_DATA_lIST_LICH_CHIEU, SET_DATA_LIST_MOVIE_PHAN_TRANG, SET_DATA_LIST_PHONGVE_MALICHCHIEU, SET_IS_ACTVED_GHE_ITEM, SHOW_MODAL_VIDEO } from "../action/type";
+import { CHECK_AMOUNT, FETCH_DATA_LIST_MOVIE, FETCH_DATA_MOVIEINFO_WITH_MOVIEID, FETCH_DATA_THEATERSYSEM_INFO_WITH_ID_THEARTERSYSTEM, FIND_THEATER_SYSTEM_WITH_DATE, HIRE_MODAL_VIDEO, SET_DATA_AMOUNT_GHE, SET_DATA_LIST_DAT_GHE, SET_DATA_lIST_LICH_CHIEU, SET_DATA_LIST_MOVIE_PHAN_TRANG, SET_DATA_LIST_PHONGVE_MALICHCHIEU, SET_IS_ACTVED_GHE_ITEM, SHOW_MODAL_VIDEO } from "../action/type";
 
 let initialState = {
     listMovie: [],
@@ -200,18 +200,18 @@ const MovieReducer = (state = initialState, { type, payload }) => {
 
             if (payload) {
                 if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
-                    let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
-                        return { ...item, isKhongTheDat: true }
-                    });
-                    for (let ghedadat of state.listGheDaDat) {
-                        for (let ghe of danhSachGhetam) {
-                            if (ghedadat.maGhe === ghe.maGhe) {
-                                ghe.isKhongTheDat = false;
-                            }
-                        }
-                    }
-                    state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
-                    state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+                    // let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
+                    //     return { ...item, isKhongTheDat: true }
+                    // });
+                    // for (let ghedadat of state.listGheDaDat) {
+                    //     for (let ghe of danhSachGhetam) {
+                    //         if (ghedadat.maGhe === ghe.maGhe) {
+                    //             ghe.isKhongTheDat = false;
+                    //         }
+                    //     }
+                    // }
+                    // state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+                    // state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
                 } else {
                     let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
 
@@ -244,6 +244,26 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         }
         case SET_DATA_AMOUNT_GHE: {
             state.amount = payload;
+            return { ...state };
+        }
+        case CHECK_AMOUNT: {
+            if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
+                console.log('không dc đặt');
+                let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
+                    return { ...item, isKhongTheDat: true }
+                });
+                for (let ghedadat of state.listGheDaDat) {
+                    for (let ghe of danhSachGhetam) {
+                        if (ghedadat.maGhe === ghe.maGhe) {
+                            ghe.isKhongTheDat = false;
+                        }
+                    }
+                }
+                state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+                state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
+            } else {
+                console.log('đặt thành công');
+            }
             return { ...state };
         }
         default: {
