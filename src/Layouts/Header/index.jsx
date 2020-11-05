@@ -1,6 +1,6 @@
 import React, { Fragment, memo, useCallback, useMemo, useRef, useState } from 'react';
 import { AppBar, Avatar, Box, Button, FormControl, makeStyles, Paper, Select, Toolbar, withWidth } from '@material-ui/core';
-import avatarIcon from '../../assets/img/avatarIcon.svg';
+import avatarIcon from '../../assets/img/Noavatar.svg';
 import LogoLight from '../../assets/img/LogoLight.svg';
 import collapseButton from '../../assets/img/collapseButton.svg';
 import iconClose from '../../assets/img/iconCloseButton.svg';

@@ -180,7 +180,7 @@ const MovieReducer = (state = initialState, { type, payload }) => {
             return { ...state };
         }
         case SET_DATA_LIST_PHONGVE_MALICHCHIEU: {
-
+            let type = 'vip';
             if (payload) {
                 state.PhongVeItemByMaLichChieu.thongTinPhim = payload.thongTinPhim;
 
@@ -188,8 +188,8 @@ const MovieReducer = (state = initialState, { type, payload }) => {
                     return { ...item, isActived: false, isKhongTheDat: false }
                 });
                 state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
-                state.listGheThuong = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe === "Thuong");
-                state.listGheVip = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe === "Vip");
+                state.listGheThuong = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe.toLowerCase() === "thuong");
+                state.listGheVip = state.PhongVeItemByMaLichChieu.danhSachGhe.filter(item => item.loaiGhe.toLowerCase() === "vip");
                 state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
             } else {
                 state.PhongVeItemByMaLichChieu = {};
@@ -199,23 +199,21 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         case SET_IS_ACTVED_GHE_ITEM: {
 
             if (payload) {
+                let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
+                let i = state.listGheDaDat.findIndex(item => item.maGhe === payload.maGhe);
                 if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
-                    // let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
-                    //     return { ...item, isKhongTheDat: true }
-                    // });
-                    // for (let ghedadat of state.listGheDaDat) {
-                    //     for (let ghe of danhSachGhetam) {
-                    //         if (ghedadat.maGhe === ghe.maGhe) {
-                    //             ghe.isKhongTheDat = false;
-                    //         }
-                    //     }
-                    // }
-                    // state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
-                    // state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
-                } else {
-                    let index = state.PhongVeItemByMaLichChieu.danhSachGhe.findIndex(item => item.maGhe === payload.maGhe);
+                    if (index !== -1) {
+                        let magtam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
+                        magtam[index].isActived = false;
+                        state.PhongVeItemByMaLichChieu = { ...state.PhongVeItemByMaLichChieu, danhSachGhe: magtam };
+                        if (i !== -1) {
+                            let magTam = [...state.listGheDaDat];
+                            magTam.splice(i, 1);
+                            state.listGheDaDat = magTam;
+                        }
 
-                    let i = state.listGheDaDat.findIndex(item => item.maGhe === payload.maGhe);
+                    }
+                } else {
                     if (index !== -1) {
                         let magtam = [...state.PhongVeItemByMaLichChieu.danhSachGhe];
                         magtam[index].isActived = !magtam[index].isActived;
@@ -248,7 +246,6 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         }
         case CHECK_AMOUNT: {
             if (state.listGheDaDat.length === state.amount.total || state.listGheDaDat.length > state.amount.total) {
-                console.log('không dc đặt');
                 let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
                     return { ...item, isKhongTheDat: true }
                 });
@@ -262,7 +259,11 @@ const MovieReducer = (state = initialState, { type, payload }) => {
                 state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
                 state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
             } else {
-                console.log('đặt thành công');
+                let danhSachGhetam = state.PhongVeItemByMaLichChieu.danhSachGhe.map((item, index) => {
+                    return { ...item, isKhongTheDat: false }
+                });
+                state.PhongVeItemByMaLichChieu.danhSachGhe = danhSachGhetam;
+                state.listGhePhanMang = PhanTrangGhe(danhSachGhetam);
             }
             return { ...state };
         }

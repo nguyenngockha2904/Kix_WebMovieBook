@@ -1,5 +1,5 @@
-import { AppBar, Box, Button, makeStyles, Tab, Tabs } from '@material-ui/core';
-import React, { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { AppBar, Box, Button, Fab, makeStyles, Tab, Tabs, useTheme, Zoom } from '@material-ui/core';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Footer from '../../Layouts/footer';
 import 'react-circular-progressbar/dist/styles.css';
 import MovieDetailContent from '../../Components/MovieDetailContent';
@@ -15,9 +15,12 @@ import { SET_TYPE_PAGE } from '../../redux/action/type';
 import Header from '../../Layouts/Header';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import NavigationIcon from '@material-ui/icons/Navigation';
 const useStyles = makeStyles((theme) => ({
+    divRef: {
+        height: theme.spacing(6.4),
+    },
     root: {
-        marginTop: theme.spacing(6.4),
         width: '100%',
         minHeight: theme.spacing(140),
         height: '100%',
@@ -108,6 +111,17 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    divTool: {
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        margin: '10px',
+        zIndex: '10',
+        '& .MuiFab-root': {
+            width: '40px',
+            height: ' 40px',
+        }
     }
 }))
 
@@ -152,7 +166,9 @@ const MovieDetail = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const params = useParams();
-    const refMuaVe = useRef();
+    const refMuaVe = useRef(null);
+    const refD = useRef(null);
+    const theme = useTheme();
     const [isLoading, setIsloadding] = useState(true);
     const [isTabLichChieu, setIsTabLichChieu] = useState(true);
     const [value, setValue] = React.useState(0);
@@ -177,18 +193,27 @@ const MovieDetail = () => {
         }))
 
     }, []);
-    const handleShowTabLichChieu = useCallback((value) => () => {
-        refMuaVe.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
-        setIsTabLichChieu(value);
-    }, []);
+    // const handleShowTabLichChieu = useCallback((value) => () => {
+    //     refMuaVe.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+    //     setIsTabLichChieu(value);
+    // }, []);
     const isShowModalVideoMovie = useSelector((state) => {
         return state.qlMovie.ModalVideoMovie.isShow
     });
+    const transitionDuration = useMemo(() => {
+        return {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: theme.transitions.duration.leavingScreen,
+        }
+    });
+    const handleCLickGotoHome = useCallback(() => {
+        refD.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+    }, []);
     return (
         <Fragment >
             {isLoading ? <Loading /> :
                 <Fragment>
-
+                    <div ref={refD} className={classes.divRef}></div>
                     <Header />
                     <div className={classes.root}>
                         <motion.div className={classes.divTop}
@@ -234,6 +259,20 @@ const MovieDetail = () => {
                     </div>
                     <Footer />
                     {isShowModalVideoMovie && <ModalVideoMovie />}
+                    <div className={classes.divTool}>
+                        <Zoom
+                            in={true}
+                            timeout={transitionDuration}
+                            style={{
+                                transitionDelay: `${transitionDuration.exit}ms`,
+                            }}
+                            unmountOnExit
+                        >
+                            <Fab aria-label='Home' color='primary' onClick={handleCLickGotoHome}>
+                                <NavigationIcon />
+                            </Fab>
+                        </Zoom>
+                    </div>
                 </Fragment>}
         </Fragment>
     );
