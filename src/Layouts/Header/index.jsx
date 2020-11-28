@@ -101,6 +101,7 @@ const Header = (props) => {
                                         <img
                                             src={avatarIcon}
                                             alt="avatarIcon"
+                                            style={{ borderRadius: '50%' }}
                                         />
                                         <p color="inherit"
                                             className={`${classes.navLink} ${classes.login}`}

@@ -2,12 +2,10 @@ import React, { Fragment, memo, useCallback, useEffect, useMemo, useState } from
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction } from '../../redux/action';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
-import Loader from '../../Layouts/Loading';
-import signInBanner from '../../assets/img/signInBanner.svg';
-import topRightDop from '../../assets/img/topRightDop.svg';
+import signInBanner from '../../assets/img/signInBanner.jpg';
+import topRightDop from '../../assets/img/topRightDop.jpg';
 import logoLight from '../../assets/img/LogoLight.svg';
-import bottomRightDop from '../../assets/img/bottomRightDop.svg';
-import bottomDop from '../../assets/img/bottomDop2.svg';
+import bottomDop from '../../assets/img/bottomDop2.jpg';
 import { Avatar, Button, Fab, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, Paper, TextField, useTheme, Zoom } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';

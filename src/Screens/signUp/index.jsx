@@ -4,9 +4,9 @@ import Loader from '../../Layouts/Loading';
 import { createAction } from '../../redux/action';
 import { SET_TYPE_PAGE } from '../../redux/action/type';
 //#region img
-import signUpBanner from '../../assets/img/signUpbanner.svg';
-import bottomDop from '../../assets/img/bottomDop.svg';
-import topRightDop from '../../assets/img/topRightDop.svg';
+import signUpBanner from '../../assets/img/signUpbanner.jpg';
+import bottomDop from '../../assets/img/bottomDop.jpg';
+import topRightDop from '../../assets/img/topRightDop.jpg';
 import logoLight from '../../assets/img/LogoLight.svg';
 //#endregion
 import { Avatar, Button, Fab, FormControl, IconButton, Input, InputAdornment, InputLabel, makeStyles, TextField, useTheme, Zoom } from '@material-ui/core';

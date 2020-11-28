@@ -11,6 +11,13 @@ import { CHECK_AMOUNT, SET_IS_ACTVED_GHE_ITEM } from '../../redux/action/type';
 import { createAction } from '../../redux/action';
 import { MovieService } from '../../services';
 import swal from 'sweetalert';
+//#region import ghe
+import gheDaChon_BgLight from '../../assets/img/gheDaChon_BgLight.png';
+import gheDaCoNguoiChon_BgLight from '../../assets/img/gheDaCoNguoiChon_BgLight.png';
+import gheKhongTheChon_BgLight from '../../assets/img/gheKhongTheChon_BgLight.png';
+import gheThuong_BgLight from '../../assets/img/gheThuong_BgLight.png';
+import gheVip_BgLight from '../../assets/img/gheVip_BgLight.png';
+//#endregion
 //#region Ghe SVG
 const ChangeGheSVG = (color, number, disable, type = 0) => {
     return (
@@ -56,7 +63,6 @@ const ChonGheComponent = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [thanhToan, setThanhToan] = useState(0);
-    const [completedd, setCompletedd] = useState(false);
     const { handleNext, logoCine } = useMemo(() => {
         return props
     }, [props]);
@@ -407,7 +413,7 @@ const ChonGheComponent = (props) => {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </motion.div >
     );
 };
 const useStyles = makeStyles((theme) => ({

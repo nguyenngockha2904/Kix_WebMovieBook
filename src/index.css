@@ -93,3 +93,6 @@ body .swal-text {
   font-size: 18px;
   text-align: center;
 }
+.slick-initialized .slick-slide div {
+  outline: 0px !important;
+}
