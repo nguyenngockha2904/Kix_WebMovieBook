@@ -11,7 +11,6 @@ const SignUp = React.lazy(() => import('./Screens/signUp'));
 const UserInfo = React.lazy(() => import('./Screens/userpage'));
 const ErrorPage = React.lazy(() => import('./Screens/ErrorPage'));
 function App() {
-
   return (
     <BrowserRouter>
       <Suspense fallback={<Fragment><Loading /></Fragment>}>

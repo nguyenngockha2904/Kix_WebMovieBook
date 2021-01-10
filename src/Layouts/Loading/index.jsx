@@ -1,6 +1,6 @@
-import { Fab, makeStyles, useTheme, Zoom } from '@material-ui/core';
+import { Avatar, Fab, makeStyles, useTheme, Zoom } from '@material-ui/core';
 import React, { memo, useMemo } from 'react';
-import logoLight from '../../assets/img/LogoLight.svg';
+import logoLight from '../../assets/img/logoCine/LogoLight.jpg';
 const useStyles = makeStyles(() => ({
     root: {
         position: 'fixed',
@@ -16,6 +16,8 @@ const useStyles = makeStyles(() => ({
     },
     logoLight: {
         animation: 'shake 1s linear infinite',
+        width: 100,
+        height: 100,
     }
 }));
 const Loading = () => {
@@ -38,13 +40,8 @@ const Loading = () => {
                 }}
                 unmountOnExit
             >
-                <Fab aria-label='Home' color='primary'>
-                    <img src={logoLight} alt="logoLight" className={classes.logoLight} />
-                </Fab>
+                <Avatar variant="square" src={logoLight} className={classes.logoLight} />
             </Zoom>
-            <div>
-
-            </div>
         </div>
     );
 };

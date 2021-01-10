@@ -31,6 +31,7 @@ let initialState = {
     listGheThuong: [],
     listGheDaDat: [],
     amount: {},
+    canBook: false,
 };
 const PhanTrangGhe = (danhSachGhetam) => {
 
@@ -358,8 +359,10 @@ const MovieReducer = (state = initialState, { type, payload }) => {
                     for (let item of danhSachGhetam) {
                         if (item.loaiGhe.toLowerCase() === 'vip') {
                             item.isKhongTheDat = true;
+                            state.canBook = false;
                         } else {
                             item.isKhongTheDat = false;
+                            state.canBook = true;
                         }
                     }
                     for (let ghedadat of state.listGheDaDat) {
