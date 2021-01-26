@@ -9,6 +9,7 @@ const BookMovieDetail = React.lazy(() => import('./Screens/BookMovieDetail'));
 const SignIn = React.lazy(() => import('./Screens/SignIn'));
 const SignUp = React.lazy(() => import('./Screens/signUp'));
 const UserInfo = React.lazy(() => import('./Screens/userpage'));
+const AdminPage = React.lazy(() => import('./Screens/AdminPage'));
 const ErrorPage = React.lazy(() => import('./Screens/ErrorPage'));
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/dangky' exact component={SignUp} />
           <Route path='/chitietphongve/:maLichChieu' exact component={BookMovieDetail} />
           <Route path='/thongtincanhan' exact component={UserInfo} />
+          <Route path='/admin' exact component={AdminPage} />
           <Route path='/' exact component={Home} />
           <Route path="*">
             <ErrorPage role={0} />
