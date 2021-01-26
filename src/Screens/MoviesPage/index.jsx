@@ -17,6 +17,8 @@ import DateRangeRoundedIcon from '@material-ui/icons/DateRangeRounded';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import RemoveCircleOutlineRoundedIcon from '@material-ui/icons/RemoveCircleOutlineRounded';
 import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
 // core components
 import styles from "../../marterialsStyles/tableStyle.js";
 import { Box, Collapse, IconButton } from "@material-ui/core";
@@ -137,22 +139,30 @@ function Row(props) {
                                 </div>
 
                             </Box>
-                            <Box alignSelf="start">
+                            <Box alignSelf="center"  >
                                 <div>
-                                    <IconButton color="primary" fontSize="large" style={{ color: '#43a047' }}>
-                                        <DateRangeRoundedIcon />
-                                    </IconButton>
-                                </div>
-                                <div>
-                                    <IconButton color="inherit" fontSize="large" style={{ color: '#fb8c00' }}>
-                                        <EditRoundedIcon />
-                                    </IconButton>
-                                </div>
 
+                                    <Tooltip title="Xem lịch chiếu" TransitionComponent={Fade}>
+                                        <IconButton color="primary" fontSize="large" style={{ color: '#43a047' }}>
+                                            <DateRangeRoundedIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                                <Box my={3}>
+                                    <Tooltip title="Chỉnh sửa" TransitionComponent={Fade}>
+                                        <IconButton color="inherit" fontSize="large" style={{ color: '#fb8c00' }}>
+                                            <EditRoundedIcon />
+                                        </IconButton>
+                                    </Tooltip>
+
+                                </Box>
                                 <div>
-                                    <IconButton color="secondary" fontSize="large" style={{ color: '#e53935' }} >
-                                        <RemoveCircleOutlineRoundedIcon />
-                                    </IconButton>
+
+                                    <Tooltip title="Xóa" TransitionComponent={Fade}>
+                                        <IconButton color="secondary" fontSize="large" style={{ color: '#e53935' }} >
+                                            <RemoveCircleOutlineRoundedIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </div>
                             </Box>
                         </Box>
@@ -174,17 +184,19 @@ export default function CustomTable(props) {
                 <p >
                     số lượng phim hiện tại : 17
                  </p>
-                <IconButton fontSize="large" color="primary" style={{
+                <Tooltip title="Thêm mới">
+                    <IconButton fontSize="large" color="primary" style={{
 
-                    position: 'absolute',
-                    top: '50%',
-                    right: '10px',
-                    transform: 'translateY(-50%)',
-                    color: '#6b00b6',
-                    background: '#fff',
-                }} >
-                    <AddRoundedIcon />
-                </IconButton>
+                        position: 'absolute',
+                        top: '50%',
+                        right: '10px',
+                        transform: 'translateY(-50%)',
+                        color: '#6b00b6',
+                        background: '#fff',
+                    }} >
+                        <AddRoundedIcon />
+                    </IconButton>
+                </Tooltip>
             </CardHeader>
             <CardBody>
                 <TableComponent
