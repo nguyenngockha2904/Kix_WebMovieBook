@@ -57,26 +57,26 @@ function AdminPage(props) {
             <Box width="15%" maxWidth="15%">
                 <div className={classes.sideBar}>
                     <div className={classes.sideBarItem} style={{ marginLeft: 6 }}>
-                        <Button className={classes.Btnlogo} fullWidth="100%" variant="text" color="primary" onClick={handleActiveTab(0)} > <img src={Logo} alt="logo" className={`${classes.logo} ${classes.iconSiderbar}`} /> <i style={{ color: '#fff', letterSpacing: 3, fontWeight: '800' }} className={classes.textSideBar}> Kix Admin </i> </Button>
+                        <Button className={classes.Btnlogo} fullWidth={true} variant="text" color="primary" onClick={handleActiveTab(0)} > <img src={Logo} alt="logo" className={`${classes.logo} ${classes.iconSiderbar}`} /> <i style={{ color: '#fff', letterSpacing: 3, fontWeight: '800' }} className={classes.textSideBar}> Kix Admin </i> </Button>
                     </div>
                     <div className={classes.sideBarItem}>
-                        <Button className={`${classes.btnSide} ${active === 0 && classes.activeStep}`} fullWidth="100%" variant="contained" color="primary" onClick={handleActiveTab(0)}><DashboardRoundedIcon className={classes.iconSiderbar} /> <span className={classes.textSideBar}> Dashboard </span></Button>
+                        <Button className={`${classes.btnSide} ${active === 0 && classes.activeStep}`} fullWidth={true} variant="contained" color="primary" onClick={handleActiveTab(0)}><DashboardRoundedIcon className={classes.iconSiderbar} /> <span className={classes.textSideBar}> Dashboard </span></Button>
                     </div>
                     <div className={classes.sideBarItem}>
-                        <Button className={`${classes.btnSide} ${active === 1 && classes.activeStep}`} fullWidth="100%" variant="contained" color="primary" onClick={handleActiveTab(1)}><LocalMoviesRoundedIcon className={classes.iconSiderbar} /> <span className={classes.textSideBar}> Danh sách phim </span></Button>
+                        <Button className={`${classes.btnSide} ${active === 1 && classes.activeStep}`} fullWidth={true} variant="contained" color="primary" onClick={handleActiveTab(1)}><LocalMoviesRoundedIcon className={classes.iconSiderbar} /> <span className={classes.textSideBar}> Danh sách phim </span></Button>
                     </div>
                     <div className={classes.sideBarItem}>
-                        <Button className={`${classes.btnSide} ${active === 2 && classes.activeStep}`} fullWidth="100%" variant="contained" color="primary" onClick={handleActiveTab(2)}><PeopleRoundedIcon className={classes.iconSiderbar} />  <span className={classes.textSideBar}> Người dùng</span></Button>
+                        <Button className={`${classes.btnSide} ${active === 2 && classes.activeStep}`} fullWidth={true} variant="contained" color="primary" onClick={handleActiveTab(2)}><PeopleRoundedIcon className={classes.iconSiderbar} />  <span className={classes.textSideBar}> Người dùng</span></Button>
 
                     </div>
                     <div className={classes.sideBarItem}>
-                        <Button className={`${classes.btnSide} ${active === 3 && classes.activeStep}`} fullWidth="100%" variant="contained" color="primary" onClick={handleActiveTab(3)}>  <DateRangeRoundedIcon className={classes.iconSiderbar} /> <span className={classes.textSideBar}> Lịch chiếu</span></Button>
+                        <Button className={`${classes.btnSide} ${active === 3 && classes.activeStep}`} fullWidth={true} variant="contained" color="primary" onClick={handleActiveTab(3)}>  <DateRangeRoundedIcon className={classes.iconSiderbar} /> <span className={classes.textSideBar}> Lịch chiếu</span></Button>
 
                     </div>
                 </div>
 
             </Box>
-            <Box width="85%" maxWidth="85%" height="400vh" p={2} style={{ backgroundColor: '#eee' }}>
+            <Box width="85%" maxWidth="85%" p={2} style={{ backgroundColor: '#eee' }}>
                 <div className={classes.appBar}>
                     <div className={classes.sectionDesktop}>
                         <Button color="default" variant="text" className={classes.textTitle}>
@@ -109,10 +109,10 @@ function AdminPage(props) {
                     </div>
 
                 </div>
-                <Box my={3}>
+                <Box my={3} minHeight="150vh">
                     {getContent(active)}
                 </Box>
-
+                <Box>Footer</Box>
             </Box>
         </Box>
 

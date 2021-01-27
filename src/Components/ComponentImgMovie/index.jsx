@@ -5,6 +5,7 @@ import iconStarMid from '../../assets/img/iconStarMid.svg';
 import onePerTwoIcon from '../../assets/img/onePerTwoIcon.svg';
 import play_videoIcon from '../../assets/img/play_videoIcon.svg';
 import CircularProgressCustom from '../CircularProgressCustom';
+
 import { useStyles } from './styles';
 const ImageMovie = (props) => {
     const classes = useStyles();

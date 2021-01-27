@@ -11,10 +11,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
 import { Box, Button, Collapse, TableHead, Typography } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -23,6 +19,7 @@ import { createAction } from '../../redux/action';
 import { SET_REQUEST_PAGE } from '../../redux/action/type';
 import { useHistory } from 'react-router-dom';
 import { useRowStyles, useStylesHistoryBookComponent } from './styles';
+import { TablePaginationActions } from '../TablePagination';
 const StyledTableCell = withStyles((theme) => ({
     body: {
         fontSize: 14,
@@ -92,75 +89,6 @@ const Row = (props) => {
         </React.Fragment>
     );
 }
-
-//#region TablePaginationActions 
-const TablePaginationActions = (props) => {
-    const classes = useStylesTablePaginationActions();
-    const theme = useTheme();
-    const { count, page, rowsPerPage, onChangePage } = useMemo(() => {
-        return props
-    }, [props]);
-
-    const handleFirstPageButtonClick = useCallback((event) => {
-        onChangePage(event, 0);
-    }, []);
-
-    const handleBackButtonClick = useCallback((event) => {
-        onChangePage(event, page - 1);
-    }, [page]);
-
-    const handleNextButtonClick = useCallback((event) => {
-        onChangePage(event, page + 1);
-    }, [page]);
-
-    const handleLastPageButtonClick = useCallback((event) => {
-        onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    }, [count, rowsPerPage]);
-
-    return (
-        <div className={classes.root}>
-            <IconButton
-                onClick={handleFirstPageButtonClick}
-                disabled={page === 0}
-                aria-label="first page"
-            >
-                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-            </IconButton>
-            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-            </IconButton>
-            <IconButton
-                onClick={handleNextButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
-            >
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-            </IconButton>
-            <IconButton
-                onClick={handleLastPageButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
-            >
-                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-            </IconButton>
-        </div>
-    );
-}
-
-const useStylesTablePaginationActions = makeStyles((theme) => ({
-    root: {
-        flexShrink: 0,
-        marginLeft: theme.spacing(2.5),
-
-    },
-}));
-TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onChangePage: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-};
-//#endregion
 
 
 const HistoryBookComponent = () => {

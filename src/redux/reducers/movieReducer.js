@@ -91,12 +91,15 @@ const MovieReducer = (state = initialState, { type, payload }) => {
         case SHOW_MODAL_VIDEO: {
             state.ModalVideoMovie.isShow = true;
             state.ModalVideoMovie.value = payload.value;
+
+            document.getElementById('bodyTag').className = "modalVideo";
             state.ModalVideoMovie.role = payload.role;
             return { ...state };
         }
         case HIRE_MODAL_VIDEO: {
             state.ModalVideoMovie.isShow = false;
             state.ModalVideoMovie.role = 0;
+            document.getElementById('bodyTag').classList.remove("modalVideo");
             return { ...state };
         }
         case FETCH_DATA_MOVIEINFO_WITH_MOVIEID: {
